@@ -32,6 +32,9 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
             this.btn_GenerateMod = new DarkUI.Controls.DarkButton();
             this.groupBox_Paths = new DarkUI.Controls.DarkGroupBox();
@@ -56,7 +59,8 @@
             this.menuStrip_Main.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.menuStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.addToolStripMenuItem});
             this.menuStrip_Main.Location = new System.Drawing.Point(0, 0);
             this.menuStrip_Main.Name = "menuStrip_Main";
             this.menuStrip_Main.Padding = new System.Windows.Forms.Padding(3, 2, 0, 2);
@@ -78,7 +82,8 @@
             // saveConfigToolStripMenuItem
             // 
             this.saveConfigToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.saveConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.saveConfigToolStripMenuItem.Enabled = false;
+            this.saveConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.saveConfigToolStripMenuItem.Name = "saveConfigToolStripMenuItem";
             this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
             this.saveConfigToolStripMenuItem.Text = "Save Config";
@@ -86,10 +91,41 @@
             // loadConfigToolStripMenuItem
             // 
             this.loadConfigToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.loadConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.loadConfigToolStripMenuItem.Enabled = false;
+            this.loadConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
             this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
             this.loadConfigToolStripMenuItem.Text = "Load Config";
+            this.loadConfigToolStripMenuItem.Click += new System.EventHandler(this.LoadConfig_Click);
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addFileToolStripMenuItem,
+            this.addOptionToolStripMenuItem});
+            this.addToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.addToolStripMenuItem.Text = "Add...";
+            // 
+            // addFileToolStripMenuItem
+            // 
+            this.addFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.addFileToolStripMenuItem.Enabled = false;
+            this.addFileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.addFileToolStripMenuItem.Name = "addFileToolStripMenuItem";
+            this.addFileToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.addFileToolStripMenuItem.Text = "File";
+            // 
+            // addOptionToolStripMenuItem
+            // 
+            this.addOptionToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.addOptionToolStripMenuItem.Enabled = false;
+            this.addOptionToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.addOptionToolStripMenuItem.Name = "addOptionToolStripMenuItem";
+            this.addOptionToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            this.addOptionToolStripMenuItem.Text = "Option";
             // 
             // tlp_Main
             // 
@@ -112,10 +148,12 @@
             // btn_GenerateMod
             // 
             this.btn_GenerateMod.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_GenerateMod.Location = new System.Drawing.Point(563, 361);
+            this.btn_GenerateMod.Enabled = false;
+            this.btn_GenerateMod.Location = new System.Drawing.Point(570, 368);
+            this.btn_GenerateMod.Margin = new System.Windows.Forms.Padding(10);
             this.btn_GenerateMod.Name = "btn_GenerateMod";
-            this.btn_GenerateMod.Padding = new System.Windows.Forms.Padding(5);
-            this.btn_GenerateMod.Size = new System.Drawing.Size(234, 58);
+            this.btn_GenerateMod.Padding = new System.Windows.Forms.Padding(15);
+            this.btn_GenerateMod.Size = new System.Drawing.Size(220, 44);
             this.btn_GenerateMod.TabIndex = 0;
             this.btn_GenerateMod.Text = "Generate Mod";
             // 
@@ -137,11 +175,13 @@
             // 
             this.comboBox_File.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox_File.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.comboBox_File.Enabled = false;
             this.comboBox_File.FormattingEnabled = true;
             this.comboBox_File.Location = new System.Drawing.Point(560, 0);
             this.comboBox_File.Name = "comboBox_File";
             this.comboBox_File.Size = new System.Drawing.Size(231, 28);
             this.comboBox_File.TabIndex = 1;
+            this.comboBox_File.SelectedIndexChanged += new System.EventHandler(this.SelectedFile_Changed);
             // 
             // tlp_Paths
             // 
@@ -173,6 +213,7 @@
             this.btn_OutputPath.Size = new System.Drawing.Size(73, 29);
             this.btn_OutputPath.TabIndex = 5;
             this.btn_OutputPath.Text = ". . .";
+            this.btn_OutputPath.Click += new System.EventHandler(this.OutputPath_Click);
             // 
             // lbl_GamePath
             // 
@@ -206,6 +247,7 @@
             this.txt_GamePath.Name = "txt_GamePath";
             this.txt_GamePath.Size = new System.Drawing.Size(506, 27);
             this.txt_GamePath.TabIndex = 2;
+            this.txt_GamePath.TextChanged += new System.EventHandler(this.Path_Changed);
             // 
             // txt_OutputPath
             // 
@@ -217,6 +259,7 @@
             this.txt_OutputPath.Name = "txt_OutputPath";
             this.txt_OutputPath.Size = new System.Drawing.Size(506, 27);
             this.txt_OutputPath.TabIndex = 3;
+            this.txt_OutputPath.TextChanged += new System.EventHandler(this.Path_Changed);
             // 
             // btn_GamePath
             // 
@@ -227,6 +270,7 @@
             this.btn_GamePath.Size = new System.Drawing.Size(73, 29);
             this.btn_GamePath.TabIndex = 4;
             this.btn_GamePath.Text = ". . .";
+            this.btn_GamePath.Click += new System.EventHandler(this.GamePath_Click);
             // 
             // pnl_Main
             // 
@@ -277,5 +321,8 @@
         private DarkUI.Controls.DarkButton btn_OutputPath;
         private DarkUI.Controls.DarkButton btn_GamePath;
         private DarkUI.Controls.DarkComboBox comboBox_File;
+        private ToolStripMenuItem addToolStripMenuItem;
+        private ToolStripMenuItem addFileToolStripMenuItem;
+        private ToolStripMenuItem addOptionToolStripMenuItem;
     }
 }
