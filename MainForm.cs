@@ -192,26 +192,28 @@ namespace TOTKActorRepacker
 
             // Add Header Row
             tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-            TableLayoutPanel header = new TableLayoutPanel() { Name = "tlp_Header", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
-            foreach (var width in new float[] { 15f, 50f, 35f })
+            TableLayoutPanel header = new TableLayoutPanel() { Name = "tlp_Header", Dock = DockStyle.Fill, ColumnCount = 4, RowCount = 1 };
+            foreach (var width in new float[] { 5f, 55f, 25f, 15f })
                 header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
-            header.Controls.Add(new DarkLabel { Name = "lbl_Enabled", Text = "Enabled", Anchor = anchorStyle }, 0, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_FieldName", Text = "Field Name", Anchor = anchorStyle }, 1, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_Value", Text = "Value", Anchor = anchorStyle }, 2, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_Enabled", Text = "", Anchor = anchorStyle }, 0, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_Path", Text = "Path", Anchor = anchorStyle }, 1, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_FieldName", Text = "Field Name", Anchor = anchorStyle }, 2, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_Value", Text = "Value", Anchor = anchorStyle }, 3, 0);
             tlp.Controls.Add(header, 0, 0);
 
             // Add individual options
             for (int i = 0; i < fileOptions.Count; i++)
             {
                 tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-                TableLayoutPanel option = new TableLayoutPanel() { Name = $"tlp_Option_{i}", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
-                foreach (var width in new float[] { 15f, 50f, 35f })
+                TableLayoutPanel option = new TableLayoutPanel() { Name = $"tlp_Option_{i}", Dock = DockStyle.Fill, ColumnCount = 4, RowCount = 1 };
+                foreach (var width in new float[] { 5f, 55f, 25f, 15f })
                     option.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
 
                 // Add fields
                 option.Controls.Add(new DarkCheckBox { Name = $"chk_Enabled_{i}", Checked = fileOptions[i].Enabled, Anchor = anchorStyle }, 0, 0);
-                option.Controls.Add(new DarkLabel { Name = $"lbl_FieldName_{i}", Text = fileOptions[i].FieldName, Anchor = anchorStyle }, 1, 0);
-                option.Controls.Add(new DarkTextBox { Name = $"txt_Value_{i}", Text = fileOptions[i].Value, Anchor = anchorStyle }, 2, 0);
+                option.Controls.Add(new DarkLabel { Name = $"lbl_Path_{i}", Text = fileOptions[i].Path, Anchor = anchorStyle }, 1, 0);
+                option.Controls.Add(new DarkLabel { Name = $"lbl_FieldName_{i}", Text = fileOptions[i].FieldName, Anchor = anchorStyle }, 2, 0);
+                option.Controls.Add(new DarkTextBox { Name = $"txt_Value_{i}", Text = fileOptions[i].Value, Anchor = anchorStyle }, 3, 0);
                 tlp.Controls.Add(option, 0, i + 1);
             }
         }

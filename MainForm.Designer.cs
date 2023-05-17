@@ -36,9 +36,8 @@
             this.addFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_GenerateMod = new DarkUI.Controls.DarkButton();
-            this.groupBox_Paths = new DarkUI.Controls.DarkGroupBox();
             this.comboBox_File = new DarkUI.Controls.DarkComboBox();
+            this.groupBox_Paths = new DarkUI.Controls.DarkGroupBox();
             this.tlp_Paths = new System.Windows.Forms.TableLayoutPanel();
             this.btn_OutputPath = new DarkUI.Controls.DarkButton();
             this.lbl_GamePath = new DarkUI.Controls.DarkLabel();
@@ -46,6 +45,7 @@
             this.txt_GamePath = new DarkUI.Controls.DarkTextBox();
             this.txt_OutputPath = new DarkUI.Controls.DarkTextBox();
             this.btn_GamePath = new DarkUI.Controls.DarkButton();
+            this.btn_GenerateMod = new DarkUI.Controls.DarkButton();
             this.pnl_Main = new System.Windows.Forms.Panel();
             this.menuStrip_Main.SuspendLayout();
             this.tlp_Main.SuspendLayout();
@@ -132,36 +132,38 @@
             this.tlp_Main.ColumnCount = 2;
             this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlp_Main.Controls.Add(this.btn_GenerateMod, 1, 2);
+            this.tlp_Main.Controls.Add(this.comboBox_File, 0, 1);
             this.tlp_Main.Controls.Add(this.groupBox_Paths, 0, 0);
-            this.tlp_Main.Controls.Add(this.pnl_Main, 0, 1);
+            this.tlp_Main.Controls.Add(this.btn_GenerateMod, 1, 3);
+            this.tlp_Main.Controls.Add(this.pnl_Main, 0, 2);
             this.tlp_Main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_Main.Location = new System.Drawing.Point(0, 28);
             this.tlp_Main.Name = "tlp_Main";
-            this.tlp_Main.RowCount = 3;
+            this.tlp_Main.RowCount = 4;
             this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tlp_Main.Size = new System.Drawing.Size(800, 422);
             this.tlp_Main.TabIndex = 1;
             // 
-            // btn_GenerateMod
+            // comboBox_File
             // 
-            this.btn_GenerateMod.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_GenerateMod.Enabled = false;
-            this.btn_GenerateMod.Location = new System.Drawing.Point(570, 368);
-            this.btn_GenerateMod.Margin = new System.Windows.Forms.Padding(10);
-            this.btn_GenerateMod.Name = "btn_GenerateMod";
-            this.btn_GenerateMod.Padding = new System.Windows.Forms.Padding(15);
-            this.btn_GenerateMod.Size = new System.Drawing.Size(220, 44);
-            this.btn_GenerateMod.TabIndex = 0;
-            this.btn_GenerateMod.Text = "Generate Mod";
+            this.comboBox_File.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox_File.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.comboBox_File.Enabled = false;
+            this.comboBox_File.FormattingEnabled = true;
+            this.comboBox_File.Location = new System.Drawing.Point(10, 112);
+            this.comboBox_File.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.comboBox_File.Name = "comboBox_File";
+            this.comboBox_File.Size = new System.Drawing.Size(547, 28);
+            this.comboBox_File.TabIndex = 1;
+            this.comboBox_File.SelectedIndexChanged += new System.EventHandler(this.SelectedFile_Changed);
             // 
             // groupBox_Paths
             // 
             this.groupBox_Paths.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.tlp_Main.SetColumnSpan(this.groupBox_Paths, 2);
-            this.groupBox_Paths.Controls.Add(this.comboBox_File);
             this.groupBox_Paths.Controls.Add(this.tlp_Paths);
             this.groupBox_Paths.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox_Paths.Location = new System.Drawing.Point(3, 3);
@@ -170,18 +172,6 @@
             this.groupBox_Paths.TabIndex = 1;
             this.groupBox_Paths.TabStop = false;
             this.groupBox_Paths.Text = "Paths";
-            // 
-            // comboBox_File
-            // 
-            this.comboBox_File.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox_File.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.comboBox_File.Enabled = false;
-            this.comboBox_File.FormattingEnabled = true;
-            this.comboBox_File.Location = new System.Drawing.Point(560, 0);
-            this.comboBox_File.Name = "comboBox_File";
-            this.comboBox_File.Size = new System.Drawing.Size(231, 28);
-            this.comboBox_File.TabIndex = 1;
-            this.comboBox_File.SelectedIndexChanged += new System.EventHandler(this.SelectedFile_Changed);
             // 
             // tlp_Paths
             // 
@@ -272,14 +262,26 @@
             this.btn_GamePath.Text = ". . .";
             this.btn_GamePath.Click += new System.EventHandler(this.GamePath_Click);
             // 
+            // btn_GenerateMod
+            // 
+            this.btn_GenerateMod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_GenerateMod.Enabled = false;
+            this.btn_GenerateMod.Location = new System.Drawing.Point(570, 368);
+            this.btn_GenerateMod.Margin = new System.Windows.Forms.Padding(10);
+            this.btn_GenerateMod.Name = "btn_GenerateMod";
+            this.btn_GenerateMod.Padding = new System.Windows.Forms.Padding(15);
+            this.btn_GenerateMod.Size = new System.Drawing.Size(220, 44);
+            this.btn_GenerateMod.TabIndex = 0;
+            this.btn_GenerateMod.Text = "Generate Mod";
+            // 
             // pnl_Main
             // 
             this.pnl_Main.AutoScroll = true;
             this.tlp_Main.SetColumnSpan(this.pnl_Main, 2);
             this.pnl_Main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_Main.Location = new System.Drawing.Point(3, 108);
+            this.pnl_Main.Location = new System.Drawing.Point(3, 150);
             this.pnl_Main.Name = "pnl_Main";
-            this.pnl_Main.Size = new System.Drawing.Size(794, 247);
+            this.pnl_Main.Size = new System.Drawing.Size(794, 205);
             this.pnl_Main.TabIndex = 2;
             // 
             // MainForm
