@@ -178,6 +178,8 @@ namespace TOTKActorRepacker
         {
             var comboBox = (DarkComboBox)sender;
             LoadOptions(comboBox.SelectedItem.ToString());
+
+            saveConfigToolStripMenuItem.Enabled = true;
         }
 
         private void LoadOptions(string fileName)
@@ -216,6 +218,29 @@ namespace TOTKActorRepacker
                 option.Controls.Add(new DarkTextBox { Name = $"txt_Value_{i}", Text = fileOptions[i].Value, Anchor = anchorStyle }, 3, 0);
                 tlp.Controls.Add(option, 0, i + 1);
             }
+
+            addOptionToolStripMenuItem.Enabled = true;
+        }
+
+        private void SaveConfig_Click(object sender, EventArgs e)
+        {
+            string file = SaveFile("Save config file", ".json");
+            if (!string.IsNullOrEmpty(file))
+            {
+                SaveConfig(file);
+            }
+        }
+
+        private string SaveFile(string title, string filter)
+        {
+            CommonSaveFileDialog dialog = new CommonSaveFileDialog();
+
+            dialog.Title = title;
+            dialog.Filters.Add(new CommonFileDialogFilter("File", filter));
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                return dialog.FileName;
+            return "";
         }
     }
 
@@ -223,8 +248,11 @@ namespace TOTKActorRepacker
     {
         public string File = "";
         public string Path = "";
+        public string NodePath = "";
         public string FieldName = "";
+        public string Nickname = "";
         public string Value = "";
+        public string OGValue = "";
         public bool Enabled = true;
     }
 }

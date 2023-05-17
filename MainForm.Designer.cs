@@ -85,8 +85,9 @@
             this.saveConfigToolStripMenuItem.Enabled = false;
             this.saveConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.saveConfigToolStripMenuItem.Name = "saveConfigToolStripMenuItem";
-            this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
+            this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveConfigToolStripMenuItem.Text = "Save Config";
+            this.saveConfigToolStripMenuItem.Click += new System.EventHandler(this.SaveConfig_Click);
             // 
             // loadConfigToolStripMenuItem
             // 
@@ -94,7 +95,7 @@
             this.loadConfigToolStripMenuItem.Enabled = false;
             this.loadConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
-            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
+            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.loadConfigToolStripMenuItem.Text = "Load Config";
             this.loadConfigToolStripMenuItem.Click += new System.EventHandler(this.LoadConfig_Click);
             // 
