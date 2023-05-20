@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.IO;
+using ZstdSharp;
+using Cead;
 
 namespace TOTKActorRepacker
 {
@@ -64,8 +66,7 @@ namespace TOTKActorRepacker
         {
             // If paths are valid...
             if (Directory.Exists(txt_GamePath.Text)
-                && File.Exists(Path.Combine(txt_GamePath.Text, "Pack\\ZsDic.pack.zs"))
-                && Directory.Exists(txt_OutputPath.Text))
+                && File.Exists(Path.Combine(txt_GamePath.Text, "Pack\\ZsDic.pack.zs")))
             {
                 // Update config with chosen paths
                 formSettings.GamePath = txt_GamePath.Text;
@@ -76,6 +77,7 @@ namespace TOTKActorRepacker
                 btn_GenerateMod.Enabled = true;
                 loadConfigToolStripMenuItem.Enabled = true;
                 addFileToolStripMenuItem.Enabled = true;
+                compareModFilesToolStripMenuItem.Enabled = true;
             }
             else
             {
@@ -83,6 +85,7 @@ namespace TOTKActorRepacker
                 btn_GenerateMod.Enabled = false;
                 loadConfigToolStripMenuItem.Enabled = false;
                 addFileToolStripMenuItem.Enabled = false;
+                compareModFilesToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -256,6 +259,69 @@ namespace TOTKActorRepacker
         {
             using (SettingsForm settingsForm = new SettingsForm())
                 settingsForm.ShowDialog();
+        }
+
+        private void Compare_Click(object sender, EventArgs e)
+        {
+            string modPath = ChooseFolder("Choose mod folder to compare with game files");
+            string modActorPath = Path.Combine(modPath, "Pack/Actor");
+            string gameActorPath = Path.Combine(formSettings.GamePath, "Pack/Actor");
+            if (Directory.Exists(modActorPath) && Directory.Exists(gameActorPath))
+            {
+                // For each file in Actor/Pack...
+                foreach (var modFile in Directory.GetFiles(modActorPath, "*.zs", SearchOption.TopDirectoryOnly))
+                {
+                    // If matching file in game dir exists...
+                    string modFileRelativePath = modFile.Substring(modPath.Length + 1);
+                    string gameFile = Path.Combine(formSettings.GamePath, modFileRelativePath);
+                    if (File.Exists(gameFile))
+                    {
+                        string fileName = Path.GetFileName(gameFile);
+                        string tempFolder = $"./Temp/{Path.GetFileNameWithoutExtension(fileName)}";
+
+                        // Copy both to temp dir
+                        if (Directory.Exists(tempFolder))
+                            Directory.Delete(tempFolder, true);
+                        // TODO: wait for handle to be free
+                        Directory.CreateDirectory(tempFolder);
+                        string tempModFile = Path.Combine(tempFolder, "modFile.pack.zs");
+                        string tempGameFile = Path.Combine(tempFolder, "gameFile.pack.zs");
+                        File.Copy(modFile, tempModFile);
+                        File.Copy(gameFile, tempGameFile);
+
+                        // Decompress files
+                        ZStdHelper.DecompressFolder(tempFolder, tempFolder, false);
+                        tempModFile = tempModFile.Replace(".zs", "");
+                        tempGameFile = tempGameFile.Replace(".zs", "");
+
+                        // Open SARC
+                        if (File.Exists(tempModFile))
+                        {
+                            using Sarc modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile));
+                            using Sarc gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile));
+
+                            foreach((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml") 
+                                && gamePack.Any(y => y.Key.Equals(x.Key))))
+                            {
+                                // Extract and compare BGYML if same file is found in both SARCs
+                                var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
+
+                                Byml modBymlFile = Byml.FromBinary(modPackFile.AsSpan());
+                                Byml gameBymlFile = Byml.FromBinary(gamePackFile.Value.AsSpan());
+                            }
+                        }
+
+                    }
+                }
+                
+                // Compare each byml value and add to new list of options if different
+                // Save new .json and notify user
+            }
+            else
+            {
+                MessageBox.Show("Failed to compare mod to game files, please ensure " +
+                    "/Pack/Actor/ directory exists in both folders!");
+            }
         }
     }
 

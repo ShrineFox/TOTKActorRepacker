@@ -49,6 +49,7 @@
             this.btn_GenerateMod = new DarkUI.Controls.DarkButton();
             this.pnl_Main = new System.Windows.Forms.Panel();
             this.lbl_ChooseFile = new DarkUI.Controls.DarkLabel();
+            this.compareModFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip_Main.SuspendLayout();
             this.tlp_Main.SuspendLayout();
             this.groupBox_Paths.SuspendLayout();
@@ -76,7 +77,8 @@
             this.fileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveConfigToolStripMenuItem,
-            this.loadConfigToolStripMenuItem});
+            this.loadConfigToolStripMenuItem,
+            this.compareModFilesToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
@@ -88,7 +90,7 @@
             this.saveConfigToolStripMenuItem.Enabled = false;
             this.saveConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.saveConfigToolStripMenuItem.Name = "saveConfigToolStripMenuItem";
-            this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
+            this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
             this.saveConfigToolStripMenuItem.Text = "Save Config";
             this.saveConfigToolStripMenuItem.Click += new System.EventHandler(this.SaveConfig_Click);
             // 
@@ -98,7 +100,7 @@
             this.loadConfigToolStripMenuItem.Enabled = false;
             this.loadConfigToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
-            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
+            this.loadConfigToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
             this.loadConfigToolStripMenuItem.Text = "Load Config";
             this.loadConfigToolStripMenuItem.Click += new System.EventHandler(this.LoadConfig_Click);
             // 
@@ -310,6 +312,16 @@
             this.lbl_ChooseFile.Text = "<= Choose a File to Get Started";
             this.lbl_ChooseFile.Visible = false;
             // 
+            // compareModFilesToolStripMenuItem
+            // 
+            this.compareModFilesToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.compareModFilesToolStripMenuItem.Enabled = false;
+            this.compareModFilesToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.compareModFilesToolStripMenuItem.Name = "compareModFilesToolStripMenuItem";
+            this.compareModFilesToolStripMenuItem.Size = new System.Drawing.Size(230, 26);
+            this.compareModFilesToolStripMenuItem.Text = "Compare Mod Files...";
+            this.compareModFilesToolStripMenuItem.Click += new System.EventHandler(this.Compare_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -355,5 +367,6 @@
         private ToolStripMenuItem addOptionToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private DarkUI.Controls.DarkLabel lbl_ChooseFile;
+        private ToolStripMenuItem compareModFilesToolStripMenuItem;
     }
 }
