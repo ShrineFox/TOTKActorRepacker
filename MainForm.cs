@@ -10,31 +10,31 @@ namespace TOTKActorRepacker
     public partial class MainForm : DarkUI.Forms.DarkForm
     {
         public static List<Option> options { get; set; } = new List<Option>();
+        public static FormSettings formSettings = new FormSettings();
         TableLayoutPanel tlp { get; set; } = new TableLayoutPanel() { Name = "tlp_Inner", Dock = DockStyle.Top, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink };
 
         public MainForm()
         {
             InitializeComponent();
 
-            LoadDefaults();
-            // Save example config
-            //options.Add(new Option { Enabled = true, File = "Pack/Actor/Npc_Tulin_Sage.pack", Path = "GameParameter/SageCommonParam/NpcSageTulinCommon.game__npc__SageCommonParam.bgyml", FieldName = "SageSkillRecastBaseTime", Value = "450" });
-            //options.Add(new Option { Enabled = true, File = "Pack/Actor/Npc_Tulin_Sage.pack", Path = "GameParameter/SageCommonParam/NpcSageCommon.game__npc__SageCommonParam.bgyml", FieldName = "SageSkillRecastBaseTime", Value = "90" });
-            //SaveConfig("./config.json");
+            // Load default form settings from json if it exists
+            formSettings.Load();
+            // Load field values from default json if it exists
+            LoadUserDefaults();
 
             // Create options table
             pnl_Main.Controls.Add(tlp);
         }
 
-        private void LoadDefaults()
+        private void LoadUserDefaults()
         {
-            if (File.Exists("./defaults.json"))
-            {
-                List<string> defaults = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("./defaults.json"));
-                txt_GamePath.Text = defaults[0];
-                txt_OutputPath.Text = defaults[1];
-                LoadConfig(defaults[2]);
-            }
+            // Automatically set previously used paths
+            txt_GamePath.Text = formSettings.GamePath;
+            txt_OutputPath.Text = formSettings.OutputPath;
+
+            // Automatically load default .json file if found
+            if (File.Exists(formSettings.DefaultJson))
+                LoadConfig(formSettings.DefaultJson);
         }
 
         private void GamePath_Click(object sender, EventArgs e)
@@ -62,17 +62,24 @@ namespace TOTKActorRepacker
 
         private void ValidatePaths()
         {
-            // Enable options if mod files are found & output folder is set
+            // If paths are valid...
             if (Directory.Exists(txt_GamePath.Text)
                 && File.Exists(Path.Combine(txt_GamePath.Text, "Pack\\ZsDic.pack.zs"))
                 && Directory.Exists(txt_OutputPath.Text))
             {
+                // Update config with chosen paths
+                formSettings.GamePath = txt_GamePath.Text;
+                formSettings.OutputPath = txt_OutputPath.Text;
+                formSettings.Save();
+
+                // Enable options if mod files are found & output folder is set
                 btn_GenerateMod.Enabled = true;
                 loadConfigToolStripMenuItem.Enabled = true;
                 addFileToolStripMenuItem.Enabled = true;
             }
             else
             {
+                // Disiable options
                 btn_GenerateMod.Enabled = false;
                 loadConfigToolStripMenuItem.Enabled = false;
                 addFileToolStripMenuItem.Enabled = false;
@@ -118,6 +125,7 @@ namespace TOTKActorRepacker
                 comboBox_File.Enabled = false;
             }
             comboBox_File.SelectedIndex = 0;
+            lbl_ChooseFile.Visible = true;
         }
 
         private string ChooseFile(string title, string filter)
@@ -180,6 +188,7 @@ namespace TOTKActorRepacker
             LoadOptions(comboBox.SelectedItem.ToString());
 
             saveConfigToolStripMenuItem.Enabled = true;
+            lbl_ChooseFile.Visible = false;
         }
 
         private void LoadOptions(string fileName)
@@ -241,6 +250,12 @@ namespace TOTKActorRepacker
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 return dialog.FileName;
             return "";
+        }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            using (SettingsForm settingsForm = new SettingsForm())
+                settingsForm.ShowDialog();
         }
     }
 
