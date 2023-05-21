@@ -300,14 +300,21 @@ namespace TOTKActorRepacker
                             using Sarc modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile));
                             using Sarc gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile));
 
-                            foreach((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml") 
+                            foreach ((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml")
                                 && gamePack.Any(y => y.Key.Equals(x.Key))))
                             {
                                 // Extract and compare BGYML if same file is found in both SARCs
                                 var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
 
-                                Byml modBymlFile = Byml.FromBinary(modPackFile.AsSpan());
-                                Byml gameBymlFile = Byml.FromBinary(gamePackFile.Value.AsSpan());
+                                string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
+                                string gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
+
+                                // If BYML files are not identical...
+                                if (modByml != gameByml)
+                                {
+                                    File.WriteAllText(Path.Combine(tempFolder, $"mod_{Path.GetFileNameWithoutExtension(modPackFileName)}.yml"), modByml);
+                                    File.WriteAllText(Path.Combine(tempFolder, $"game_{Path.GetFileNameWithoutExtension(modPackFileName)}.yml"), gameByml);
+                                }
                             }
                         }
 
