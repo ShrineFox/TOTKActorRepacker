@@ -6,6 +6,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using ZstdSharp;
 using Cead;
+using YamlDotNet.Serialization;
+using System.Dynamic;
+using System.IO.Compression;
+using Zstandard.Net;
+using ObjectsComparer;
 
 namespace TOTKActorRepacker
 {
@@ -266,8 +271,11 @@ namespace TOTKActorRepacker
             string modPath = ChooseFolder("Choose mod folder to compare with game files");
             string modActorPath = Path.Combine(modPath, "Pack/Actor");
             string gameActorPath = Path.Combine(formSettings.GamePath, "Pack/Actor");
+
             if (Directory.Exists(modActorPath) && Directory.Exists(gameActorPath))
             {
+                var newOptions = new List<Option>();
+
                 // For each file in Actor/Pack...
                 foreach (var modFile in Directory.GetFiles(modActorPath, "*.zs", SearchOption.TopDirectoryOnly))
                 {
@@ -300,21 +308,60 @@ namespace TOTKActorRepacker
                             using Sarc modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile));
                             using Sarc gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile));
 
-                            foreach ((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml")
-                                && gamePack.Any(y => y.Key.Equals(x.Key))))
+                            // For each byml file in modified SARC...
+                            foreach ((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml")))
                             {
-                                // Extract and compare BGYML if same file is found in both SARCs
-                                var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
+                                string gameByml = "";
 
+                                // If unmodified SARC contains same file...
+                                if (gamePack.Any(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName)))
+                                {
+                                    // Compare original BYML text
+                                    var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
+                                    gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
+                                }
+
+                                // Get modified BYML text
                                 string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
-                                string gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
 
-                                // If BYML files are not identical...
+                                // If BYML texts are not identical...
                                 if (modByml != gameByml)
                                 {
-                                    File.WriteAllText(Path.Combine(tempFolder, $"mod_{Path.GetFileNameWithoutExtension(modPackFileName)}.yml"), modByml);
-                                    File.WriteAllText(Path.Combine(tempFolder, $"game_{Path.GetFileNameWithoutExtension(modPackFileName)}.yml"), gameByml);
+                                    // Serialize using YML library
+                                    var deserializer = new DeserializerBuilder().WithTagMapping("!u", typeof(uint)).Build();
+
+                                    dynamic gameYml = deserializer.Deserialize<ExpandoObject>(gameByml);
+                                    dynamic modYml = deserializer.Deserialize<ExpandoObject>(modByml);
+
+                                    var comparer = new ObjectsComparer.Comparer(new ComparisonSettings { UseDefaultIfMemberNotExist = true });
+
+                                    // Compare objects
+                                    IEnumerable<Difference> differences;
+                                    var isEqual = comparer.Compare(gameYml, modYml, out differences);
+
+                                    // Add comparison data to list of options
+                                    foreach (var diff in differences)
+                                    {
+                                        Option newOption = new Option()
+                                        {
+                                            Enabled = true,
+                                            File = modFileRelativePath,
+                                            Path = modPackFileName,
+                                            FieldName = diff.MemberPath,
+                                            Value = diff.Value2,
+                                            OGValue = diff.Value1
+                                        };
+                                        newOptions.Add(newOption);
+                                    }
+
+                                    // Load options in editor
+                                    options = newOptions;
+                                    if (options.Count > 0)
+                                    {
+                                        UpdateFilesList();
+                                    }
                                 }
+                                
                             }
                         }
 
@@ -329,6 +376,25 @@ namespace TOTKActorRepacker
                 MessageBox.Show("Failed to compare mod to game files, please ensure " +
                     "/Pack/Actor/ directory exists in both folders!");
             }
+        }
+
+        internal static void Decompress(string input, string output)
+        {
+            using (var ms = new MemoryStream(File.ReadAllBytes(input)))
+            using (var compressionStream = new ZstandardStream(ms, CompressionMode.Decompress))
+            using (var temp = new MemoryStream())
+            {
+                compressionStream.CopyTo(temp);
+                byte[] outputBytes = temp.ToArray();
+                File.WriteAllBytes(output, outputBytes);
+            }
+        }
+
+        internal static void Compress(string input, string output)
+        {
+            ZstdNet.Compressor compressor = new ZstdNet.Compressor();
+            var outputBytes = compressor.Wrap(File.ReadAllBytes(input));
+            File.WriteAllBytes(output, outputBytes);
         }
     }
 
