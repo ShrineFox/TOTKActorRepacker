@@ -271,12 +271,16 @@ namespace TOTKActorRepacker
             string modPath = ChooseFolder("Choose mod folder to compare with game files");
             string modActorPath = Path.Combine(modPath, "Pack/Actor");
             string gameActorPath = Path.Combine(formSettings.GamePath, "Pack/Actor");
+            string comparisonPath = $"./Compare_{Path.GetFileName(modPath)}";
+
+            // If comparison path already exists, delete it
+            if (Directory.Exists(comparisonPath))
+                Directory.Delete(comparisonPath, true);
+
 
             if (Directory.Exists(modActorPath) && Directory.Exists(gameActorPath))
             {
-                var newOptions = new List<Option>();
-
-                // For each file in Actor/Pack...
+                // For each .zs file in Actor/Pack...
                 foreach (var modFile in Directory.GetFiles(modActorPath, "*.zs", SearchOption.TopDirectoryOnly))
                 {
                     // If matching file in game dir exists...
@@ -285,20 +289,19 @@ namespace TOTKActorRepacker
                     if (File.Exists(gameFile))
                     {
                         string fileName = Path.GetFileName(gameFile);
-                        string tempFolder = $"./Temp/{Path.GetFileNameWithoutExtension(fileName)}";
+                        string outFolder = Path.Combine(comparisonPath, Path.GetFileNameWithoutExtension(fileName));
 
-                        // Copy both to temp dir
-                        if (Directory.Exists(tempFolder))
-                            Directory.Delete(tempFolder, true);
                         // TODO: wait for handle to be free
-                        Directory.CreateDirectory(tempFolder);
-                        string tempModFile = Path.Combine(tempFolder, "modFile.pack.zs");
-                        string tempGameFile = Path.Combine(tempFolder, "gameFile.pack.zs");
+
+                        // Copy both to comparison output dir
+                        Directory.CreateDirectory(outFolder);
+                        string tempModFile = Path.Combine(outFolder, "modFile.pack.zs");
+                        string tempGameFile = Path.Combine(outFolder, "gameFile.pack.zs");
                         File.Copy(modFile, tempModFile);
                         File.Copy(gameFile, tempGameFile);
 
                         // Decompress files
-                        ZStdHelper.DecompressFolder(tempFolder, tempFolder, false);
+                        ZStdHelper.DecompressFolder(outFolder, outFolder, false);
                         tempModFile = tempModFile.Replace(".zs", "");
                         tempGameFile = tempGameFile.Replace(".zs", "");
 
@@ -311,6 +314,7 @@ namespace TOTKActorRepacker
                             // For each byml file in modified SARC...
                             foreach ((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml")))
                             {
+                                // By default, if a match doesn't exist in base game, consider it a modded file
                                 string gameByml = "";
 
                                 // If unmodified SARC contains same file...
@@ -324,52 +328,34 @@ namespace TOTKActorRepacker
                                 // Get modified BYML text
                                 string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
 
-                                // If BYML texts are not identical...
+                                // If BYML texts are not identical, save .yml
                                 if (modByml != gameByml)
                                 {
-                                    // Serialize using YML library
-                                    var deserializer = new DeserializerBuilder().WithTagMapping("!u", typeof(uint)).Build();
-
-                                    dynamic gameYml = deserializer.Deserialize<ExpandoObject>(gameByml);
-                                    dynamic modYml = deserializer.Deserialize<ExpandoObject>(modByml);
-
-                                    var comparer = new ObjectsComparer.Comparer(new ComparisonSettings { UseDefaultIfMemberNotExist = true });
-
-                                    // Compare objects
-                                    IEnumerable<Difference> differences;
-                                    var isEqual = comparer.Compare(gameYml, modYml, out differences);
-
-                                    // Add comparison data to list of options
-                                    foreach (var diff in differences)
-                                    {
-                                        Option newOption = new Option()
-                                        {
-                                            Enabled = true,
-                                            File = modFileRelativePath,
-                                            Path = modPackFileName,
-                                            FieldName = diff.MemberPath,
-                                            Value = diff.Value2,
-                                            OGValue = diff.Value1
-                                        };
-                                        newOptions.Add(newOption);
-                                    }
-
-                                    // Load options in editor
-                                    options = newOptions;
-                                    if (options.Count > 0)
-                                    {
-                                        UpdateFilesList();
-                                    }
+                                    string outFile = Path.Combine(outFolder, modPackFileName.Replace("bgyml", "yml"));
+                                    Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                                    File.WriteAllText(outFile, modByml);
                                 }
-                                
                             }
                         }
 
                     }
                 }
-                
-                // Compare each byml value and add to new list of options if different
-                // Save new .json and notify user
+
+                // Delete .pack and .zs files
+                foreach (var file in Directory.GetFiles(comparisonPath, "*", SearchOption.AllDirectories)
+                    .Where(x => Path.GetExtension(x) == ".zs" || Path.GetExtension(x) == ".pack"))
+                {
+                    File.Delete(file);
+                }
+
+                // Delete empty output directories
+                foreach (var dir in Directory.GetDirectories(comparisonPath, "*", SearchOption.AllDirectories))
+                {
+                    if (Directory.GetFiles(dir, "*.yml", SearchOption.AllDirectories).Count() == 0)
+                        Directory.Delete(dir, true);
+                }
+
+                MessageBox.Show($"Comparison complete, modded .yml files can be found at:\n\n{Path.GetFullPath(comparisonPath)}");
             }
             else
             {
@@ -402,11 +388,9 @@ namespace TOTKActorRepacker
     {
         public string File = "";
         public string Path = "";
-        public string NodePath = "";
         public string FieldName = "";
         public string Nickname = "";
         public string Value = "";
-        public string OGValue = "";
         public bool Enabled = true;
     }
 }

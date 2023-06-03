@@ -14,7 +14,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ObjectsComparer" Version="1.4.1" />
     <PackageReference Include="WindowsAPICodePack" Version="7.0.4" />
-    <PackageReference Include="YamlDotNet" Version="13.1.0" />
+    <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
     <PackageReference Include="Zstandard.Net" Version="1.1.7" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
     <PackageReference Include="ZstdSharp.Port" Version="0.7.2" />
@@ -28,6 +28,13 @@
     <None Update="Cead.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Dependencies\**\**\*.yml">
+      <Link>Dependencies\%(RecursiveDir)%(FileName)%(Extension)</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
