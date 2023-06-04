@@ -49,7 +49,7 @@ namespace TOTKActorRepacker
 
             CopyDependencyYMLs();
 
-            // For each enabled option, update with newest values
+            UpdateYMLValues();
 
             // For each disabled option, revert to OG values
 
@@ -60,6 +60,61 @@ namespace TOTKActorRepacker
             // Patch RSTB
 
             // Done! Notify user
+        }
+
+        private void UpdateYMLValues()
+        {
+            foreach (var option in options)
+            {
+                foreach(var change in option.Changes)
+                {
+                    string ymlPath = $"./Temp/Pack/Actor/{change.File}/{change.Path.Replace(".bgyml",".yml")}";
+                    if (File.Exists(ymlPath))
+                    {
+                        UpdateYMLValue(ymlPath, change, option.Enabled);
+                    }
+                }
+            }
+        }
+
+        private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
+        {
+            string[] ymlLines = File.ReadAllLines(ymlPath);
+            string value = change.Value;
+            if (!enabled)
+                value = change.OGValue;
+
+            for (int i = 0; i < ymlLines.Count(); i++)
+            {
+                if (ymlLines[i].Contains(change.FieldName))
+                {
+                    if (change.FieldName.Contains(":"))
+                    {
+                        string lineStart = ymlLines[i].Split(change.FieldName).First();
+                        string lineEnd = ymlLines[i].Split(change.FieldName).Last();
+                        string[] splitLineEnd = lineEnd.Split(' ');
+                        string newLineEnd = "";
+
+                        if (splitLineEnd.Count() > 2)
+                        {
+                            newLineEnd = ", " + string.Join("", splitLineEnd.Skip(2));
+                        }
+                        else
+                            newLineEnd = " " + string.Join("", splitLineEnd.Skip(1));
+
+                        ymlLines[i] = lineStart + change.FieldName + value + newLineEnd;
+                    }
+                    else
+                    {
+                        string newLine = change.FieldName + ": " + value;
+                        int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
+
+                        ymlLines[i] = newLine.PadLeft(whiteSpaceCount);
+                    }
+                }
+            }
+
+            File.WriteAllLines(ymlPath, ymlLines);
         }
 
         private void CopyDependencyYMLs()
@@ -129,7 +184,7 @@ namespace TOTKActorRepacker
                     // For each byml file in SARC...
                     foreach ((var bymlFileName, var bymlFile) in sarc.Where(x => x.Key.EndsWith(".bgyml")))
                     {
-                        string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile));
+                        string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
                         string outFile = Path.Combine(tempSarcPath, bymlFileName.Replace("bgyml", "yml"));
 
                         // Extract YML to temp folder
