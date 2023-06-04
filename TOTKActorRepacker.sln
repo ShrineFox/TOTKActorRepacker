@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TOTKActorRepacker", "TOTKAc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cead", "..\Cead\src\Cead.csproj", "{D2503676-C348-4D75-A7A4-720E12DEAD77}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsRestbl.Managed", "..\cs-restbl\src\CsRestbl.Managed\CsRestbl.Managed.csproj", "{80137A14-14CA-4250-B0E9-A1A917609440}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{D2503676-C348-4D75-A7A4-720E12DEAD77}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2503676-C348-4D75-A7A4-720E12DEAD77}.Release|x64.ActiveCfg = Release|x64
 		{D2503676-C348-4D75-A7A4-720E12DEAD77}.Release|x64.Build.0 = Release|x64
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Debug|x64.Build.0 = Debug|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Release|x64.ActiveCfg = Release|Any CPU
+		{80137A14-14CA-4250-B0E9-A1A917609440}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

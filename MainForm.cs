@@ -12,6 +12,11 @@ using System.IO.Compression;
 using Zstandard.Net;
 using ObjectsComparer;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using CsRestbl.Managed;
+using static System.Windows.Forms.Design.AxImporter;
+using System.Text;
+using Soft160.Data.Cryptography;
 
 namespace TOTKActorRepacker
 {
@@ -53,9 +58,91 @@ namespace TOTKActorRepacker
 
             RebuildSARC();
 
-            // Patch RSTB
+            // Recompress .pack files to .zs 
+            string actorPath = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+            ZStdHelper.CompressFolder(actorPath, actorPath, false);
+
+            PatchRESTBL();
 
             MessageBox.Show("Done generating output!");
+        }
+
+        private void PatchRESTBL()
+        {
+            string gameResTbl = Path.Combine(txt_GamePath.Text, 
+                $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".","")}.rsizetable.zs");
+            
+            if (File.Exists(gameResTbl))
+            {
+                // Decompress RESTBL data in memory
+                Restbl restbl = Restbl.FromBinary(Decompress(gameResTbl));
+
+                foreach (var file in Directory.GetFiles(txt_OutputPath.Text, "*"))
+                {
+                    if (file.EndsWith(".pack.zs"))
+                    {
+                        // Add uncompressed sizes to CRC32 table
+                        UpdatePackRSTBEntry(restbl, file);
+                    }
+                }
+
+                // Save new RESTBL file
+                string newResTbl = Path.Combine(txt_OutputPath.Text,
+                    $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".", "")}.rsizetable.zs");
+
+                Compress(restbl.ToBinary(), newResTbl);
+            }
+        }
+
+        private void UpdatePackRSTBEntry(Restbl restbl, string path)
+        {
+            string uncompressedSARC = path.Replace(".zs", "");
+            string relativePath = uncompressedSARC.Substring(txt_OutputPath.Text.Length + 1).Replace("\\", "/");
+
+            // Add/update CRC32 entry for the decompressed .pack itself
+            if (File.Exists(uncompressedSARC))
+            {
+                uint pathCrc = StringToCRC32(relativePath);
+
+                if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
+                {
+                    if (File.Exists(uncompressedSARC))
+                    {
+                        FileInfo fi = new FileInfo(uncompressedSARC);
+
+                        // Remove and re-add RESTBL entry if one exists
+                        restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+                        restbl.CrcTable.Add(new CrcEntry(pathCrc, Convert.ToUInt32(fi.Length + formSettings.Padding)));
+                    }
+                }
+            }
+
+            // Add/update CRC32 entry for the decompressed files within Actor Packs
+            string tempFolder = "./Temp/Pack/Actor";
+            if (Directory.Exists(tempFolder))
+            {
+                foreach (var sarcDir in Directory.GetDirectories(tempFolder))
+                {
+                    foreach (var ymlFile in Directory.GetFiles(sarcDir, "*.yml", SearchOption.AllDirectories))
+                    {
+                        string relativeYmlPath = ymlFile.Substring(sarcDir.Length + 1).Replace("\\", "/").Replace(".yml",".bgyml");
+                        uint pathCrc = StringToCRC32(relativeYmlPath);
+                        int size = Byml.FromText(File.ReadAllText(ymlFile)).ToBinary(true, 3).AsSpan().Length;
+
+                        // Remove existing RESTBL entry if one exists
+                        if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
+                            restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+
+                        // Add CRC32 entry
+                        restbl.CrcTable.Add(new CrcEntry(pathCrc, Convert.ToUInt32(size + formSettings.Padding)));
+                    }
+                }
+            }
+        }
+
+        private static uint StringToCRC32(string path)
+        {
+            return CRC.Crc32(Encoding.ASCII.GetBytes(path));
         }
 
         private void RebuildSARC()
@@ -607,7 +694,7 @@ namespace TOTKActorRepacker
             }
         }
 
-        internal static void Decompress(string input, string output)
+        internal static byte[] Decompress(string input)
         {
             using (var ms = new MemoryStream(File.ReadAllBytes(input)))
             using (var compressionStream = new ZstandardStream(ms, CompressionMode.Decompress))
@@ -615,14 +702,17 @@ namespace TOTKActorRepacker
             {
                 compressionStream.CopyTo(temp);
                 byte[] outputBytes = temp.ToArray();
-                File.WriteAllBytes(output, outputBytes);
+                return outputBytes;
             }
         }
 
-        internal static void Compress(string input, string output)
+        internal static void Compress(byte[] input, string output)
         {
             ZstdNet.Compressor compressor = new ZstdNet.Compressor();
-            var outputBytes = compressor.Wrap(File.ReadAllBytes(input));
+            var outputBytes = compressor.Wrap(input);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(output));
+
             File.WriteAllBytes(output, outputBytes);
         }
 
