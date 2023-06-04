@@ -51,15 +51,39 @@ namespace TOTKActorRepacker
 
             UpdateYMLValues();
 
-            // For each disabled option, revert to OG values
-
-            // Convert YMLs to BGYML and replace
-
-            // Rebuild SARCs
+            RebuildSARC();
 
             // Patch RSTB
 
-            // Done! Notify user
+            MessageBox.Show("Done generating output!");
+        }
+
+        private void RebuildSARC()
+        {
+            foreach (var sarcFile in Directory.GetFiles($"./Temp/Pack/Actor/", "*.sarc", SearchOption.TopDirectoryOnly))
+            {
+                string sarcDir = sarcFile.Replace(".sarc", ".pack");
+
+                using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
+
+                // For each yml file in matching SARC dir...
+                foreach (var ymlFile in Directory.GetFiles(sarcDir, "*.yml", SearchOption.AllDirectories))
+                {
+                    // Add to SARC
+                    string relativePath = ymlFile.Substring(sarcDir.Length + 1);
+                    Byml newByml = Byml.FromText(File.ReadAllText(ymlFile));
+                    // TODO: verify endian/version matches OG file
+                    sarc.Add(relativePath.Replace(".yml",".bgyml").Replace("\\", "/"), newByml.ToBinary(true, 3));
+                }
+
+                // Save new .pack to output dir
+                string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+                Directory.CreateDirectory(outDir);
+                using (FileStream fs = new FileStream(Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack"), FileMode.OpenOrCreate))
+                {
+                    fs.Write(sarc.ToBinary());
+                }
+            }
         }
 
         private void UpdateYMLValues()

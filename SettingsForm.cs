@@ -39,7 +39,7 @@ namespace TOTKActorRepacker
     public class FormSettings
     {
         public string GamePath { get; set; } = "";
-        public string OutputPath { get; set; } = "";
+        public string OutputPath { get; set; } = "./Output";
         // Default values for form settings object
         public string Game { get; set; } = "Tears of the Kingdom";
         public string Version { get; set; } = "1.1.1";
