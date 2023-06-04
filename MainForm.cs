@@ -11,6 +11,7 @@ using System.Dynamic;
 using System.IO.Compression;
 using Zstandard.Net;
 using ObjectsComparer;
+using System.Linq;
 
 namespace TOTKActorRepacker
 {
@@ -18,6 +19,7 @@ namespace TOTKActorRepacker
     {
         public static List<Option> options { get; set; } = new List<Option>();
         public static FormSettings formSettings = new FormSettings();
+
         TableLayoutPanel tlp { get; set; } = new TableLayoutPanel() { Name = "tlp_Inner", Dock = DockStyle.Top, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink };
 
         public MainForm()
@@ -26,11 +28,318 @@ namespace TOTKActorRepacker
 
             // Load default form settings from json if it exists
             formSettings.Load();
+
             // Load field values from default json if it exists
             LoadUserDefaults();
 
+            // TODO: Dynamically compare YML files
+            saveConfigToolStripMenuItem.Visible = false;
+            lbl_ChooseFile.Visible = false;
+            comboBox_File.Visible = false;
+            loadConfigToolStripMenuItem.Visible = false;
+            addFileToolStripMenuItem.Visible = false;
+
+            //LoadBetterSagesModOptions();
+            //UpdateFilesList();
+
             // Create options table
             pnl_Main.Controls.Add(tlp);
+        }
+
+        private void GenerateMod_Click(object sender, EventArgs e)
+        {
+            // Extract SARCs
+
+            // Copy dependency mod files to output
+
+            // For each enabled option, update with newest values
+
+            // For each disabled option, revert to OG values
+
+            // Convert YMLs to BGYML and replace
+
+            // Rebuild SARCs
+
+            // Patch RSTB
+
+            // Done! Notify user
+        }
+
+        private void LoadBetterSagesModOptions()
+        {
+            options = new List<Option>
+            {
+                new Option() { Name = "Riju Attack Power", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
+                            FieldName = "DamageMultiplier",
+                            Value = "1.5",
+                            OGValue = "0.75"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
+                            FieldName = "DamageMultiplier",
+                            Value = "1.5",
+                            OGValue = "0.75"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Attack Rate", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "LongIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "LongIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "LongIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "LongIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMax:",
+                            Value = "1",
+                            OGValue = "160"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+                            FieldName = "MediumIntervalMin:",
+                            Value = "1",
+                            OGValue = "140"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Lightning Range", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        // TODO: Less hacky way of dealing with YML dictionaries
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
+                            FieldName = "Range:",
+                            Value = "999999",
+                            OGValue = "50"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
+                            FieldName = "Range:",
+                            Value = "999999",
+                            OGValue = "50"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Lightning Max Time", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
+                            FieldName = "LightningMaxTime",
+                            Value = "999",
+                            OGValue = "10"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
+                            FieldName = "LightningMaxTime",
+                            Value = "999",
+                            OGValue = "10"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Cooldown Duration", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
+                            FieldName = "SageSkillRecastBaseTime",
+                            Value = "1",
+                            OGValue = "300"
+                        },
+                        new Change()
+                        {
+                            File = "Npc_Gerudo_Queen_Young.pack",
+                            Path = "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
+                            FieldName = "SageSkillRecastBaseTime",
+                            Value = "1",
+                            OGValue = "90"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
+                            FieldName = "SageSkillRecastBaseTime",
+                            Value = "1",
+                            OGValue = "300"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
+                            FieldName = "SageSkillRecastBaseTime",
+                            Value = "1",
+                            OGValue = "90"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Soul Color Restoration", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Dm_Sage_Soul_Gerudo.pack",
+                            Path = "Component\\ModelInfo\\Dm_Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
+                            FieldName = "FmdbName",
+                            Value = "Npc_Gerudo_Queen_Young",
+                            OGValue = "Npc_Gerudo_Queen_Young_Reduction"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "Component\\ModelInfo\\Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
+                            FieldName = "FmdbName",
+                            Value = "Npc_Gerudo_Queen_Young",
+                            OGValue = "Npc_Gerudo_Queen_Young_Reduction"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Soul Actor Links", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "Component\\ELink\\Sage_Soul_Gerudo.engine__component__ELinkParam.yml",
+                            FieldName = "UserName",
+                            Value = "Npc_Gerudo_Queen_Young",
+                            OGValue = "Sage_Soul_Gerudo"
+                        },
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "Component\\SLink\\Npc_Gerudo_Queen_Young_Soul.engine__component__SLinkParam.yml",
+                            FieldName = "UserName",
+                            Value = "Npc_Gerudo_Queen_Young",
+                            OGValue = "Sage_Soul_Gerudo"
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Soul Voice Clips", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
+                            FieldName = "VoiceRef",
+                            Value = "?Component/VoiceParam/Npc_oasis003.game__component__VoiceParam.bgyml",
+                            OGValue = ""
+                        }
+                    }
+                },
+                new Option() { Name = "Riju Soul Footstep Sounds", Enabled = true,
+                    Changes = new List<Change>()
+                    {
+                        new Change()
+                        {
+                            File = "Sage_Soul_Gerudo.pack",
+                            Path = "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
+                            FieldName = "SoundFootStepRef",
+                            Value = "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",
+                            OGValue = ""
+                        }
+                    }
+                }
+            };
         }
 
         private void LoadUserDefaults()
@@ -55,7 +364,7 @@ namespace TOTKActorRepacker
             string path = ChooseFolder("Choose output mod files folder");
             txt_OutputPath.Text = path;
         }
-        
+
         public static string ChooseFolder(string windowTitle)
         {
             // Prompt the user to pick a folder path
@@ -114,10 +423,12 @@ namespace TOTKActorRepacker
 
             if (options.Count > 0)
             {
+                // TODO: Iterate over changes in option
                 foreach (var option in options)
-                    if (!files.Any(x => x.Equals(option.File)))
-                        files.Add(option.File);
-                comboBox_File.Items.Clear();
+                    //if (!files.Any(x => x.Equals(option.File)))
+                    //files.Add(option.File);
+
+                    comboBox_File.Items.Clear();
                 // Add blank first item
                 comboBox_File.Items.Add("");
 
@@ -165,9 +476,9 @@ namespace TOTKActorRepacker
             File.WriteAllText(jsonPath, JsonConvert.SerializeObject(options, Formatting.Indented));
         }
 
-        public static FileStream WaitForFile(string fullPath, 
-            FileMode mode = FileMode.Open, 
-            FileAccess access = FileAccess.ReadWrite, 
+        public static FileStream WaitForFile(string fullPath,
+            FileMode mode = FileMode.Open,
+            FileAccess access = FileAccess.ReadWrite,
             FileShare share = FileShare.None)
         {
             for (int numTries = 0; numTries < 10; numTries++)
@@ -201,7 +512,9 @@ namespace TOTKActorRepacker
 
         private void LoadOptions(string fileName)
         {
-            List<Option> fileOptions = options.Where(x => x.File == fileName).ToList();
+            // TODO: Filter options by file
+            //List<Option> fileOptions = options.Where(x => x.File == fileName).ToList();
+            //List<Option> fileOptions = options;
 
             // Reset TableLayoutPanel contents
             tlp.Controls.Clear();
@@ -211,32 +524,62 @@ namespace TOTKActorRepacker
 
             // Add Header Row
             tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-            TableLayoutPanel header = new TableLayoutPanel() { Name = "tlp_Header", Dock = DockStyle.Fill, ColumnCount = 4, RowCount = 1 };
-            foreach (var width in new float[] { 5f, 55f, 25f, 15f })
+            TableLayoutPanel header = new TableLayoutPanel() { Name = "tlp_Header", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
+            foreach (var width in new float[] { 5f, 55f, 40f })
                 header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
             header.Controls.Add(new DarkLabel { Name = "lbl_Enabled", Text = "", Anchor = anchorStyle }, 0, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_Path", Text = "Path", Anchor = anchorStyle }, 1, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_FieldName", Text = "Field Name", Anchor = anchorStyle }, 2, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_Value", Text = "Value", Anchor = anchorStyle }, 3, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_Name", Text = "Name", Anchor = anchorStyle }, 1, 0);
+            header.Controls.Add(new DarkLabel { Name = "lbl_Value", Text = "Value", Anchor = anchorStyle }, 2, 0);
             tlp.Controls.Add(header, 0, 0);
 
             // Add individual options
-            for (int i = 0; i < fileOptions.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-                TableLayoutPanel option = new TableLayoutPanel() { Name = $"tlp_Option_{i}", Dock = DockStyle.Fill, ColumnCount = 4, RowCount = 1 };
-                foreach (var width in new float[] { 5f, 55f, 25f, 15f })
+                TableLayoutPanel option = new TableLayoutPanel() { Name = $"tlp_Option_{i}", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
+                foreach (var width in new float[] { 5f, 55f, 40f })
                     option.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
 
                 // Add fields
-                option.Controls.Add(new DarkCheckBox { Name = $"chk_Enabled_{i}", Checked = fileOptions[i].Enabled, Anchor = anchorStyle }, 0, 0);
-                option.Controls.Add(new DarkLabel { Name = $"lbl_Path_{i}", Text = fileOptions[i].Path, Anchor = anchorStyle }, 1, 0);
-                option.Controls.Add(new DarkLabel { Name = $"lbl_FieldName_{i}", Text = fileOptions[i].FieldName, Anchor = anchorStyle }, 2, 0);
-                option.Controls.Add(new DarkTextBox { Name = $"txt_Value_{i}", Text = fileOptions[i].Value, Anchor = anchorStyle }, 3, 0);
+                DarkCheckBox chkBox = new DarkCheckBox { Name = $"chk_Enabled_{i}", Checked = options[i].Enabled, Anchor = anchorStyle };
+                chkBox.CheckedChanged += ChkBox_Checked_Changed;
+                option.Controls.Add(chkBox, 0, 0);
+                option.Controls.Add(new DarkLabel { Name = $"lbl_Name_{i}", Text = options[i].Name, Anchor = anchorStyle }, 1, 0);
+                DarkTextBox txtBox = new DarkTextBox { Name = $"txt_Value_{i}", Text = options[i].Changes.First().Value, Anchor = anchorStyle };
+                txtBox.TextChanged += TxtBox_Value_Changed;
+                option.Controls.Add(txtBox, 2, 0);
+
                 tlp.Controls.Add(option, 0, i + 1);
             }
 
             addOptionToolStripMenuItem.Enabled = true;
+        }
+
+        private void TxtBox_Value_Changed(object? sender, EventArgs e)
+        {
+            DarkTextBox txtBox = (DarkTextBox)sender;
+
+            // Update value of option matching label name
+            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{txtBox.Name.Split('_').Last()}", true).First();
+            if (options.Any(x => x.Name.Equals(optionLabel.Text)))
+            {
+                foreach (var change in options.First(x => x.Name.Equals(optionLabel.Text)).Changes)
+                {
+                    change.Value = txtBox.Text;
+                }
+            }
+        }
+
+        private void ChkBox_Checked_Changed(object? sender, EventArgs e)
+        {
+            DarkCheckBox chkBox = (DarkCheckBox)sender;
+
+            // Update enabled status of option matching label name
+            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{chkBox.Name.Split('_').Last()}", true).First();
+            if (options.Any(x => x.Name.Equals(optionLabel.Text)))
+            {
+                options.First(x => x.Name.Equals(optionLabel.Text)).Enabled = chkBox.Checked;
+            }
         }
 
         private void SaveConfig_Click(object sender, EventArgs e)
@@ -384,13 +727,19 @@ namespace TOTKActorRepacker
         }
     }
 
-    public class Option
+    public class Change
     {
         public string File = "";
         public string Path = "";
         public string FieldName = "";
-        public string Nickname = "";
         public string Value = "";
+        public string OGValue = "";
+    }
+
+    public class Option
+    {
+        public string Name = "";
+        public List<Change> Changes = new List<Change>();
         public bool Enabled = true;
     }
 }
