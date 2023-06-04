@@ -32,15 +32,12 @@ namespace TOTKActorRepacker
             // Load field values from default json if it exists
             LoadUserDefaults();
 
-            // TODO: Dynamically compare YML files
+            // TODO: Dynamically compare YML files, for now we're doing semi-hardcoded BYML editing
             saveConfigToolStripMenuItem.Visible = false;
             lbl_ChooseFile.Visible = false;
             comboBox_File.Visible = false;
             loadConfigToolStripMenuItem.Visible = false;
-            addFileToolStripMenuItem.Visible = false;
-
-            //LoadBetterSagesModOptions();
-            //UpdateFilesList();
+            addToolStripMenuItem.Visible = false;
 
             // Create options table
             pnl_Main.Controls.Add(tlp);
@@ -63,283 +60,6 @@ namespace TOTKActorRepacker
             // Patch RSTB
 
             // Done! Notify user
-        }
-
-        private void LoadBetterSagesModOptions()
-        {
-            options = new List<Option>
-            {
-                new Option() { Name = "Riju Attack Power", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
-                            FieldName = "DamageMultiplier",
-                            Value = "1.5",
-                            OGValue = "0.75"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
-                            FieldName = "DamageMultiplier",
-                            Value = "1.5",
-                            OGValue = "0.75"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Attack Rate", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "LongIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "LongIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "LongIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "LongIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMax:",
-                            Value = "1",
-                            OGValue = "160"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
-                            FieldName = "MediumIntervalMin:",
-                            Value = "1",
-                            OGValue = "140"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Lightning Range", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        // TODO: Less hacky way of dealing with YML dictionaries
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
-                            FieldName = "Range:",
-                            Value = "999999",
-                            OGValue = "50"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
-                            FieldName = "Range:",
-                            Value = "999999",
-                            OGValue = "50"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Lightning Max Time", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
-                            FieldName = "LightningMaxTime",
-                            Value = "999",
-                            OGValue = "10"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
-                            FieldName = "LightningMaxTime",
-                            Value = "999",
-                            OGValue = "10"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Cooldown Duration", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
-                            FieldName = "SageSkillRecastBaseTime",
-                            Value = "1",
-                            OGValue = "300"
-                        },
-                        new Change()
-                        {
-                            File = "Npc_Gerudo_Queen_Young.pack",
-                            Path = "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
-                            FieldName = "SageSkillRecastBaseTime",
-                            Value = "1",
-                            OGValue = "90"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
-                            FieldName = "SageSkillRecastBaseTime",
-                            Value = "1",
-                            OGValue = "300"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
-                            FieldName = "SageSkillRecastBaseTime",
-                            Value = "1",
-                            OGValue = "90"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Soul Color Restoration", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Dm_Sage_Soul_Gerudo.pack",
-                            Path = "Component\\ModelInfo\\Dm_Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
-                            FieldName = "FmdbName",
-                            Value = "Npc_Gerudo_Queen_Young",
-                            OGValue = "Npc_Gerudo_Queen_Young_Reduction"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "Component\\ModelInfo\\Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
-                            FieldName = "FmdbName",
-                            Value = "Npc_Gerudo_Queen_Young",
-                            OGValue = "Npc_Gerudo_Queen_Young_Reduction"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Soul Actor Links", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "Component\\ELink\\Sage_Soul_Gerudo.engine__component__ELinkParam.yml",
-                            FieldName = "UserName",
-                            Value = "Npc_Gerudo_Queen_Young",
-                            OGValue = "Sage_Soul_Gerudo"
-                        },
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "Component\\SLink\\Npc_Gerudo_Queen_Young_Soul.engine__component__SLinkParam.yml",
-                            FieldName = "UserName",
-                            Value = "Npc_Gerudo_Queen_Young",
-                            OGValue = "Sage_Soul_Gerudo"
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Soul Voice Clips", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
-                            FieldName = "VoiceRef",
-                            Value = "?Component/VoiceParam/Npc_oasis003.game__component__VoiceParam.bgyml",
-                            OGValue = ""
-                        }
-                    }
-                },
-                new Option() { Name = "Riju Soul Footstep Sounds", Enabled = true,
-                    Changes = new List<Change>()
-                    {
-                        new Change()
-                        {
-                            File = "Sage_Soul_Gerudo.pack",
-                            Path = "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
-                            FieldName = "SoundFootStepRef",
-                            Value = "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",
-                            OGValue = ""
-                        }
-                    }
-                }
-            };
         }
 
         private void LoadUserDefaults()
@@ -424,7 +144,7 @@ namespace TOTKActorRepacker
             if (options.Count > 0)
             {
                 // TODO: Iterate over changes in option
-                foreach (var option in options)
+               // foreach (var option in options)
                     //if (!files.Any(x => x.Equals(option.File)))
                     //files.Add(option.File);
 
@@ -559,6 +279,10 @@ namespace TOTKActorRepacker
         {
             DarkTextBox txtBox = (DarkTextBox)sender;
 
+            // Skip this if options is currently disabled
+            if (!txtBox.Enabled)
+                return;
+
             // Update value of option matching label name
             var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{txtBox.Name.Split('_').Last()}", true).First();
             if (options.Any(x => x.Name.Equals(optionLabel.Text)))
@@ -575,10 +299,27 @@ namespace TOTKActorRepacker
             DarkCheckBox chkBox = (DarkCheckBox)sender;
 
             // Update enabled status of option matching label name
-            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{chkBox.Name.Split('_').Last()}", true).First();
+            string optionIndex = chkBox.Name.Split('_').Last();
+
+            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{optionIndex}", true).First();
             if (options.Any(x => x.Name.Equals(optionLabel.Text)))
             {
-                options.First(x => x.Name.Equals(optionLabel.Text)).Enabled = chkBox.Checked;
+                var option = options.First(x => x.Name.Equals(optionLabel.Text));
+                option.Enabled = chkBox.Checked;
+
+                var txtBox = (DarkTextBox)this.Controls.Find($"txt_Value_{optionIndex}", true).First();
+                if (!option.Enabled)
+                {
+                    txtBox.Enabled = false;
+                    // Show OG value if textbox is disabled
+                    txtBox.Text = option.Changes.First().OGValue;
+                }
+                else
+                {
+                    txtBox.Enabled = true;
+                    // Show user-defined value if textbox is enabled
+                    txtBox.Text = option.Changes.First().Value;
+                }
             }
         }
 
