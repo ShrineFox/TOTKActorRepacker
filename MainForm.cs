@@ -45,9 +45,9 @@ namespace TOTKActorRepacker
 
         private void GenerateMod_Click(object sender, EventArgs e)
         {
-            // Extract SARCs
+            ExtractSARCs();
 
-            // Copy dependency mod files to output
+            CopyDependencyYMLs();
 
             // For each enabled option, update with newest values
 
@@ -60,6 +60,80 @@ namespace TOTKActorRepacker
             // Patch RSTB
 
             // Done! Notify user
+        }
+
+        private void CopyDependencyYMLs()
+        {
+            if (Directory.Exists("./Dependencies"))
+            {
+                foreach (var depFolder in Directory.GetDirectories("./Dependencies"))
+                {
+                    foreach (var packFolder in Directory.GetDirectories(depFolder))
+                    {
+                        // Copy directory contents to temp folder if used by any active options
+                        if (options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(packFolder).Equals(c.File))))
+                        {
+                            foreach (var subDir in Directory.GetDirectories(packFolder))
+                            {
+                                CopyDir(subDir, $"./Temp/Pack/Actor/{Path.GetFileName(packFolder)}/{Path.GetFileName(subDir)}");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ExtractSARCs()
+        {
+            string actorPath = Path.Combine(txt_GamePath.Text, "Pack/Actor");
+            string tempPath = $"./Temp";
+            string tempActorPath = $"./Temp/Pack/Actor";
+
+            // If temp path already exists, delete it
+            if (Directory.Exists(tempPath))
+                Directory.Delete(tempPath, true);
+
+            if (Directory.Exists(actorPath))
+            {
+                // For each .zs file in Actor/Pack matching the name of an enabled option's changed file...
+                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly)
+                    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
+                {
+                    // Copy to temp dir
+                    Directory.CreateDirectory(tempActorPath);
+                    string zsCopy = Path.Combine(tempActorPath, Path.GetFileName(zsFile));
+                    File.Copy(zsFile, zsCopy);
+                }
+
+                // Decompress files
+                ZStdHelper.DecompressFolder(tempActorPath, tempActorPath, false);
+
+                // Delete .zs files
+                foreach (var zsFile in Directory.GetFiles(tempActorPath, "*.zs", SearchOption.TopDirectoryOnly))
+                {
+                    File.Delete(zsFile);
+                }
+
+                // For each .pack file in temp dir...
+                foreach (var sarcFile in Directory.GetFiles(tempActorPath, "*.pack", SearchOption.TopDirectoryOnly))
+                {
+                    // Open SARC
+                    using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
+
+                    // For each byml file in SARC...
+                    foreach ((var bymlFileName, var bymlFile) in sarc.Where(x => x.Key.EndsWith(".bgyml")))
+                    {
+                        string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile));
+                        string outFile = Path.Combine(tempSarcPath, bymlFileName.Replace("bgyml", "yml"));
+
+                        // Extract YML to temp folder
+                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                        File.WriteAllText(outFile, Byml.FromBinary(bymlFile.AsSpan()).ToText());
+                    }
+                }
+
+            }
+            
         }
 
         private void LoadUserDefaults()
@@ -465,6 +539,30 @@ namespace TOTKActorRepacker
             ZstdNet.Compressor compressor = new ZstdNet.Compressor();
             var outputBytes = compressor.Wrap(File.ReadAllBytes(input));
             File.WriteAllBytes(output, outputBytes);
+        }
+
+        public static void CopyDir(string sourceFolder, string destFolder)
+        {
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+
+            // Get Files & Copy
+            string[] files = Directory.GetFiles(sourceFolder);
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
+                File.Copy(file, dest, true);
+            }
+
+            // Get dirs recursively and copy files
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyDir(folder, dest);
+            }
         }
     }
 
