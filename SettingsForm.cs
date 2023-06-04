@@ -53,6 +53,7 @@ namespace TOTKActorRepacker
         public void Save()
         {
             File.WriteAllText("./formsettings.json", JsonConvert.SerializeObject(MainForm.formSettings, Formatting.Indented));
+            Console.WriteLine("Saved Settings to ./formsettings.json", ConsoleColor.Green);
         }
     }
 }
