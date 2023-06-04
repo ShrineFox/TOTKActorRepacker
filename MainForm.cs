@@ -109,13 +109,19 @@ namespace TOTKActorRepacker
                 ZStdHelper.DecompressFolder(tempActorPath, tempActorPath, false);
 
                 // Delete .zs files
-                foreach (var zsFile in Directory.GetFiles(tempActorPath, "*.zs", SearchOption.TopDirectoryOnly))
+                foreach (var file in Directory.GetFiles(tempActorPath, "*.zs", SearchOption.AllDirectories))
                 {
-                    File.Delete(zsFile);
+                    File.Delete(file);
                 }
 
-                // For each .pack file in temp dir...
-                foreach (var sarcFile in Directory.GetFiles(tempActorPath, "*.pack", SearchOption.TopDirectoryOnly))
+                // Rename .pack files to .sarc
+                foreach (var file in Directory.GetFiles(tempActorPath, "*.pack", SearchOption.AllDirectories))
+                {
+                    File.Move(file, Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".sarc"));
+                }
+
+                // For each .sarc file in temp dir...
+                foreach (var sarcFile in Directory.GetFiles(tempActorPath, "*.sarc", SearchOption.TopDirectoryOnly))
                 {
                     // Open SARC
                     using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
@@ -543,7 +549,7 @@ namespace TOTKActorRepacker
 
         public static void CopyDir(string sourceFolder, string destFolder)
         {
-            if (!Directory.Exists(destFolder))
+            if (!Directory.Exists(destFolder) && !File.Exists(destFolder))
                 Directory.CreateDirectory(destFolder);
 
             // Get Files & Copy
