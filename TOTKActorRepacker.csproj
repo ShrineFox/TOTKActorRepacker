@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cead\src\Cead.csproj" />
     <ProjectReference Include="..\cs-restbl\src\CsRestbl.Managed\CsRestbl.Managed.csproj" />
+    <ProjectReference Include="..\ShrineFox.IO\ShrineFox.IO.csproj" />
   </ItemGroup>
 
   <ItemGroup>

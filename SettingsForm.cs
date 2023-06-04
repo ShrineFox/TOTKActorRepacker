@@ -43,7 +43,7 @@ namespace TOTKActorRepacker
         // Default values for form settings object
         public string Game { get; set; } = "Tears of the Kingdom";
         public string Version { get; set; } = "1.1.1";
-        public int Padding { get; set; } = 5000;
+        public int Padding { get; set; } = 58000;
         public string DefaultJson { get; set; } = "./Dependencies/bettersagesmod.json";
         public void Load()
         {

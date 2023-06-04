@@ -8,6 +8,7 @@ using CsRestbl.Managed;
 using System.Text;
 using Soft160.Data.Cryptography;
 using System.Runtime.InteropServices;
+using ShrineFox.IO;
 
 namespace TOTKActorRepacker
 {
@@ -20,6 +21,8 @@ namespace TOTKActorRepacker
 
         public MainForm()
         {
+            SetupLogging();
+
             InitializeComponent();
 
             // Load default form settings from json if it exists
@@ -39,9 +42,15 @@ namespace TOTKActorRepacker
             pnl_Main.Controls.Add(tlp);
         }
 
+        private void SetupLogging()
+        {
+            Output.Logging = true;
+            Output.LogPath = "log.txt";
+        }
+
         private void GenerateMod_Click(object sender, EventArgs e)
         {
-            Console.WriteLine($"Starting mod generation...");
+            Output.Log($"Starting mod generation...");
 
             ExtractSARCs();
 
@@ -54,14 +63,13 @@ namespace TOTKActorRepacker
             // Recompress .pack files to .zs 
             string actorPath = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
             ZStdHelper.CompressFolder(actorPath, actorPath, false);
-            Console.WriteLine($"Compressed .pack files to .zs in: {actorPath}");
+            Output.Log($"Compressed .pack files to .zs in: {actorPath}");
 
             PatchRESTBL();
 
+            Output.Log($"\n\nMod generation complete", ConsoleColor.Green);
+
             MessageBox.Show("Done generating output!");
-
-            Console.WriteLine($"Mod generation complete", ConsoleColor.Green);
-
         }
 
         private void PatchRESTBL()
@@ -69,7 +77,7 @@ namespace TOTKActorRepacker
             string gameResTbl = Path.Combine(txt_GamePath.Text, 
                 $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".","")}.rsizetable.zs");
 
-            Console.WriteLine($"Creating newly patched Resource Table file...");
+            Output.Log($"Creating newly patched Resource Table file...");
 
             if (File.Exists(gameResTbl))
             {
@@ -90,9 +98,10 @@ namespace TOTKActorRepacker
                     $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".", "")}.rsizetable.zs");
 
                 Compress(restbl.ToBinary(), newResTbl);
+                Output.Log($"Saved new Resource Table file to: {newResTbl}", ConsoleColor.Green);
             }
             else
-                Console.WriteLine($"Could not find Resource Table file at: {gameResTbl}", ConsoleColor.Red);
+                Output.Log($"Could not find Resource Table file at: {gameResTbl}", ConsoleColor.Red);
         }
 
         private void UpdatePackRSTBEntry(Restbl restbl, string path)
@@ -105,64 +114,43 @@ namespace TOTKActorRepacker
             {
                 FileInfo fi = new FileInfo(uncompressedSARC);
                 uint pathCrc = StringToCRC32(relativePath);
-                uint oldSize = 0;
                 uint newSize = Convert.ToUInt32(fi.Length + formSettings.Padding);
 
                 if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
                 {
-                    oldSize = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)).Size;
-                }
+                    Output.Log($"Updating RESTBL entry for: {relativePath}");
 
-                if (oldSize != newSize)
-                {
-                    Console.WriteLine($"Updating RESTBL entry for: {relativePath}");
-
-                    if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
-                    {
-                        var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
-                        restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
-                        Console.WriteLine($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
-                    }
+                    var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
+                    restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+                    Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
 
                     restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
-                    Console.WriteLine($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
+                    Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
                 }
-            }
 
-            // Add/update CRC32 entry for the decompressed files within Actor Packs
-            string tempFolder = "./Temp/Pack/Actor";
-            if (Directory.Exists(tempFolder))
-            {
-                foreach (var sarcDir in Directory.GetDirectories(tempFolder))
+                // Add/update CRC32 entry for the decompressed files within matching Actor Pack
+                string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileName(uncompressedSARC)}";
+                if (Directory.Exists(tempFolder))
                 {
-                    foreach (var ymlFile in Directory.GetFiles(sarcDir, "*.yml", SearchOption.AllDirectories))
+                    foreach (var ymlFile in Directory.GetFiles(tempFolder, "*.yml", SearchOption.AllDirectories))
                     {
-                        string relativeYmlPath = ymlFile.Substring(sarcDir.Length + 1).Replace("\\", "/").Replace(".yml",".bgyml");
-                        uint pathCrc = StringToCRC32(relativeYmlPath);
-                        uint oldSize = 0;
-                        int size = Byml.FromText(File.ReadAllText(ymlFile)).ToBinary(true, 3).AsSpan().Length;
-                        uint newSize = Convert.ToUInt32(size + formSettings.Padding);
+                        string relativeYmlPath = ymlFile.Substring(tempFolder.Length + 1).Replace("\\", "/").Replace(".yml", ".bgyml");
+                        pathCrc = StringToCRC32(relativeYmlPath);
+                        newSize = Convert.ToUInt32(Byml.FromText(File.ReadAllText(ymlFile)).ToBinary(true, 3).AsSpan().Length + formSettings.Padding);
 
                         if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
                         {
-                            oldSize = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)).Size;
-                        }
+                            Output.Log($"Updating RESTBL entry for: {relativeYmlPath}");
 
-                        if (oldSize != newSize)
-                        {
-                            Console.WriteLine($"Updating RESTBL entry for: {relativeYmlPath}");
-
-                            if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
-                            {
-                                var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
-                                restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
-                                Console.WriteLine($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
-                            }
+                            var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
+                            restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+                            Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
 
                             restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
-                            Console.WriteLine($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
+                            Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
                         }
                     }
+                    
                 }
             }
         }
@@ -174,7 +162,7 @@ namespace TOTKActorRepacker
 
         private void RebuildSARC()
         {
-            Console.WriteLine("Rebuilding SARC archives...");
+            Output.Log("Rebuilding SARC archives...");
 
             foreach (var sarcFile in Directory.GetFiles($"./Temp/Pack/Actor/", "*.sarc", SearchOption.TopDirectoryOnly))
             {
@@ -190,7 +178,7 @@ namespace TOTKActorRepacker
                     Byml newByml = Byml.FromText(File.ReadAllText(ymlFile));
 
                     // TODO: verify endian/version matches OG file
-                    Console.WriteLine($"Updating SARC: {sarcFile}\n\twith .BGYML: {relativePath.Replace(".yml", ".bgyml")}");
+                    Output.Log($"Updating SARC: {sarcFile}\n\twith .BGYML: {relativePath.Replace(".yml", ".bgyml")}");
 
                     sarc.Add(relativePath.Replace(".yml",".bgyml").Replace("\\", "/"), newByml.ToBinary(true, 3));
                 }
@@ -202,11 +190,11 @@ namespace TOTKActorRepacker
                 using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
                 {
                     fs.Write(sarc.ToBinary());
-                    Console.WriteLine($"Saving new .pack to output: {outPath}");
+                    Output.Log($"Saving new .pack to output: {outPath}");
                 }
             }
 
-            Console.WriteLine("Done rebuilding SARC archives.", ConsoleColor.Green);
+            Output.Log("Done rebuilding SARC archives.", ConsoleColor.Green);
         }
 
         private void UpdateYMLValues()
@@ -251,11 +239,11 @@ namespace TOTKActorRepacker
 
                         string newLine = $"{lineStart}{change.FieldName}{value}{newLineEnd}";
 
-                        Console.WriteLine($"\nChanged line {i} in YML: {ymlPath}");
-                        Console.Write($"\tOld: ", ConsoleColor.Yellow);
-                        Console.Write(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-                        Console.Write($"\n\tNew: ", ConsoleColor.Yellow);
-                        Console.Write(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
+                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
+                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
 
                         ymlLines[i] = newLine;
                     }
@@ -265,11 +253,11 @@ namespace TOTKActorRepacker
                         int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
                         newLine = newLine.PadLeft(whiteSpaceCount);
 
-                        Console.WriteLine($"\nChanged line {i} in YML: {ymlPath}");
-                        Console.Write($"\tOld: ", ConsoleColor.Yellow);
-                        Console.Write(ymlLines[i].Replace("{","{{").Replace("}","}}"), ConsoleColor.Yellow);
-                        Console.Write($"\n\tNew: ", ConsoleColor.Yellow);
-                        Console.Write(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
+                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
+                        Output.Log(ymlLines[i].Replace("{","{{").Replace("}","}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
 
                         ymlLines[i] = newLine;
                     }
@@ -294,7 +282,7 @@ namespace TOTKActorRepacker
                             {
                                 CopyDir(subDir, $"./Temp/Pack/Actor/{Path.GetFileName(packFolder)}/{Path.GetFileName(subDir)}");
                             }
-                            Console.WriteLine($"Copied dependency \"{Path.GetFileName(depFolder)}\" contents to temp folder: {Path.GetFileName(packFolder)}", ConsoleColor.White);
+                            Output.Log($"Copied dependency \"{Path.GetFileName(depFolder)}\" contents to temp folder: {Path.GetFileName(packFolder)}", ConsoleColor.White);
                         }
                     }
                 }
@@ -307,13 +295,13 @@ namespace TOTKActorRepacker
             string tempPath = $"./Temp";
             string tempActorPath = $"./Temp/Pack/Actor";
 
-            Console.WriteLine($"Extracting YML from SARC files...", ConsoleColor.White);
+            Output.Log($"Extracting YML from SARC files...", ConsoleColor.White);
 
             // If temp path already exists, delete it
             if (Directory.Exists(tempPath))
             {
                 Directory.Delete(tempPath, true);
-                Console.WriteLine($"Deleted existing temp folder: {tempPath}", ConsoleColor.Yellow);
+                Output.Log($"Deleted existing temp folder: {tempPath}", ConsoleColor.Yellow);
             }
 
             if (Directory.Exists(actorPath))
@@ -326,26 +314,26 @@ namespace TOTKActorRepacker
                     Directory.CreateDirectory(tempActorPath);
                     string zsCopy = Path.Combine(tempActorPath, Path.GetFileName(zsFile));
                     File.Copy(zsFile, zsCopy);
-                    Console.WriteLine($"Copied .zs file matching form option: {zsCopy}", ConsoleColor.White);
+                    Output.Log($"Copied .zs file matching form option: {zsCopy}", ConsoleColor.White);
                 }
 
                 // Decompress files
                 ZStdHelper.DecompressFolder(tempActorPath, tempActorPath, false);
-                Console.WriteLine($"Decompressed temp folder: {tempActorPath}", ConsoleColor.White);
+                Output.Log($"Decompressed temp folder: {tempActorPath}", ConsoleColor.White);
 
                 // Delete .zs files
                 foreach (var file in Directory.GetFiles(tempActorPath, "*.zs", SearchOption.AllDirectories))
                 {
                     File.Delete(file);
                 }
-                Console.WriteLine($"Deleted .zs files in temp folder.", ConsoleColor.Yellow);
+                Output.Log($"Deleted .zs files in temp folder.", ConsoleColor.Yellow);
 
                 // Rename .pack files to .sarc
                 foreach (var file in Directory.GetFiles(tempActorPath, "*.pack", SearchOption.AllDirectories))
                 {
                     File.Move(file, Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".sarc"));
                 }
-                Console.WriteLine($"Renamed .pack files in temp folder to .sarc", ConsoleColor.Yellow);
+                Output.Log($"Renamed .pack files in temp folder to .sarc", ConsoleColor.Yellow);
 
 
                 // For each .sarc file in temp dir...
@@ -363,11 +351,11 @@ namespace TOTKActorRepacker
                         // Extract YML to temp folder
                         Directory.CreateDirectory(Path.GetDirectoryName(outFile));
                         File.WriteAllText(outFile, Byml.FromBinary(bymlFile.AsSpan()).ToText());
-                        Console.WriteLine($"Extracted .yml file to temp folder: {outFile}", ConsoleColor.White);
+                        Output.Log($"Extracted .yml file to temp folder: {outFile}", ConsoleColor.White);
                     }
                 }
 
-                Console.WriteLine($"Done extracting YML from SARC files.", ConsoleColor.Green);
+                Output.Log($"Done extracting YML from SARC files.", ConsoleColor.Green);
             }
 
         }
@@ -409,13 +397,12 @@ namespace TOTKActorRepacker
         private void ValidatePaths()
         {
             // If paths are valid...
-            if (Directory.Exists(txt_GamePath.Text)
+            if (Directory.Exists(txt_GamePath.Text) && Directory.Exists(txt_OutputPath.Text)
                 && File.Exists(Path.Combine(txt_GamePath.Text, "Pack\\ZsDic.pack.zs")))
             {
                 // Update config with chosen paths
                 formSettings.GamePath = txt_GamePath.Text;
                 formSettings.OutputPath = txt_OutputPath.Text;
-                formSettings.Save();
 
                 // Enable options if mod files are found & output folder is set
                 btn_GenerateMod.Enabled = true;
@@ -495,7 +482,7 @@ namespace TOTKActorRepacker
             if (File.Exists(jsonPath))
             {
                 options = JsonConvert.DeserializeObject<List<Option>>(File.ReadAllText(jsonPath));
-                Console.WriteLine($"Loaded options from: {jsonPath}", ConsoleColor.White);
+                Output.Log($"Loaded options from: {jsonPath}", ConsoleColor.White);
             }
             if (options.Count > 0)
             {
@@ -508,7 +495,7 @@ namespace TOTKActorRepacker
             Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
             using (WaitForFile(jsonPath)) { };
             File.WriteAllText(jsonPath, JsonConvert.SerializeObject(options, Formatting.Indented));
-            Console.WriteLine($"Saved options to: {jsonPath}", ConsoleColor.Green);
+            Output.Log($"Saved options to: {jsonPath}", ConsoleColor.Green);
         }
 
         public static FileStream WaitForFile(string fullPath,
@@ -672,12 +659,12 @@ namespace TOTKActorRepacker
             string gameActorPath = Path.Combine(formSettings.GamePath, "Pack/Actor");
             string comparisonPath = $"./Compare_{Path.GetFileName(modPath)}";
 
-            Console.WriteLine($"Comparing Actor Pack files between\n\tOriginal: {gameActorPath}\n\tMod: {modActorPath}", ConsoleColor.White);
+            Output.Log($"Comparing Actor Pack files between\n\tOriginal: {gameActorPath}\n\tMod: {modActorPath}", ConsoleColor.White);
 
             // If comparison path already exists, delete it
             if (Directory.Exists(comparisonPath))
             {
-                Console.WriteLine($"Deleting existing comparison output directory: {comparisonPath}", ConsoleColor.Yellow);
+                Output.Log($"Deleting existing comparison output directory: {comparisonPath}", ConsoleColor.Yellow);
                 Directory.Delete(comparisonPath, true);
             }
 
@@ -703,14 +690,14 @@ namespace TOTKActorRepacker
                         File.Copy(modFile, tempModFile);
                         File.Copy(gameFile, tempGameFile);
 
-                        Console.WriteLine($"Copied matching files to Temp directory: {Path.GetFileName(outFolder)}", ConsoleColor.White);
+                        Output.Log($"Copied matching files to Temp directory: {Path.GetFileName(outFolder)}", ConsoleColor.White);
 
                         // Decompress files
                         ZStdHelper.DecompressFolder(outFolder, outFolder, false);
                         tempModFile = tempModFile.Replace(".zs", "");
                         tempGameFile = tempGameFile.Replace(".zs", "");
 
-                        Console.WriteLine($"Decompressed .zs files in Temp directory", ConsoleColor.White);
+                        Output.Log($"Decompressed .zs files in Temp directory", ConsoleColor.White);
 
                         // Open SARC
                         if (File.Exists(tempModFile))
@@ -741,7 +728,7 @@ namespace TOTKActorRepacker
                                     string outFile = Path.Combine(outFolder, modPackFileName.Replace("bgyml", "yml"));
                                     Directory.CreateDirectory(Path.GetDirectoryName(outFile));
                                     File.WriteAllText(outFile, modByml);
-                                    Console.WriteLine($"Extracted modified .yml file to: {outFile}", ConsoleColor.Green);
+                                    Output.Log($"Extracted modified .yml file to: {outFile}", ConsoleColor.Green);
                                 }
                             }
                         }
@@ -755,7 +742,7 @@ namespace TOTKActorRepacker
                 {
                     File.Delete(file);
                 }
-                Console.WriteLine($"Deleted .pack and .zs files in comparison directory", ConsoleColor.Yellow);
+                Output.Log($"Deleted .pack and .zs files in comparison directory", ConsoleColor.Yellow);
 
                 // Delete empty output directories
                 foreach (var dir in Directory.GetDirectories(comparisonPath, "*", SearchOption.AllDirectories))
@@ -763,16 +750,16 @@ namespace TOTKActorRepacker
                     if (Directory.GetFiles(dir, "*.yml", SearchOption.AllDirectories).Count() == 0)
                         Directory.Delete(dir, true);
                 }
-                Console.WriteLine($"Deleted empty folders in comparison directory", ConsoleColor.Yellow);
+                Output.Log($"Deleted empty folders in comparison directory", ConsoleColor.Yellow);
 
                 MessageBox.Show($"Comparison complete, modded .yml files can be found at:\n\n{Path.GetFullPath(comparisonPath)}");
-                Console.WriteLine($"Comparison succeeded.", ConsoleColor.Green);
+                Output.Log($"Comparison succeeded.", ConsoleColor.Green);
             }
             else
             {
                 MessageBox.Show("Failed to compare mod to game files, please ensure " +
                     "/Pack/Actor/ directory exists in both folders!");
-                Console.WriteLine($"Comparison failed.", ConsoleColor.Red);
+                Output.Log($"Comparison failed.", ConsoleColor.Red);
             }
         }
 
