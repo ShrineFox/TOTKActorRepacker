@@ -89,9 +89,12 @@ namespace TOTKActorRepacker
                     if (file.EndsWith(".pack.zs"))
                     {
                         // Add uncompressed sizes to CRC32 table
-                        UpdatePackRSTBEntry(restbl, file);
+                        UpdatePackRSTBEntries(restbl, file);
                     }
                 }
+
+                // Add additional entry updates via ./RSTB.txt
+                UpdateEntriesFromTXT(restbl);
 
                 // Save new RESTBL file
                 string newResTbl = Path.Combine(txt_OutputPath.Text,
@@ -104,7 +107,25 @@ namespace TOTKActorRepacker
                 Output.Log($"Could not find Resource Table file at: {gameResTbl}", ConsoleColor.Red);
         }
 
-        private void UpdatePackRSTBEntry(Restbl restbl, string path)
+        private void UpdateEntriesFromTXT(Restbl restbl)
+        {
+            if (File.Exists("./RSTB.txt"))
+            {
+                foreach (var line in File.ReadAllLines("./RSTB.txt"))
+                {
+                    string[] splitLine = line.Split(' ');
+                    if (splitLine.Count() > 1)
+                    {
+                        string filePath = splitLine[0].Replace("\\","/");
+                        uint size = Convert.ToUInt32(splitLine[1]) + (uint)formSettings.Padding;
+
+                        UpdateRSTBEntry(restbl, filePath, size, true);
+                    }
+                }
+            }
+        }
+
+        private void UpdatePackRSTBEntries(Restbl restbl, string path)
         {
             string uncompressedSARC = path.Replace(".zs", "");
             string relativePath = uncompressedSARC.Substring(txt_OutputPath.Text.Length + 1).Replace("\\", "/");
@@ -113,20 +134,9 @@ namespace TOTKActorRepacker
             if (File.Exists(uncompressedSARC))
             {
                 FileInfo fi = new FileInfo(uncompressedSARC);
-                uint pathCrc = StringToCRC32(relativePath);
                 uint newSize = Convert.ToUInt32(fi.Length + formSettings.Padding);
 
-                if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
-                {
-                    Output.Log($"Updating RESTBL entry for: {relativePath}");
-
-                    var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
-                    restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
-                    Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
-
-                    restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
-                    Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
-                }
+                UpdateRSTBEntry(restbl, relativePath, newSize);
 
                 // Add/update CRC32 entry for the decompressed files within matching Actor Pack
                 string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileName(uncompressedSARC)}";
@@ -135,23 +145,35 @@ namespace TOTKActorRepacker
                     foreach (var ymlFile in Directory.GetFiles(tempFolder, "*.yml", SearchOption.AllDirectories))
                     {
                         string relativeYmlPath = ymlFile.Substring(tempFolder.Length + 1).Replace("\\", "/").Replace(".yml", ".bgyml");
-                        pathCrc = StringToCRC32(relativeYmlPath);
                         newSize = Convert.ToUInt32(Byml.FromText(File.ReadAllText(ymlFile)).ToBinary(true, 3).AsSpan().Length + formSettings.Padding);
 
-                        if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
-                        {
-                            Output.Log($"Updating RESTBL entry for: {relativeYmlPath}");
-
-                            var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
-                            restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
-                            Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
-
-                            restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
-                            Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
-                        }
+                        UpdateRSTBEntry(restbl, relativeYmlPath, newSize);
                     }
                     
                 }
+            }
+        }
+
+        private void UpdateRSTBEntry(Restbl restbl, string relativePath, uint newSize, bool forceAdd = false)
+        {
+            uint pathCrc = StringToCRC32(relativePath);
+
+            if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
+            {
+                Output.Log($"Updating RESTBL entry for: {relativePath}");
+
+                var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
+                restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+                Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.Yellow);
+
+                restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
+                Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
+            }
+            else if (forceAdd)
+            {
+                Output.Log($"Adding new RESTBL entry for: {relativePath}");
+                restbl.CrcTable.Add(new CrcEntry(pathCrc, newSize));
+                Output.Log($"\tAdded CRC32 Table Entry:\n\t\tHash: {pathCrc}\n\t\tSize: {newSize}");
             }
         }
 
