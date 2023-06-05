@@ -149,7 +149,6 @@ namespace TOTKActorRepacker
 
                         UpdateRSTBEntry(restbl, relativeYmlPath, newSize);
                     }
-                    
                 }
             }
         }
@@ -259,7 +258,7 @@ namespace TOTKActorRepacker
                         else
                             newLineEnd = " " + string.Join("", splitLineEnd.Skip(1));
 
-                        string newLine = $"{lineStart}{change.FieldName}{value}{newLineEnd}";
+                        string newLine = $"{lineStart}{change.FieldName} {value}{newLineEnd}";
 
                         Output.Log($"\nChanged line {i} in YML: {ymlPath}");
                         Output.Log($"\tOld: ", ConsoleColor.Yellow);
@@ -364,8 +363,9 @@ namespace TOTKActorRepacker
                     // Open SARC
                     using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
 
-                    // For each byml file in SARC...
-                    foreach ((var bymlFileName, var bymlFile) in sarc.Where(x => x.Key.EndsWith(".bgyml")))
+                    // For each byml file in SARC that is modified by an enabled option...
+                    foreach ((var bymlFileName, var bymlFile) in sarc.Where(x => x.Key.EndsWith(".bgyml") 
+                        && options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(x.Key).Equals(c.File)))))
                     {
                         string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
                         string outFile = Path.Combine(tempSarcPath, bymlFileName.Replace("bgyml", "yml"));
