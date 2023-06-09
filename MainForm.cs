@@ -9,6 +9,9 @@ using System.Text;
 using Soft160.Data.Cryptography;
 using System.Runtime.InteropServices;
 using ShrineFox.IO;
+using YamlDotNet.Serialization;
+using System.Dynamic;
+using YamlDotNet.Core.Tokens;
 
 namespace TOTKActorRepacker
 {
@@ -56,7 +59,7 @@ namespace TOTKActorRepacker
 
             CopyDependencyYMLs();
 
-            UpdateYMLValues();
+            //UpdateYMLValues();
 
             RebuildSARC();
 
@@ -229,46 +232,47 @@ namespace TOTKActorRepacker
                     {
                         UpdateYMLValue(ymlPath, change, option.Enabled);
                     }
+                    else
+                        Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
                 }
             }
         }
 
         private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
         {
-            string[] ymlLines = File.ReadAllLines(ymlPath);
+            using (WaitForFile(ymlPath)) { }
+
             string value = change.Value;
             if (!enabled)
                 value = change.OGValue;
 
-            for (int i = 0; i < ymlLines.Count(); i++)
+            if (change.FieldName.Contains(":"))
             {
-                if (ymlLines[i].Contains(change.FieldName))
+                var deserializer = new DeserializerBuilder().Build();
+                List<KeyValuePair<object, object>> ymlObj = Yml.Deserialize(ymlPath);
+
+                for (int x = 0; x < ymlObj.Count; x++)
                 {
-                    if (change.FieldName.Contains(":"))
+                    if (ymlObj[x].Key.Equals(change.FieldName.Replace(":", "")))
                     {
-                        string lineStart = ymlLines[i].Split(change.FieldName).First();
-                        string lineEnd = ymlLines[i].Split(change.FieldName).Last();
-                        string[] splitLineEnd = lineEnd.Split(' ');
-                        string newLineEnd = "";
-
-                        if (splitLineEnd.Count() > 2)
-                        {
-                            newLineEnd = ", " + string.Join("", splitLineEnd.Skip(2));
-                        }
-                        else
-                            newLineEnd = " " + string.Join("", splitLineEnd.Skip(1));
-
-                        string newLine = $"{lineStart}{change.FieldName} {value}{newLineEnd}";
-
-                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
+                        Output.Log($"\nChanged KeyValuePair {x} in YML: {ymlPath}");
                         Output.Log($"\tOld: ", ConsoleColor.Yellow);
-                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
-                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-
-                        ymlLines[i] = newLine;
+                        Output.Log(ymlObj[x].Key + ": " + ymlObj[x].Value, ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Green);
+                        Output.Log(ymlObj[x].Key + ": " + value, ConsoleColor.Green);
+                        var newEntry = new KeyValuePair<object, object>(ymlObj[x].Key, value);
+                        ymlObj[x] = newEntry;
                     }
-                    else
+                }
+
+                Yml.Serialize(ymlObj, ymlPath);
+            }
+            else
+            {
+                string[] ymlLines = File.ReadAllLines(ymlPath);
+                for (int i = 0; i < ymlLines.Count(); i++)
+                {
+                    if (ymlLines[i].Contains(change.FieldName))
                     {
                         string newLine = change.FieldName + ": " + value;
                         int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
@@ -276,16 +280,16 @@ namespace TOTKActorRepacker
 
                         Output.Log($"\nChanged line {i} in YML: {ymlPath}");
                         Output.Log($"\tOld: ", ConsoleColor.Yellow);
-                        Output.Log(ymlLines[i].Replace("{","{{").Replace("}","}}"), ConsoleColor.Yellow);
-                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
-                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Green);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Green);
 
                         ymlLines[i] = newLine;
+
+                        File.WriteAllLines(ymlPath, ymlLines);
                     }
                 }
             }
-
-            File.WriteAllLines(ymlPath, ymlLines);
         }
 
         private void CopyDependencyYMLs()
@@ -724,33 +728,62 @@ namespace TOTKActorRepacker
                         // Open SARC
                         if (File.Exists(tempModFile))
                         {
+                            using (WaitForFile(tempModFile)) { }
                             using Sarc modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile));
+                            using (WaitForFile(tempGameFile)) { }
                             using Sarc gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile));
 
                             // For each byml file in modified SARC...
-                            foreach ((var modPackFileName, var modPackFile) in modPack.Where(x => x.Key.EndsWith(".bgyml")))
+                            foreach ((var modPackFileName, var modPackFile) in modPack)
                             {
                                 // By default, if a match doesn't exist in base game, consider it a modded file
                                 string gameByml = "";
 
                                 // If unmodified SARC contains same file...
-                                if (gamePack.Any(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName)))
+                                if (modPackFileName.EndsWith(".bgyml"))
                                 {
-                                    // Compare original BYML text
-                                    var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
-                                    gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
+                                    // If file is a BYML...
+                                    if (gamePack.Any(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName)))
+                                    {
+                                        // Compare original BYML text
+                                        var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
+                                        gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
+                                    }
+
+                                    // Get modified BYML text
+                                    string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
+
+                                    // If BYML texts are not identical, save .yml
+                                    if (modByml != gameByml)
+                                    {
+                                        string outFile = Path.Combine(outFolder, modPackFileName.Replace("bgyml", "yml"));
+                                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                                        File.WriteAllText(outFile, modByml);
+                                        Output.Log($"Extracted modified .yml file to: {outFile}", ConsoleColor.Green);
+                                    }
                                 }
-
-                                // Get modified BYML text
-                                string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
-
-                                // If BYML texts are not identical, save .yml
-                                if (modByml != gameByml)
+                                else
                                 {
-                                    string outFile = Path.Combine(outFolder, modPackFileName.Replace("bgyml", "yml"));
-                                    Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                                    File.WriteAllText(outFile, modByml);
-                                    Output.Log($"Extracted modified .yml file to: {outFile}", ConsoleColor.Green);
+                                    // If file in mod pack is new or different from one in game pack...
+                                    if (gamePack.Any(x => !x.Key.Equals(modPackFileName) 
+                                    || (x.Key.Equals(modPackFileName) && 
+                                        gamePack.First(x => x.Key.Equals(modPackFileName)).Value.AsSpan() != modPackFile.AsSpan())))
+                                    {
+                                        string outFile = Path.Combine(outFolder, modPackFileName);
+                                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                                        using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
+                                        {
+                                            try
+                                            {
+                                                fs.Write(modPackFile.AsSpan());
+                                                Output.Log($"Saving new or modified SARC content to output: {outFile}");
+                                            }
+                                            catch
+                                            {
+                                                Output.Log($"Failed to save new or modified SARC content to output: {outFile}", ConsoleColor.Red);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
