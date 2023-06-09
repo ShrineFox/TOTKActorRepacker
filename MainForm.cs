@@ -729,9 +729,9 @@ namespace TOTKActorRepacker
                         if (File.Exists(tempModFile))
                         {
                             using (WaitForFile(tempModFile)) { }
-                            using Sarc modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile));
+                            var modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile)).Where(x => x.Key.Contains('.')).ToList();
                             using (WaitForFile(tempGameFile)) { }
-                            using Sarc gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile));
+                            var gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile)).Where(x => x.Key.Contains('.')).ToList();
 
                             // For each byml file in modified SARC...
                             foreach ((var modPackFileName, var modPackFile) in modPack)
@@ -798,14 +798,6 @@ namespace TOTKActorRepacker
                     File.Delete(file);
                 }
                 Output.Log($"Deleted .pack and .zs files in comparison directory", ConsoleColor.Yellow);
-
-                // Delete empty output directories
-                foreach (var dir in Directory.GetDirectories(comparisonPath, "*", SearchOption.AllDirectories))
-                {
-                    if (Directory.GetFiles(dir, "*.yml", SearchOption.AllDirectories).Count() == 0)
-                        Directory.Delete(dir, true);
-                }
-                Output.Log($"Deleted empty folders in comparison directory", ConsoleColor.Yellow);
 
                 MessageBox.Show($"Comparison complete, modded .yml files can be found at:\n\n{Path.GetFullPath(comparisonPath)}");
                 Output.Log($"Comparison succeeded.", ConsoleColor.Green);
