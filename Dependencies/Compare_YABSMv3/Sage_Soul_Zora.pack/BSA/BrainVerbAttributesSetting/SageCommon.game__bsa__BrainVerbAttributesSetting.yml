@@ -1,0 +1,175 @@
+BrainVerbAttributes:
+  Alerted:
+    AttributeFlag: '0x0000000080000002'
+    Attributes: [Alerted, PerceptionResponseTimeImportant]
+  AttackAnchor:
+    AttributeFlag: '0x0000000004000001'
+    Attributes: [Battle, SendBattleTarget]
+  BattleLODMgrMode:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  BattlingAllyDiscovered:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  BreakeSuspicious:
+    AttributeFlag: '0x0000000080000000'
+    Attributes: [PerceptionResponseTimeImportant]
+  BreakingUp:
+    AttributeFlag: '0x0000104000000000'
+    Attributes: [ForbidSageCullingPause, BreakingUp]
+  Confuse:
+    AttributeFlag: '0x0000000080005280'
+    Attributes: [Confuse, InvalidCooperation, InvalidRetToHomeWhenOutOfTerritory, PerceptionResponseTimeImportant, ConsiderActivatePresentation]
+  ConfuseBattle:
+    AttributeFlag: '0x0000000006005201'
+    Attributes: [Confuse, Battle, InvalidCooperation, SendBattleTarget, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason]
+  Defeat:
+    AttributeFlag: '0x0000000080004000'
+    Attributes: [InvalidRetToHomeWhenOutOfTerritory, PerceptionResponseTimeImportant, PerceptionResponseTimeImportant]
+  Demoralized:
+    AttributeFlag: '0x0000000000804000'
+    Attributes: [InvalidRetToHomeWhenOutOfTerritory, StealthAttack]
+  Eat:
+    AttributeFlag: '0x0000000000800000'
+    Attributes: [StealthAttack]
+  EnemyDiscovered:
+    AttributeFlag: '0x0000000002004005'
+    Attributes: [Battle, Discover, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason]
+  EnemyLost:
+    AttributeFlag: '0x0000000080800002'
+    Attributes: [StealthAttack, Alerted, PerceptionResponseTimeImportant]
+  EnemySearch:
+    AttributeFlag: '0x0000000080000003'
+    Attributes: [Battle, Alerted, PerceptionResponseTimeImportant]
+  Escape:
+    AttributeFlag: '0x0000000000000008'
+    Attributes: [Escape]
+  FlyingBattle:
+    AttributeFlag: '0x0000000016004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, SendBattleTarget, NoWasteShield]
+  Follow:
+    AttributeFlag: '0x0000000002000000'
+    Attributes: [UpdateTargetInaccessibleReason]
+  FollowSpecial:
+    AttributeFlag: '0x0000004400000020'
+    Attributes: [SageLightOrbFormation, IsPathfindingUserCalcSkip, ForbidSageCullingPause]
+  ForceReturnHome:
+    AttributeFlag: '0x0000000000004000'
+    Attributes: [InvalidRetToHomeWhenOutOfTerritory]
+  FrozenInIce:
+    AttributeFlag: '0x0000001000000000'
+    Attributes: [AllowModelOnlyLODNear]
+  GetUp:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  GiveOrders:
+    AttributeFlag: '0x0000000004000001'
+    Attributes: [Battle, SendBattleTarget]
+  GiveUp:
+    AttributeFlag: '0x0000020002004000'
+    Attributes: [InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, RecieveBattleTargetRevocation]
+  HangingBattle:
+    AttributeFlag: '0x0000000016004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, SendBattleTarget, NoWasteShield]
+  Hide:
+    AttributeFlag: '0x0000000280800000'
+    Attributes: [StealthAttack, PerceptionResponseTimeImportant, IsCheckRestartPatrol]
+  Hiding:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  Hunt:
+    AttributeFlag: '0x0000000000000080'
+    Attributes: [ConsiderActivatePresentation]
+  InaccessibleToTarget:
+    AttributeFlag: '0x0000000016004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, SendBattleTarget, NoWasteShield]
+  InvestigateSuspiciousActivity:
+    AttributeFlag: '0x0000000090800002'
+    Attributes: [StealthAttack, NoWasteShield, Alerted, PerceptionResponseTimeImportant]
+  LandBattle:
+    AttributeFlag: '0x0000000016004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, SendBattleTarget, NoWasteShield]
+  Lookout:
+    AttributeFlag: '0x0000000080800000'
+    Attributes: [StealthAttack, PerceptionResponseTimeImportant]
+  MoveTo:
+    AttributeFlag: '0x0000000080000000'
+    Attributes: [PerceptionResponseTimeImportant]
+  MoveToSafePosition:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  None:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  ObstacleDiscovered:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  Patrol:
+    AttributeFlag: '0x0000000080820000'
+    Attributes: [UpdateHomePosOnNestComponent, StealthAttack, PerceptionResponseTimeImportant]
+  ReturnFromDamage:
+    AttributeFlag: '0x0000000090800080'
+    Attributes: [StealthAttack, NoWasteShield, PerceptionResponseTimeImportant, ConsiderActivatePresentation]
+  ReturnFromEventAI:
+    AttributeFlag: '0x0000000000000001'
+    Attributes: [Battle]
+  ReturnToHomePosition:
+    AttributeFlag: '0x0000004080004400'
+    Attributes: [ReturningToHomePos, InvalidRetToHomeWhenOutOfTerritory, PerceptionResponseTimeImportant, ForbidSageCullingPause]
+  Ridden:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  Rodeo:
+    AttributeFlag: '0x0000000000000040'
+    Attributes: [SageSkillPlaying]
+  SageSkill:
+    AttributeFlag: '0x0000004000000040'
+    Attributes: [SageSkillPlaying, ForbidSageCullingPause]
+  SightDown:
+    AttributeFlag: '0x0000000008801002'
+    Attributes: [Alerted, InvalidCooperation, StealthAttack, SightDown]
+  Sleep:
+    AttributeFlag: '0x0000001081800000'
+    Attributes: [Sleep, StealthAttack, PerceptionResponseTimeImportant, AllowModelOnlyLODNear]
+  SpringOut:
+    AttributeFlag: '0x0000004000004000'
+    Attributes: [InvalidRetToHomeWhenOutOfTerritory, ForbidSageCullingPause]
+  SpringOutAppear:
+    AttributeFlag: '0x0000000000000000'
+    Attributes: []
+  SuspiciousIindividualDiscovered:
+    AttributeFlag: '0x00000000c4000000'
+    Attributes: [SendBattleTarget, SuspiciousIndividual, PerceptionResponseTimeImportant]
+  SuspiciousIindividualNotice:
+    AttributeFlag: '0x0000000040004004'
+    Attributes: [Discover, InvalidRetToHomeWhenOutOfTerritory, SuspiciousIndividual]
+  TakeOrders:
+    AttributeFlag: '0x0000000014004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, SendBattleTarget, NoWasteShield]
+  ToArms:
+    AttributeFlag: '0x0000000000000001'
+    Attributes: [Battle]
+  TurnTo:
+    AttributeFlag: '0x0000000080000000'
+    Attributes: [PerceptionResponseTimeImportant]
+  UnderWaterBattale:
+    AttributeFlag: '0x0000000016004001'
+    Attributes: [Battle, InvalidRetToHomeWhenOutOfTerritory, UpdateTargetInaccessibleReason, SendBattleTarget, NoWasteShield]
+  UnidentifiedTerrorDiscovered:
+    AttributeFlag: '0x0000000082000000'
+    Attributes: [UpdateTargetInaccessibleReason, PerceptionResponseTimeImportant]
+  Wait:
+    AttributeFlag: '0x0000000380800000'
+    Attributes: [StealthAttack, PerceptionResponseTimeImportant, AllowModelOnlyLOD, IsCheckRestartPatrol]
+  WaitAtCamp:
+    AttributeFlag: '0x0000000180840000'
+    Attributes: [AtCamp, StealthAttack, PerceptionResponseTimeImportant, AllowModelOnlyLOD]
+  WaitOnRidable:
+    AttributeFlag: '0x0000001080000000'
+    Attributes: [PerceptionResponseTimeImportant, AllowModelOnlyLODNear]
+  Wander:
+    AttributeFlag: '0x0000000380800000'
+    Attributes: [StealthAttack, PerceptionResponseTimeImportant, AllowModelOnlyLOD, IsCheckRestartPatrol]
+  WanderOnRidable:
+    AttributeFlag: '0x0000000080000000'
+    Attributes: [PerceptionResponseTimeImportant]

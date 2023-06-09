@@ -57,9 +57,11 @@ namespace TOTKActorRepacker
 
             ExtractSARCs();
 
-            CopyDependencyYMLs();
+            CopyDependencyFiles();
 
             //UpdateYMLValues();
+
+            ConvertYMLsToBYML();
 
             RebuildSARC();
 
@@ -70,9 +72,27 @@ namespace TOTKActorRepacker
 
             PatchRESTBL();
 
+            // Delete .pack files in output folder
+            foreach (var packFile in Directory.GetFiles(actorPath, "*.pack", SearchOption.TopDirectoryOnly))
+                File.Delete(packFile);
+            Output.Log($"Deleted uncompressed .pack files in output folder");
+
+
             Output.Log($"\n\nMod generation complete", ConsoleColor.Green);
 
             MessageBox.Show("Done generating output!");
+        }
+
+        private void ConvertYMLsToBYML()
+        {
+            foreach (var file in Directory.GetFiles("./Temp").Where(x => x.EndsWith(".yml")))
+            {
+                using (FileStream fs = new FileStream(file.Replace(".yml",".bgyml"), FileMode.OpenOrCreate))
+                {
+                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(true, 3).AsSpan());
+                    Output.Log($"Converted .yml back to .bgyml: {file.Replace(".yml", ".bgyml")}");
+                }
+            }
         }
 
         private void PatchRESTBL()
@@ -192,29 +212,30 @@ namespace TOTKActorRepacker
             {
                 string sarcDir = sarcFile.Replace(".sarc", ".pack");
 
-                using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
-
-                // For each yml file in matching SARC dir...
-                foreach (var ymlFile in Directory.GetFiles(sarcDir, "*.yml", SearchOption.AllDirectories))
+                // If matching folder for .sarc exists...
+                if (Directory.Exists(sarcDir)) 
                 {
-                    // Add to SARC
-                    string relativePath = ymlFile.Substring(sarcDir.Length + 1);
-                    Byml newByml = Byml.FromText(File.ReadAllText(ymlFile));
+                    using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
 
-                    // TODO: verify endian/version matches OG file
-                    Output.Log($"Updating SARC: {sarcFile}\n\twith .BGYML: {relativePath.Replace(".yml", ".bgyml")}");
+                    // For each non-yml file in matching SARC dir...
+                    foreach (var newFile in Directory.GetFiles(sarcDir, "*",
+                        SearchOption.AllDirectories).Where(x => !x.EndsWith(".yml")))
+                    {
+                        // Add to SARC
+                        string relativePath = newFile.Substring(sarcDir.Length + 1).Replace("\\", "/");
+                        Output.Log($"Updating SARC: {sarcFile}\n\twith file: {relativePath}");
+                        sarc.Add(relativePath, File.ReadAllBytes(newFile));
+                    }
 
-                    sarc.Add(relativePath.Replace(".yml",".bgyml").Replace("\\", "/"), newByml.ToBinary(true, 3));
-                }
-
-                // Save new .pack to output dir
-                string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
-                string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
-                Directory.CreateDirectory(outDir);
-                using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
-                {
-                    fs.Write(sarc.ToBinary());
-                    Output.Log($"Saving new .pack to output: {outPath}");
+                    // Save new .pack to output dir
+                    string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+                    string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
+                    Directory.CreateDirectory(outDir);
+                    using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
+                    {
+                        fs.Write(sarc.ToBinary());
+                        Output.Log($"Saving new .pack to output: {outPath}");
+                    }
                 }
             }
 
@@ -292,7 +313,7 @@ namespace TOTKActorRepacker
             }
         }
 
-        private void CopyDependencyYMLs()
+        private void CopyDependencyFiles()
         {
             if (Directory.Exists("./Dependencies"))
             {
@@ -300,8 +321,8 @@ namespace TOTKActorRepacker
                 {
                     foreach (var packFolder in Directory.GetDirectories(depFolder))
                     {
-                        // Copy directory contents to temp folder if used by any active options
-                        if (options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(packFolder).Equals(c.File))))
+                        // Copy directory contents to temp folder
+                        //if (options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(packFolder).Equals(c.File))))
                         {
                             foreach (var subDir in Directory.GetDirectories(packFolder))
                             {
@@ -331,15 +352,15 @@ namespace TOTKActorRepacker
 
             if (Directory.Exists(actorPath))
             {
-                // For each .zs file in Actor/Pack matching the name of an enabled option's changed file...
-                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly)
-                    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
+                // For each .zs file in Actor/Pack
+                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly))
+                //    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
                 {
                     // Copy to temp dir
                     Directory.CreateDirectory(tempActorPath);
                     string zsCopy = Path.Combine(tempActorPath, Path.GetFileName(zsFile));
                     File.Copy(zsFile, zsCopy);
-                    Output.Log($"Copied .zs file matching form option: {zsCopy}", ConsoleColor.White);
+                    Output.Log($"Copied .zs file to temp folder: {zsCopy}", ConsoleColor.White);
                 }
 
                 // Decompress files
