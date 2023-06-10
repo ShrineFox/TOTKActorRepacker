@@ -1,2 +1,0 @@
-{$parent: Work/GameBalance/AttackInterval/NpcCommonTwoHandThrustWeapon.game__gamebalance__AttackInterval.gyml, LongIntervalMax: 1.0,
-  LongIntervalMin: 1.0, MediumIntervalMax: 1.0, MediumIntervalMin: 1.0, ShortIntervalMax: 1.0, ShortIntervalMin: 1.0}

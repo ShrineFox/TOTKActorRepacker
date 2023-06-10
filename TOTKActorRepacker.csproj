@@ -31,16 +31,9 @@
     <None Update="Cead.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Dependencies\bettersagesmod.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Dependencies\**\**\*.yml">
-      <Link>Dependencies\%(RecursiveDir)%(FileName)%(Extension)</Link>
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Dependencies\**\*.*">
+	  <Link>Dependencies\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
 </Project>

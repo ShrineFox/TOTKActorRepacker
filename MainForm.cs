@@ -59,7 +59,7 @@ namespace TOTKActorRepacker
 
             CopyDependencyFiles();
 
-            //UpdateYMLValues();
+            UpdateYMLValues();
 
             ConvertYMLsToBYML();
 
@@ -85,7 +85,7 @@ namespace TOTKActorRepacker
 
         private void ConvertYMLsToBYML()
         {
-            foreach (var file in Directory.GetFiles("./Temp").Where(x => x.EndsWith(".yml")))
+            foreach (var file in Directory.GetFiles("./Temp", "*.yml", SearchOption.AllDirectories))
             {
                 using (FileStream fs = new FileStream(file.Replace(".yml",".bgyml"), FileMode.OpenOrCreate))
                 {
@@ -162,10 +162,10 @@ namespace TOTKActorRepacker
                 UpdateRSTBEntry(restbl, relativePath, newSize);
 
                 // Add/update CRC32 entry for the decompressed files within matching Actor Pack
-                string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileName(uncompressedSARC)}";
+                string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileNameWithoutExtension(uncompressedSARC)}_pack";
                 if (Directory.Exists(tempFolder))
                 {
-                    foreach (var file in Directory.GetFiles(tempFolder, "*", SearchOption.AllDirectories).Where(x => !x.EndsWith(".yml")))
+                    foreach (var file in Directory.GetFiles(tempFolder, "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml")))
                     {
                         string relativeFilePath = file.Substring(tempFolder.Length + 1).Replace("\\", "/");
                         newSize = Convert.ToUInt32(new FileInfo(file).Length + formSettings.Padding);
@@ -215,9 +215,10 @@ namespace TOTKActorRepacker
                 // If matching folder for .sarc exists...
                 if (Directory.Exists(sarcDir)) 
                 {
-                    //Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
+                    using (Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile)))
                     {
-                        var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories);
+                        // Get all non-YML files in Temp Sarc dir
+                        var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml"));
                         int count = sarcFilesDir.Count();
                         // For each non-yml file in matching SARC dir...
                         foreach (var newFile in sarcFilesDir)
@@ -225,7 +226,7 @@ namespace TOTKActorRepacker
                             // Add to SARC
                             string relativePath = newFile.Substring(sarcDir.Length + 1).Replace("\\", "/");
                             Output.Log($"Updating SARC: {sarcFile}\n\twith file: {relativePath}");
-                            //sarc.Add(relativePath, File.ReadAllBytes(newFile));
+                            sarc.Add(relativePath, File.ReadAllBytes(newFile));
                         }
 
                         // Save new .pack to output dir
@@ -234,7 +235,7 @@ namespace TOTKActorRepacker
                         Directory.CreateDirectory(outDir);
                         using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
                         {
-                            //fs.Write(sarc.ToBinary());
+                            fs.Write(sarc.ToBinary());
                             Output.Log($"Saving new .pack to output: {outPath}");
                         }
                     }
