@@ -261,7 +261,7 @@ namespace TOTKActorRepacker
 
         private void UpdateYMLValues()
         {
-            foreach (var option in options.Where(x => x.Enabled))
+            foreach (var option in options)
             {
                 foreach(var change in option.Changes)
                 {
@@ -270,7 +270,7 @@ namespace TOTKActorRepacker
                         CopyGameYMLToTemp(ymlPath);
 
                     if (File.Exists(ymlPath))
-                        UpdateYMLValue(ymlPath, change);
+                        UpdateYMLValue(ymlPath, change, option.Enabled);
                     else
                         Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
                 }
@@ -321,9 +321,13 @@ namespace TOTKActorRepacker
             }
         }
 
-        private void UpdateYMLValue(string ymlPath, Change change)
+        private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
         {
             using (WaitForFile(ymlPath)) { }
+
+            string value = change.Value;
+            if (!enabled)
+                value = change.OGValue;
 
             if (change.FieldName.Contains(":"))
             {
@@ -344,7 +348,7 @@ namespace TOTKActorRepacker
                                     strEnd += "}}";
                                 else if (splitLine[x + 1].EndsWith("}"))
                                     strEnd += "}";
-                                splitLine[x + 1] = change.Value + strEnd;
+                                splitLine[x + 1] = value + strEnd;
                             }
                         }
 
@@ -369,7 +373,7 @@ namespace TOTKActorRepacker
                 {
                     if (ymlLines[i].Contains(change.FieldName))
                     {
-                        string newLine = change.FieldName + ": " + change.Value;
+                        string newLine = change.FieldName + ": " + value;
                         int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
                         newLine = newLine.PadLeft(whiteSpaceCount);
 
@@ -428,8 +432,8 @@ namespace TOTKActorRepacker
             if (Directory.Exists(actorPath))
             {
                 // For each .zs file in Actor/Pack
-                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly)
-                    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
+                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly))
+                //    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
                 {
                     // Copy to temp dir
                     Directory.CreateDirectory(tempActorPath);

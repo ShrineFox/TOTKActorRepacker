@@ -247,17 +247,31 @@
     "Enabled": true
   },
   {
-    "Name": "Riju Soul Voice Clips",
+    "Name": "Riju Soul Muted Voice Clips",
     "Changes": [
       {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
+        "FieldName": "NpcVoiceType:",
+        "Value": "",
+        "OGValue": "Custom_Rouge"
+      },
+      {
         "File": "Sage_Soul_Gerudo.pack",
-        "Path": "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
-        "FieldName": "VoiceRef",
-        "Value": "?Component/VoiceParam/Npc_oasis003.game__component__VoiceParam.bgyml",
-        "OGValue": ""
+        "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
+        "FieldName": "NpcVoiceType:",
+        "Value": "",
+        "OGValue": "Custom_Rouge"
+      },
+      {
+        "File": "Npc_Gerudo_Queen_Young.pack",
+        "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
+        "FieldName": "NpcVoiceType:",
+        "Value": "",
+        "OGValue": "Custom_Rouge"
       }
     ],
-    "Enabled": true
+    "Enabled": false
   },
   {
     "Name": "Riju Soul Footstep Sounds",
@@ -265,6 +279,13 @@
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
+        "FieldName": "SoundFootStepRef",
+        "Value": "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",
+        "OGValue": ""
+      },
+      {
+        "File": "Npc_Gerudo_Queen_Young.pack",
+        "Path": "Actor\\Npc_Gerudo_Queen_Young.engine__actor__ActorParam.yml",
         "FieldName": "SoundFootStepRef",
         "Value": "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",
         "OGValue": ""
