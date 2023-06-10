@@ -15,6 +15,13 @@
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
         "OGValue": "0.75"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
+        "FieldName": "DamageMultiplier",
+        "Value": "1.5",
+        "OGValue": "0.75"
       }
     ],
     "Enabled": true
@@ -105,6 +112,48 @@
         "FieldName": "ShortIntervalMin:",
         "Value": "1",
         "OGValue": "140"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "LongIntervalMax:",
+        "Value": "1",
+        "OGValue": "160"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "LongIntervalMin:",
+        "Value": "1",
+        "OGValue": "140"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "MediumIntervalMax:",
+        "Value": "1",
+        "OGValue": "160"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "MediumIntervalMin:",
+        "Value": "1",
+        "OGValue": "140"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "ShortIntervalMax:",
+        "Value": "1",
+        "OGValue": "160"
+      },
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
+        "FieldName": "ShortIntervalMin:",
+        "Value": "1",
+        "OGValue": "140"
       }
     ],
     "Enabled": true
@@ -155,70 +204,44 @@
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
+        "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1",
         "OGValue": "300"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
+        "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1",
         "OGValue": "90"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
+        "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1",
         "OGValue": "300"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
+        "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1",
         "OGValue": "90"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Riju Soul Color Restoration",
-    "Changes": [
+      },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
-        "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
-        "FieldName": "FmdbName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Npc_Gerudo_Queen_Young_Reduction"
+        "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
+        "FieldName": "SageSkillRecastBaseTime:",
+        "Value": "1",
+        "OGValue": "300"
       },
       {
-        "File": "Sage_Soul_Gerudo.pack",
-        "Path": "Component\\ModelInfo\\Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
-        "FieldName": "FmdbName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Npc_Gerudo_Queen_Young_Reduction"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Riju Soul Actor Links",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Gerudo.pack",
-        "Path": "Component\\ELink\\Sage_Soul_Gerudo.engine__component__ELinkParam.yml",
-        "FieldName": "UserName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Sage_Soul_Gerudo"
-      },
-      {
-        "File": "Sage_Soul_Gerudo.pack",
-        "Path": "Component\\SLink\\Npc_Gerudo_Queen_Young_Soul.engine__component__SLinkParam.yml",
-        "FieldName": "UserName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Sage_Soul_Gerudo"
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
+        "FieldName": "SageSkillRecastBaseTime:",
+        "Value": "1",
+        "OGValue": "90"
       }
     ],
     "Enabled": true
@@ -241,240 +264,6 @@
     "Changes": [
       {
         "File": "Sage_Soul_Gerudo.pack",
-        "Path": "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
-        "FieldName": "SoundFootStepRef",
-        "Value": "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",
-        "OGValue": ""
-      }
-    ],
-    "Enabled": true
-  },
-  
-  
-  
-  
-  {
-    "Name": "Yunobo Attack Power",
-    "Changes": [
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackParam\\NpcGoronSage.game__gamebalance__AttackParam.yml",
-        "FieldName": "DamageMultiplier",
-        "Value": "1.5",
-        "OGValue": "0.75"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackParam\\NpcGoronSage.game__gamebalance__AttackParam.yml",
-        "FieldName": "DamageMultiplier",
-        "Value": "1.5",
-        "OGValue": "0.75"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Attack Interval",
-    "Changes": [
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMax:",
-        "Value": "1",
-        "OGValue": "160"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMin:",
-        "Value": "1",
-        "OGValue": "140"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Cannonball Max Time",
-    "Changes": [
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameParameter\\GerudoSageParam\\NpcGoronSage.game__npc__GerudoSageParam.yml",
-        "FieldName": "LightningMaxTime",
-        "Value": "999",
-        "OGValue": "10"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameParameter\\GerudoSageParam\\NpcGoronSage.game__npc__GerudoSageParam.yml",
-        "FieldName": "LightningMaxTime",
-        "Value": "999",
-        "OGValue": "10"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Cooldown Duration",
-    "Changes": [
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
-        "Value": "1",
-        "OGValue": "300"
-      },
-      {
-        "File": "Npc_Goron_Yunbo_Sage.pack",
-        "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
-        "Value": "1",
-        "OGValue": "90"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
-        "Value": "1",
-        "OGValue": "300"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
-        "FieldName": "SageSkillRecastBaseTime",
-        "Value": "1",
-        "OGValue": "90"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Soul Color Restoration",
-    "Changes": [
-      {
-        "File": "Dm_Sage_Soul_Goron.pack",
-        "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Goron.engine__component__ModelInfo.yml",
-        "FieldName": "FmdbName",
-        "Value": "Npc_Goron_HeroDescendants_Sage",
-        "OGValue": "Npc_Goron_HeroDescendants_Sage_Reduction"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "Component\\ModelInfo\\Sage_Soul_Goron.engine__component__ModelInfo.yml",
-        "FieldName": "FmdbName",
-        "Value": "Npc_Goron_HeroDescendants_Sage",
-        "OGValue": "Npc_Goron_HeroDescendants_Sage_Reduction"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Soul Actor Links",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "Component\\ELink\\Sage_Soul_Gerudo.engine__component__ELinkParam.yml",
-        "FieldName": "UserName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Sage_Soul_Gerudo"
-      },
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "Component\\SLink\\Npc_Gerudo_Queen_Young_Soul.engine__component__SLinkParam.yml",
-        "FieldName": "UserName",
-        "Value": "Npc_Gerudo_Queen_Young",
-        "OGValue": "Sage_Soul_Gerudo"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Soul Voice Clips",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Goron.pack",
-        "Path": "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
-        "FieldName": "VoiceRef",
-        "Value": "?Component/VoiceParam/Npc_oasis003.game__component__VoiceParam.bgyml",
-        "OGValue": ""
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Yunobo Soul Footstep Sounds",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Goron.pack",
         "Path": "Actor\\Sage_Soul_Gerudo.engine__actor__ActorParam.yml",
         "FieldName": "SoundFootStepRef",
         "Value": "?Component/SoundFootStepParam/Sage.game__component__SoundFootStepParam.bgyml",

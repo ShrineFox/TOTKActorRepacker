@@ -9,9 +9,6 @@ using System.Text;
 using Soft160.Data.Cryptography;
 using System.Runtime.InteropServices;
 using ShrineFox.IO;
-using YamlDotNet.Serialization;
-using System.Dynamic;
-using YamlDotNet.Core.Tokens;
 
 namespace TOTKActorRepacker
 {
@@ -76,7 +73,6 @@ namespace TOTKActorRepacker
             foreach (var packFile in Directory.GetFiles(actorPath, "*.pack", SearchOption.TopDirectoryOnly))
                 File.Delete(packFile);
             Output.Log($"Deleted uncompressed .pack files in output folder");
-
 
             Output.Log($"\n\nMod generation complete", ConsoleColor.Green);
 
@@ -252,12 +248,52 @@ namespace TOTKActorRepacker
                 foreach(var change in option.Changes)
                 {
                     string ymlPath = $"./Temp/Pack/Actor/{change.File.Replace(".pack","_pack")}/{change.Path.Replace(".bgyml",".yml")}";
+                    if (!File.Exists(ymlPath))
+                        CopyGameYMLToTemp(ymlPath);
+
                     if (File.Exists(ymlPath))
-                    {
                         UpdateYMLValue(ymlPath, change, option.Enabled);
-                    }
                     else
                         Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
+                }
+            }
+        }
+
+        private void CopyGameYMLToTemp(string ymlPath)
+        {
+            string tempSarcPath = ymlPath.Split("_pack")[0] + ".sarc";
+
+            // If .pack isn't already decompressed and copied to Temp dir, do that first
+            if (!File.Exists(tempSarcPath))
+            {
+                string gameSARCPath = Path.Combine(txt_GamePath.Text, $"Pack/Actor/{Path.GetFileNameWithoutExtension(tempSarcPath)}.pack.zs");
+                string tempSARCPath = Path.Combine(Path.GetDirectoryName(tempSarcPath), Path.GetFileName(gameSARCPath));
+                if (File.Exists(gameSARCPath))
+                {
+                    File.Copy(gameSARCPath, tempSARCPath);
+                    ZStdHelper.Decompress(tempSARCPath);
+                    using (WaitForFile(tempSarcPath.Replace(".zs", ""))) { }
+                    Output.Log($"Decompressed required SARC to: {tempSarcPath}", ConsoleColor.DarkGray);
+                }
+            }
+
+            // Extract required .yml files from SARC
+            using (Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(tempSarcPath)))
+            {
+                string packEntryPath = ymlPath.Replace("./Temp/Pack/Actor/", "")
+                        .Replace(Path.GetFileNameWithoutExtension(tempSarcPath) + "_pack/", "").Replace(".yml", ".bgyml").Replace("\\", "/");
+
+                if (sarc.Any(x => x.Key.Equals(packEntryPath)))
+                {
+                    string modByml = Byml.FromBinary(sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan()).ToText();
+                    Directory.CreateDirectory(Path.GetDirectoryName(ymlPath));
+                    File.WriteAllText(ymlPath, modByml);
+                    using (WaitForFile(ymlPath)) { }
+                    Output.Log($"Extracted required .yml file to: {ymlPath}", ConsoleColor.DarkGreen);
+                }
+                else
+                {
+                    Output.Log($"Could not extract required .yml file from SARC.\n\tPack: {tempSarcPath}\n\tPack file: {packEntryPath}", ConsoleColor.DarkRed);
                 }
             }
         }
@@ -272,24 +308,40 @@ namespace TOTKActorRepacker
 
             if (change.FieldName.Contains(":"))
             {
-                var deserializer = new DeserializerBuilder().Build();
-                List<KeyValuePair<object, object>> ymlObj = Yml.Deserialize(ymlPath);
-
-                for (int x = 0; x < ymlObj.Count; x++)
+                string[] ymlLines = File.ReadAllLines(ymlPath);
+                for (int i = 0; i < ymlLines.Count(); i++)
                 {
-                    if (ymlObj[x].Key.Equals(change.FieldName.Replace(":", "")))
+                    if (ymlLines[i].Contains(change.FieldName))
                     {
-                        Output.Log($"\nChanged KeyValuePair {x} in YML: {ymlPath}");
+                        string[] splitLine = ymlLines[i].Split(' ');
+                        for (int x = 0; x < splitLine.Length; x++)
+                        {
+                            if (splitLine[x].Replace("{","").StartsWith(change.FieldName))
+                            {
+                                string strEnd = "";
+                                if (splitLine[x + 1].EndsWith(","))
+                                    strEnd += ",";
+                                if (splitLine[x + 1].EndsWith("}}"))
+                                    strEnd += "}}";
+                                else if (splitLine[x + 1].EndsWith("}"))
+                                    strEnd += "}";
+                                splitLine[x + 1] = value + strEnd;
+                            }
+                        }
+
+                        string newLine = string.Join(' ', splitLine);
+
+                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
                         Output.Log($"\tOld: ", ConsoleColor.Yellow);
-                        Output.Log(ymlObj[x].Key + ": " + ymlObj[x].Value, ConsoleColor.Yellow);
-                        Output.Log($"\n\tNew: ", ConsoleColor.Green);
-                        Output.Log(ymlObj[x].Key + ": " + value, ConsoleColor.Green);
-                        var newEntry = new KeyValuePair<object, object>(ymlObj[x].Key, value);
-                        ymlObj[x] = newEntry;
+                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+
+                        ymlLines[i] = newLine;
+
+                        File.WriteAllLines(ymlPath, ymlLines);
                     }
                 }
-
-                Yml.Serialize(ymlObj, ymlPath);
             }
             else
             {
@@ -357,8 +409,8 @@ namespace TOTKActorRepacker
             if (Directory.Exists(actorPath))
             {
                 // For each .zs file in Actor/Pack
-                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly))
-                //    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
+                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly)
+                    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
                 {
                     // Copy to temp dir
                     Directory.CreateDirectory(tempActorPath);
