@@ -40,6 +40,17 @@ namespace TOTKActorRepacker
 
             // Create options table
             pnl_Main.Controls.Add(tlp);
+
+            // Enable mod generation button
+            ValidateModGeneration();
+        }
+
+        private void ValidateModGeneration()
+        {
+            if (options != null && options.Where(x => x.Enabled).Count() > 0)
+                btn_GenerateMod.Enabled = true;
+            else
+                btn_GenerateMod.Enabled = false;
         }
 
         private void SetupLogging()
@@ -225,8 +236,15 @@ namespace TOTKActorRepacker
                             sarc.Add(relativePath, File.ReadAllBytes(newFile));
                         }
 
-                        // Save new .pack to output dir
+                        
                         string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+
+                        // Delete any existing .pack.zs in output dir
+                        if (Directory.Exists(outDir))
+                            foreach (var file in Directory.GetFiles(outDir).Where(x => x.EndsWith(".pack.zs")))
+                                File.Delete(file);
+                                
+                        // Save new .pack to output dir
                         string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
                         Directory.CreateDirectory(outDir);
                         using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
@@ -243,7 +261,7 @@ namespace TOTKActorRepacker
 
         private void UpdateYMLValues()
         {
-            foreach (var option in options)
+            foreach (var option in options.Where(x => x.Enabled))
             {
                 foreach(var change in option.Changes)
                 {
@@ -252,7 +270,7 @@ namespace TOTKActorRepacker
                         CopyGameYMLToTemp(ymlPath);
 
                     if (File.Exists(ymlPath))
-                        UpdateYMLValue(ymlPath, change, option.Enabled);
+                        UpdateYMLValue(ymlPath, change);
                     else
                         Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
                 }
@@ -267,15 +285,20 @@ namespace TOTKActorRepacker
             if (!File.Exists(tempSarcPath))
             {
                 string gameSARCPath = Path.Combine(txt_GamePath.Text, $"Pack/Actor/{Path.GetFileNameWithoutExtension(tempSarcPath)}.pack.zs");
-                string tempSARCPath = Path.Combine(Path.GetDirectoryName(tempSarcPath), Path.GetFileName(gameSARCPath));
+                
                 if (File.Exists(gameSARCPath))
                 {
-                    File.Copy(gameSARCPath, tempSARCPath);
-                    ZStdHelper.Decompress(tempSARCPath);
-                    using (WaitForFile(tempSarcPath.Replace(".zs", ""))) { }
+                    string tempZsPath = tempSarcPath.Replace(".sarc", ".pack.zs");
+                    File.Copy(gameSARCPath, tempZsPath);
+                    using (WaitForFile(tempZsPath)) { }
+                    var decSARC = ZStdHelper.Decompress(tempZsPath);
+                    using (FileStream fs = new FileStream(tempSarcPath, FileMode.OpenOrCreate))
+                        fs.Write(decSARC);
                     Output.Log($"Decompressed required SARC to: {tempSarcPath}", ConsoleColor.DarkGray);
                 }
             }
+
+            using (WaitForFile(tempSarcPath)) { }
 
             // Extract required .yml files from SARC
             using (Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(tempSarcPath)))
@@ -298,13 +321,9 @@ namespace TOTKActorRepacker
             }
         }
 
-        private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
+        private void UpdateYMLValue(string ymlPath, Change change)
         {
             using (WaitForFile(ymlPath)) { }
-
-            string value = change.Value;
-            if (!enabled)
-                value = change.OGValue;
 
             if (change.FieldName.Contains(":"))
             {
@@ -325,7 +344,7 @@ namespace TOTKActorRepacker
                                     strEnd += "}}";
                                 else if (splitLine[x + 1].EndsWith("}"))
                                     strEnd += "}";
-                                splitLine[x + 1] = value + strEnd;
+                                splitLine[x + 1] = change.Value + strEnd;
                             }
                         }
 
@@ -350,7 +369,7 @@ namespace TOTKActorRepacker
                 {
                     if (ymlLines[i].Contains(change.FieldName))
                     {
-                        string newLine = change.FieldName + ": " + value;
+                        string newLine = change.FieldName + ": " + change.Value;
                         int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
                         newLine = newLine.PadLeft(whiteSpaceCount);
 
@@ -726,6 +745,8 @@ namespace TOTKActorRepacker
                     txtBox.Text = option.Changes.First().Value;
                 }
             }
+
+            ValidateModGeneration();
         }
 
         private void SaveConfig_Click(object sender, EventArgs e)
