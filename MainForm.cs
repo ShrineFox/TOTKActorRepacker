@@ -688,12 +688,24 @@ namespace TOTKActorRepacker
                 foreach (var width in new float[] { 5f, 55f, 40f })
                     option.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
 
-                // Add fields
+                // Add checkbox
                 DarkCheckBox chkBox = new DarkCheckBox { Name = $"chk_Enabled_{i}", Checked = options[i].Enabled, Anchor = anchorStyle };
                 chkBox.CheckedChanged += ChkBox_Checked_Changed;
                 option.Controls.Add(chkBox, 0, 0);
-                option.Controls.Add(new DarkLabel { Name = $"lbl_Name_{i}", Text = options[i].Name, Anchor = anchorStyle }, 1, 0);
+
+                // Add label
+                DarkLabel lbl = new DarkLabel { Name = $"lbl_Name_{i}", Text = options[i].Name, Anchor = anchorStyle };
+                // Add tooltip
+                ToolTip lbl_ToolTip = new ToolTip();
+                lbl_ToolTip.SetToolTip(lbl, options[i].Hint);
+                option.Controls.Add(lbl, 1, 0);
+                
+                // Add textbox
                 DarkTextBox txtBox = new DarkTextBox { Name = $"txt_Value_{i}", Text = options[i].Changes.First().Value, Anchor = anchorStyle };
+                // Add tooltip
+                ToolTip txt_ToolTip = new ToolTip();
+                txt_ToolTip.SetToolTip(txtBox, options[i].Hint);
+                // Add text changed event
                 txtBox.TextChanged += TxtBox_Value_Changed;
                 option.Controls.Add(txtBox, 2, 0);
 
@@ -986,6 +998,7 @@ namespace TOTKActorRepacker
     public class Option
     {
         public string Name = "";
+        public string Hint = "";
         public List<Change> Changes = new List<Change>();
         public bool Enabled = true;
     }
