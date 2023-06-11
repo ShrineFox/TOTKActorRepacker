@@ -96,7 +96,7 @@ namespace TOTKActorRepacker
             {
                 using (FileStream fs = new FileStream(file.Replace(".yml",".bgyml"), FileMode.OpenOrCreate))
                 {
-                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(true, 3).AsSpan());
+                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(true, 2).AsSpan());
                     Output.Log($"Converted .yml back to .bgyml: {file.Replace(".yml", ".bgyml")}");
                 }
             }
@@ -308,9 +308,11 @@ namespace TOTKActorRepacker
 
                 if (sarc.Any(x => x.Key.Equals(packEntryPath)))
                 {
-                    string modByml = Byml.FromBinary(sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan()).ToText();
+                    Byml modByml = Byml.FromBinary(sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan());
+                    string modYml = modByml.ToText();
+
                     Directory.CreateDirectory(Path.GetDirectoryName(ymlPath));
-                    File.WriteAllText(ymlPath, modByml);
+                    File.WriteAllText(ymlPath, modYml);
                     using (WaitForFile(ymlPath)) { }
                     Output.Log($"Extracted required .yml file to: {ymlPath}", ConsoleColor.DarkGreen);
                 }
