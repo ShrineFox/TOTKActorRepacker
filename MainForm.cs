@@ -243,7 +243,11 @@ namespace TOTKActorRepacker
                 {
                     Output.Log($"Building SARC: {outPath}");
 
-                    using (Sarc sarc = new Sarc())
+                    Sarc sarc = new Sarc();
+                    if (!formSettings.FullSARCRebuild)
+                        sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
+
+                    using (sarc)
                     {
                         // Get all non-YML files in Temp Sarc dir
                         var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml"));
@@ -254,13 +258,11 @@ namespace TOTKActorRepacker
                             string relativePath = newFile.Substring(sarcDir.Length + 1).Replace("\\", "/");
 
                             // Remove from SARC if it already exists
-                            /*
-                            if (sarc.Any(x => x.Key.Equals(relativePath)))
+                            if (!formSettings.FullSARCRebuild && sarc.Any(x => x.Key.Equals(relativePath)))
                             {
                                 Output.Log($"Removing from SARC: {sarcFile}\n\texisting entry: {relativePath}", ConsoleColor.DarkYellow);
                                 sarc.Remove(relativePath);
                             }
-                            */
                             
                             // Add to SARC
                             Output.Log($"\tAdding file: {relativePath}", ConsoleColor.Gray);
@@ -504,17 +506,19 @@ namespace TOTKActorRepacker
                     {
                         string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + "_pack");
                         string outFile = Path.Combine(tempSarcPath, fileName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
 
                         if (fileName.EndsWith(".bgyml"))
                         {
+                            Directory.CreateDirectory(Path.GetDirectoryName(outFile));
                             Span<byte> bymlBytes = file.AsSpan();
                             //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
                             File.WriteAllText(outFile.Replace(".bgyml",".yml"), Byml.FromBinary(bymlBytes).ToText());
                             Output.Log($"\tExtracted .yml file to temp folder:\n\t\t{outFile}", ConsoleColor.Gray);
                         }
-                        else
+                        else if (formSettings.FullSARCRebuild)
                         {
+                            Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+
                             using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
                             {
                                 fs.Write(file.AsSpan());

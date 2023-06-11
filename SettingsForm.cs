@@ -23,6 +23,7 @@ namespace TOTKActorRepacker
             comboBox_Game.SelectedIndex = comboBox_Game.Items.IndexOf(MainForm.formSettings.Game);
             txt_Version.Text = MainForm.formSettings.Version;
             num_Padding.Value = Convert.ToDecimal(MainForm.formSettings.Padding);
+            chk_FullSARCRebuild.Checked = MainForm.formSettings.FullSARCRebuild;
         }
 
         private void Apply_Click(object sender, EventArgs e)
@@ -31,6 +32,7 @@ namespace TOTKActorRepacker
             MainForm.formSettings.Game = comboBox_Game.SelectedItem.ToString();
             MainForm.formSettings.Version = txt_Version.Text;
             MainForm.formSettings.Padding = Convert.ToInt32(num_Padding.Value);
+            MainForm.formSettings.FullSARCRebuild = chk_FullSARCRebuild.Checked;
             MainForm.formSettings.Save();
         }
     }
@@ -43,6 +45,7 @@ namespace TOTKActorRepacker
         public string Game { get; set; } = "Tears of the Kingdom";
         public string Version { get; set; } = "1.1.2";
         public int Padding { get; set; } = 58000;
+        public bool FullSARCRebuild { get; set; } = false;
         public string DefaultJson { get; set; } = "./Dependencies/bettersagesmod.json";
         public void Load()
         {
