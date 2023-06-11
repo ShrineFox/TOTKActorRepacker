@@ -230,16 +230,20 @@ namespace TOTKActorRepacker
 
         private void RebuildSARC()
         {
-            Output.Log("Rebuilding SARC archives...");
+            Output.Log("Rebuilding SARC archives...\n");
 
             foreach (var sarcFile in Directory.GetFiles($"./Temp/Pack/Actor/", "*.sarc", SearchOption.TopDirectoryOnly))
             {
                 string sarcDir = sarcFile.Replace(".sarc", "_pack");
+                string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+                string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
 
                 // If matching folder for .sarc exists...
                 if (Directory.Exists(sarcDir)) 
                 {
-                    using (Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile)))
+                    Output.Log($"Building SARC: {outPath}");
+
+                    using (Sarc sarc = new Sarc())
                     {
                         // Get all non-YML files in Temp Sarc dir
                         var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml"));
@@ -247,27 +251,33 @@ namespace TOTKActorRepacker
                         // For each non-yml file in matching SARC dir...
                         foreach (var newFile in sarcFilesDir)
                         {
-                            // Add to SARC
                             string relativePath = newFile.Substring(sarcDir.Length + 1).Replace("\\", "/");
-                            Output.Log($"Updating SARC: {sarcFile}\n\twith file: {relativePath}");
+
+                            // Remove from SARC if it already exists
+                            /*
+                            if (sarc.Any(x => x.Key.Equals(relativePath)))
+                            {
+                                Output.Log($"Removing from SARC: {sarcFile}\n\texisting entry: {relativePath}", ConsoleColor.DarkYellow);
+                                sarc.Remove(relativePath);
+                            }
+                            */
+                            
+                            // Add to SARC
+                            Output.Log($"\tAdding file: {relativePath}", ConsoleColor.Gray);
                             sarc.Add(relativePath, File.ReadAllBytes(newFile));
                         }
 
-                        
-                        string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
-
-                        // Delete any existing .pack.zs in output dir
+                        // Delete existing .pack.zs file in output dir
                         if (Directory.Exists(outDir))
                             foreach (var file in Directory.GetFiles(outDir).Where(x => x.EndsWith(".pack.zs")))
                                 File.Delete(file);
                                 
                         // Save new .pack to output dir
-                        string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
                         Directory.CreateDirectory(outDir);
                         using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
                         {
                             fs.Write(sarc.ToBinary());
-                            Output.Log($"Saving new .pack to output: {outPath}");
+                            Output.Log("Done building SARC.");
                         }
                     }
                 }
@@ -440,7 +450,7 @@ namespace TOTKActorRepacker
             string tempPath = $"./Temp";
             string tempActorPath = $"./Temp/Pack/Actor";
 
-            Output.Log($"Extracting YML from SARC files...", ConsoleColor.White);
+            Output.Log($"Extracting files from SARCs...", ConsoleColor.White);
 
             // If temp path already exists, delete it
             if (Directory.Exists(tempPath))
@@ -487,23 +497,34 @@ namespace TOTKActorRepacker
                     // Open SARC
                     using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
 
+                    Output.Log($"Extracting files from: {sarcFile}", ConsoleColor.White);
                     // For each byml file in SARC that is modified by an enabled option...
-                    foreach ((var bymlFileName, var bymlFile) in sarc.Where(x => x.Key.EndsWith(".bgyml") 
-                        && options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(x.Key).Equals(c.File)))))
+                    foreach ((var fileName, var file) in sarc)
+                    //   && options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(x.Key).Equals(c.File)))))
                     {
                         string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + "_pack");
-                        string outFile = Path.Combine(tempSarcPath, bymlFileName.Replace("bgyml", "yml"));
-
-                        // Extract YML to temp folder
+                        string outFile = Path.Combine(tempSarcPath, fileName);
                         Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                        Span<byte> bymlBytes = bymlFile.AsSpan();
-                        //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
-                        File.WriteAllText(outFile, Byml.FromBinary(bymlBytes).ToText());
-                        Output.Log($"Extracted .yml file to temp folder: {outFile}", ConsoleColor.White);
+
+                        if (fileName.EndsWith(".bgyml"))
+                        {
+                            Span<byte> bymlBytes = file.AsSpan();
+                            //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
+                            File.WriteAllText(outFile.Replace(".bgyml",".yml"), Byml.FromBinary(bymlBytes).ToText());
+                            Output.Log($"\tExtracted .yml file to temp folder:\n\t\t{outFile}", ConsoleColor.Gray);
+                        }
+                        else
+                        {
+                            using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
+                            {
+                                fs.Write(file.AsSpan());
+                                Output.Log($"\tExtracted file to temp folder:\n\t\t{outFile}", ConsoleColor.DarkGray);
+                            }
+                        }
                     }
                 }
 
-                Output.Log($"Done extracting YML from SARC files.", ConsoleColor.Green);
+                Output.Log($"Done extracting files from SARCs.", ConsoleColor.Green);
             }
 
         }
