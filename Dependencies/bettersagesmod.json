@@ -322,6 +322,27 @@
     "Enabled": false
   },
   {
+    "Name": "Riju Sage Soul Model",
+    "Hint": "When active, Riju's soul model loads as the 'Reduction' variant.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Gerudo.pack",
+        "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Gerudo_Queen_Young_Reduction_Dm",
+        "OGValue": "Npc_Gerudo_Queen_Young"
+      },
+      {
+        "File": "Sage_Soul_Gerudo.pack",
+        "Path": "Component\\ModelInfo\\Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Gerudo_Queen_Young_Reduction",
+        "OGValue": "Npc_Gerudo_Queen_Young"
+      }
+    ],
+    "Enabled": true
+  },
+  {
     "Name": "Yunobo Attack Power Multiplier",
     "Hint": "The amount of damage caused by melee attacks in battle. Decimal lower than 1 will decrease damage.",
     "Changes": [
@@ -607,6 +628,27 @@
       }
     ],
     "Enabled": false
+  },
+  {
+    "Name": "Yunobo Sage Soul Model",
+    "Hint": "When active, Yunobo's soul model loads as the 'Reduction' variant.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Goron.pack",
+        "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Goron.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Goron_HeroDescendants_Sage_Reduction_Dm",
+        "OGValue": "Npc_Goron_HeroDescendants_Sage"
+      },
+      {
+        "File": "Sage_Soul_Goron.pack",
+        "Path": "Component\\ModelInfo\\Sage_Soul_Goron.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Goron_HeroDescendants_Sage_Reduction",
+        "OGValue": "Npc_Goron_HeroDescendants_Sage"
+      }
+    ],
+    "Enabled": true
   },
   {
     "Name": "Sidon Attack Power Multiplier",
@@ -915,6 +957,27 @@
       }
     ],
     "Enabled": false
+  },
+  {
+    "Name": "Sidon Sage Soul Model",
+    "Hint": "When active, Sidon's soul model loads as the 'Reduction' variant.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Zora.pack",
+        "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Zora.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Zora_Prince_Sage_Reduction_Dm",
+        "OGValue": "Npc_Zora_Prince_Sage"
+      },
+      {
+        "File": "Sage_Soul_Zora.pack",
+        "Path": "Component\\ModelInfo\\Sage_Soul_Zora.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Zora_Prince_Sage_Reduction",
+        "OGValue": "Npc_Zora_Prince_Sage"
+      }
+    ],
+    "Enabled": true
   },
   {
     "Name": "Tulin Attack Power Multiplier",
@@ -1272,6 +1335,27 @@
       }
     ],
     "Enabled": false
+  },
+  {
+    "Name": "Tulin Sage Soul Model",
+    "Hint": "When active, Tulin's soul model loads as the 'Reduction' variant.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Rito.pack",
+        "Path": "Component\\ModelInfo\\Sage_Soul_Rito_Dm.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Rito_Moto_Young_Reduction_Dm",
+        "OGValue": "Npc_Rito_Moto_Young"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "Component\\ModelInfo\\Sage_Soul_Rito.engine__component__ModelInfo.yml",
+        "FieldName": "FmdbName:",
+        "Value": "Npc_Rito_Moto_Young_Reduction",
+        "OGValue": "Npc_Rito_Moto_Young"
+      }
+    ],
+    "Enabled": true
   },
   {
     "Name": "Mineru Attack Power Multiplier",

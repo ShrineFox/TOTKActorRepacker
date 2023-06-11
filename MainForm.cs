@@ -61,6 +61,15 @@ namespace TOTKActorRepacker
 
         private void GenerateMod_Click(object sender, EventArgs e)
         {
+            try
+            {
+                GenerateMod();
+            }
+            catch { MessageBox.Show("There was an error generating the mod. This is known to happen at random, who knows why.\n\nPlease try again!"); }
+        }
+
+        private void GenerateMod()
+        {
             Output.Log($"Starting mod generation...");
 
             ExtractSARCs();
@@ -96,8 +105,11 @@ namespace TOTKActorRepacker
             {
                 using (FileStream fs = new FileStream(file.Replace(".yml",".bgyml"), FileMode.OpenOrCreate))
                 {
-                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(true, 2).AsSpan());
-                    Output.Log($"Converted .yml back to .bgyml: {file.Replace(".yml", ".bgyml")}");
+                    string relativePath = Path.Combine(Path.GetDirectoryName(file).Split("_pack\\")[1], Path.GetFileNameWithoutExtension(file) + ".bgyml");
+                    //int version = GetBymlVersion(relativePath);
+                    int version = 7;
+                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(false, version).AsSpan());
+                    Output.Log($"Converted .yml back to .bgyml: {file.Replace(".yml", ".bgyml")} (ver {version}, little endian)");
                 }
             }
         }
@@ -308,8 +320,9 @@ namespace TOTKActorRepacker
 
                 if (sarc.Any(x => x.Key.Equals(packEntryPath)))
                 {
-                    Byml modByml = Byml.FromBinary(sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan());
-                    string modYml = modByml.ToText();
+                    Span<byte> modBymlBytes = sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan();
+                    string modYml = Byml.FromBinary(modBymlBytes).ToText();
+                    //AddToVersionList(packEntryPath, Convert.ToInt32(modBymlBytes[2]));
 
                     Directory.CreateDirectory(Path.GetDirectoryName(ymlPath));
                     File.WriteAllText(ymlPath, modYml);
@@ -478,7 +491,9 @@ namespace TOTKActorRepacker
 
                         // Extract YML to temp folder
                         Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                        File.WriteAllText(outFile, Byml.FromBinary(bymlFile.AsSpan()).ToText());
+                        Span<byte> bymlBytes = bymlFile.AsSpan();
+                        //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
+                        File.WriteAllText(outFile, Byml.FromBinary(bymlBytes).ToText());
                         Output.Log($"Extracted .yml file to temp folder: {outFile}", ConsoleColor.White);
                     }
                 }
@@ -866,8 +881,10 @@ namespace TOTKActorRepacker
                                         gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
                                     }
 
-                                    // Get modified BYML text
-                                    string modByml = Byml.FromBinary(modPackFile.AsSpan()).ToText();
+                                    // Get modified BYML (and version), convert to text
+                                    Span<byte> modBymlBytes = modPackFile.AsSpan();
+                                    //AddToVersionList(modPackFileName, Convert.ToInt32(modBymlBytes[2]));
+                                    string modByml = Byml.FromBinary(modBymlBytes).ToText();
 
                                     // If BYML texts are not identical, save .yml
                                     if (modByml != gameByml)
@@ -924,6 +941,40 @@ namespace TOTKActorRepacker
                     "/Pack/Actor/ directory exists in both folders!");
                 Output.Log($"Comparison failed.", ConsoleColor.Red);
             }
+        }
+
+        private void AddToVersionList(string packFilePath, int version)
+        {
+            packFilePath = packFilePath.Replace("/", "\\");
+
+            string txtPath = "./BymlVersions.txt";
+            List<string> txtLines = new List<string>();
+
+            if (File.Exists(txtPath))
+                txtLines = File.ReadAllLines(txtPath).ToList();
+
+            if (!txtLines.Any(x => x.StartsWith(packFilePath)))
+            {
+                string versionLine = $"{packFilePath} {version}";
+                txtLines.Add(versionLine);
+                Output.Log($"\t\tAdded to known BYML version list: {versionLine}", ConsoleColor.DarkCyan);
+            }
+
+            File.WriteAllLines(txtPath, txtLines);
+        }
+
+        private int GetBymlVersion(string packFilePath)
+        {
+            packFilePath = packFilePath.Replace("/", "\\");
+
+            string txtPath = "./BymlVersions.txt";
+            string[] txtLines = txtLines = File.ReadAllLines(txtPath);
+
+            if (txtLines.Any(x => x.StartsWith(packFilePath)))
+                return Convert.ToInt32(txtLines.First(x => x.StartsWith(packFilePath)).Split(' ')[1]);
+
+            Output.Log($"\t\tCouldn't find BYML version, defaulting to 7: {packFilePath}", ConsoleColor.DarkYellow);
+            return 7;
         }
 
         internal static byte[] Decompress(string input)
