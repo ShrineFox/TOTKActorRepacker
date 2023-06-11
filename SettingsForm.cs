@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DarkUI.Forms;
 using Newtonsoft.Json;
-using static System.Windows.Forms.Design.AxImporter;
 
 namespace TOTKActorRepacker
 {
@@ -42,7 +41,7 @@ namespace TOTKActorRepacker
         public string OutputPath { get; set; } = "./Output";
         // Default values for form settings object
         public string Game { get; set; } = "Tears of the Kingdom";
-        public string Version { get; set; } = "1.1.1";
+        public string Version { get; set; } = "1.1.2";
         public int Padding { get; set; } = 58000;
         public string DefaultJson { get; set; } = "./Dependencies/bettersagesmod.json";
         public void Load()

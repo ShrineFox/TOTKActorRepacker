@@ -190,7 +190,7 @@
   },
   {
     "Name": "Riju Lightning Max Time",
-    "Hint": "The amount of time (in frames) before Riju's lightning skill will auto-cancel.",
+    "Hint": "The amount of time (in seconds) before Riju's lightning skill will auto-cancel.",
     "Changes": [
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
