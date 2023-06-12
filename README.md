@@ -44,3 +44,12 @@ You can change the path to point to a different ``.json`` in the settings (or ed
 ## Limitations
 - Unfortunately, YML fields with the same name all get replaced with the same value. This can be a problem for dictionaries if you want each set of values to be different. In the future I may address this.  
 - For numerical values, it's wise to end the value with a decimal point and a zero (i.e. ``1.0`` instead of ``1``) so that when converted back to ``.byml``, the data is formatted as a number rather than a string. I may also eventually handle this automatically as well.
+
+# License
+This project is licensed under the [AGPL v3 License](https://github.com/ShrineFox/TOTKActorRepacker/blob/main/LICENSE).
+
+# Credits
+- ZSTD Compression/Decompression code from [TotkMods/Totk.ZStdTool](https://github.com/TotkMods/Totk.ZStdTool)
+- Cead Library from [TotkMods/Cead](https://github.com/TotkMods/Cead) (SARC/BYML editing)
+- [ArchLeaders](https://github.com/ArchLeaders) for creating the above tools and generally being very helpful
+- [moonling](https://gamebanana.com/members/1698465), creator of [Yet Another Better Sages Mod](https://gamebanana.com/mods/445290) for included sample dependency
