@@ -45,6 +45,9 @@ You can change the path to point to a different ``.json`` in the settings (or ed
 - Unfortunately, YML fields with the same name all get replaced with the same value. This can be a problem for dictionaries if you want each set of values to be different. In the future I may address this.  
 - For numerical values, it's wise to end the value with a decimal point and a zero (i.e. ``1.0`` instead of ``1``) so that when converted back to ``.byml``, the data is formatted as a number rather than a string. I may also eventually handle this automatically as well.
 
+# Known Issues
+- Sometimes, when pressing "Generate Mod," you may get an error about memory corruption and the program will close. You have to keep trying and it will eventually work. This has something to do with the Cead.lib.
+
 # Requirements
 - Install the [.NET 7.0.5 Desktop Runtime (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.5-windows-x64-installer)
 
