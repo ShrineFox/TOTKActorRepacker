@@ -168,21 +168,21 @@
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
-        "Value": "999999.0",
+        "Value": "99999999.0",
         "OGValue": "50.0"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
-        "Value": "999999.0",
+        "Value": "99999999.0",
         "OGValue": "50.0"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
-        "Value": "999999.0",
+        "Value": "99999999.0",
         "OGValue": "50.0"
       }
     ],
@@ -1206,6 +1206,34 @@
         "FieldName": "SageSkillAwakeSpeedMin",
         "Value": "1.0",
         "OGValue": "10.0"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillAwakeSpeed",
+        "Value": "1.0",
+        "OGValue": "6.0"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillAwakeSpeedMin",
+        "Value": "1.0",
+        "OGValue": "10.0"
+      },
+      {
+        "File": "Npc_Tulin_Sage.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillAwakeSpeed",
+        "Value": "1.0",
+        "OGValue": "6.0"
+      },
+      {
+        "File": "Npc_Tulin_Sage.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillAwakeSpeedMin",
+        "Value": "1.0",
+        "OGValue": "10.0"
       }
     ],
     "Enabled": true
@@ -1216,6 +1244,20 @@
     "Changes": [
       {
         "File": "Dm_Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindTime",
+        "Value": "20.0",
+        "OGValue": "120.0"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindTime",
+        "Value": "20.0",
+        "OGValue": "120.0"
+      },
+      {
+        "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindTime",
         "Value": "20.0",
@@ -1234,6 +1276,20 @@
         "FieldName": "SageSkillWindPower",
         "Value": "100.0",
         "OGValue": "30.0"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindPower",
+        "Value": "100.0",
+        "OGValue": "30.0"
+      },
+      {
+        "File": "Npc_Tulin_Sage.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindPower",
+        "Value": "100.0",
+        "OGValue": "30.0"
       }
     ],
     "Enabled": true
@@ -1244,6 +1300,20 @@
     "Changes": [
       {
         "File": "Dm_Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindLength",
+        "Value": "27.0",
+        "OGValue": "30.0"
+      },
+      {
+        "File": "Sage_Soul_Rito.pack",
+        "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
+        "FieldName": "SageSkillWindLength",
+        "Value": "27.0",
+        "OGValue": "30.0"
+      },
+      {
+        "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
         "Value": "27.0",

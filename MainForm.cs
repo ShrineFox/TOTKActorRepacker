@@ -251,6 +251,7 @@ namespace TOTKActorRepacker
                     {
                         // Get all non-YML files in Temp Sarc dir
                         var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml"));
+
                         int count = sarcFilesDir.Count();
                         // For each non-yml file in matching SARC dir...
                         foreach (var newFile in sarcFilesDir)
@@ -500,23 +501,29 @@ namespace TOTKActorRepacker
                     using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
 
                     Output.Log($"Extracting files from: {sarcFile}", ConsoleColor.White);
-                    // For each byml file in SARC that is modified by an enabled option...
+                    // For each file in SARC...
                     foreach ((var fileName, var file) in sarc)
-                    //   && options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(x.Key).Equals(c.File)))))
                     {
                         string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + "_pack");
                         string outFile = Path.Combine(tempSarcPath, fileName);
 
                         if (fileName.EndsWith(".bgyml"))
                         {
-                            Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                            Span<byte> bymlBytes = file.AsSpan();
-                            //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
-                            File.WriteAllText(outFile.Replace(".bgyml",".yml"), Byml.FromBinary(bymlBytes).ToText());
-                            Output.Log($"\tExtracted .yml file to temp folder:\n\t\t{outFile}", ConsoleColor.Gray);
+                            // If Full SARC rebuild is enabled, or an option modifies this file...
+                            if (formSettings.FullSARCRebuild || 
+                                options.Any(o => o.Changes.Any(c => Path.GetFileName(fileName).Equals(c.File))))
+                            {
+                                // Extract YML to temp dir
+                                Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                                Span<byte> bymlBytes = file.AsSpan();
+                                //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
+                                File.WriteAllText(outFile.Replace(".bgyml", ".yml"), Byml.FromBinary(bymlBytes).ToText());
+                                Output.Log($"\tExtracted .yml file to temp folder:\n\t\t{outFile}", ConsoleColor.Gray);
+                            }
                         }
                         else if (formSettings.FullSARCRebuild)
                         {
+                            // Extract file to temp dir if full SARC rebuild
                             Directory.CreateDirectory(Path.GetDirectoryName(outFile));
 
                             using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
