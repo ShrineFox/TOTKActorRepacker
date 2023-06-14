@@ -652,7 +652,7 @@
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SageSkillSpeed:",
-        "Value": "5.0",
+        "Value": "2.8",
         "OGValue": "1.8",
         "Type": "Single"
       },
@@ -660,7 +660,7 @@
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SageSkillSpeed:",
-        "Value": "5.0",
+        "Value": "2.8",
         "OGValue": "1.8",
         "Type": "Single"
       },
@@ -668,7 +668,7 @@
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SageSkillSpeed:",
-        "Value": "5.0",
+        "Value": "2.8",
         "OGValue": "1.8",
         "Type": "Single"
       }
@@ -683,7 +683,7 @@
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillReturnSpeedRatio:",
-        "Value": "0.0",
+        "Value": "0.2",
         "OGValue": "0.5",
         "Type": "Single"
       },
@@ -691,7 +691,7 @@
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillReturnSpeedRatio:",
-        "Value": "0.0",
+        "Value": "0.2",
         "OGValue": "0.5",
         "Type": "Single"
       },
@@ -699,7 +699,7 @@
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillReturnSpeedRatio:",
-        "Value": "0.0",
+        "Value": "0.2",
         "OGValue": "0.5",
         "Type": "Single"
       }
@@ -1523,7 +1523,7 @@
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
-        "Value": "100.0",
+        "Value": "150.0",
         "OGValue": "30.0",
         "Type": "Single"
       },
@@ -1531,7 +1531,7 @@
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
-        "Value": "100.0",
+        "Value": "150.0",
         "OGValue": "30.0",
         "Type": "Single"
       },
@@ -1539,7 +1539,7 @@
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
-        "Value": "100.0",
+        "Value": "150.0",
         "OGValue": "30.0",
         "Type": "Single"
       }
@@ -1554,7 +1554,7 @@
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "150.0",
+        "Value": "100.0",
         "OGValue": "30.0",
         "Type": "Single"
       },
@@ -1562,7 +1562,7 @@
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "150.0",
+        "Value": "100.0",
         "OGValue": "30.0",
         "Type": "Single"
       },
@@ -1570,7 +1570,7 @@
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "150.0",
+        "Value": "100.0",
         "OGValue": "30.0",
         "Type": "Single"
       }
