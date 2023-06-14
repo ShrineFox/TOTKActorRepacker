@@ -32,7 +32,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Dependencies\bettersagesmod.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Dependencies\**\*.*">
 	  <Link>Dependencies\%(RecursiveDir)%(FileName)%(Extension)</Link>

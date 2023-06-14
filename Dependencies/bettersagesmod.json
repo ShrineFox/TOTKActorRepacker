@@ -8,21 +8,24 @@
         "Path": "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackParam\\NpcGerudoSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -36,126 +39,144 @@
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameBalance\\AttackInterval\\Npc_Gerudo_Queen_Young.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "140.0"
+        "OGValue": "140.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -169,21 +190,24 @@
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
         "Value": "99999999.0",
-        "OGValue": "50.0"
+        "OGValue": "50.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
         "Value": "99999999.0",
-        "OGValue": "50.0"
+        "OGValue": "50.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "Range:",
         "Value": "99999999.0",
-        "OGValue": "50.0"
+        "OGValue": "50.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -197,21 +221,24 @@
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "LightningMaxTime",
         "Value": "999.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "LightningMaxTime",
         "Value": "999.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\GerudoSageParam\\NpcGerudoSage.game__npc__GerudoSageParam.yml",
         "FieldName": "LightningMaxTime",
         "Value": "999.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -225,42 +252,48 @@
         "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "300.0"
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "300.0"
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGerudoSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "300.0"
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -274,21 +307,24 @@
         "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Rouge"
+        "OGValue": "Custom_Rouge",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Rouge"
+        "OGValue": "Custom_Rouge",
+        "Type": "String"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "Component\\VoiceParam\\Npc_oasis003.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Rouge"
+        "OGValue": "Custom_Rouge",
+        "Type": "String"
       }
     ],
     "Enabled": false
@@ -302,21 +338,24 @@
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Npc_Gerudo_Queen_Young.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       }
     ],
     "Enabled": false
@@ -330,14 +369,16 @@
         "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Gerudo_Queen_Young_Reduction_Dm",
-        "OGValue": "Npc_Gerudo_Queen_Young"
+        "OGValue": "Npc_Gerudo_Queen_Young",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Gerudo.pack",
         "Path": "Component\\ModelInfo\\Sage_Soul_Gerudo.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Gerudo_Queen_Young_Reduction",
-        "OGValue": "Npc_Gerudo_Queen_Young"
+        "OGValue": "Npc_Gerudo_Queen_Young",
+        "Type": "String"
       }
     ],
     "Enabled": true
@@ -351,21 +392,24 @@
         "Path": "GameBalance\\AttackParam\\NpcGoronSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackParam\\NpcGoronSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackParam\\NpcGoronSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -379,126 +423,144 @@
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "180.0"
+        "OGValue": "180.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcGoronSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "160.0"
+        "OGValue": "160.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -512,63 +574,165 @@
         "Path": "GameParameter\\SageCommonParam\\Sage_Soul_Goron.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "270.0"
+        "OGValue": "270.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\SageCommonParam\\Sage_Soul_Goron.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "270.0"
+        "OGValue": "270.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\Sage_Soul_Goron.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "270.0"
+        "OGValue": "270.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcGoronSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
+      }
+    ],
+    "Enabled": true
+  },
+  {
+    "Name": "Yunobo Skill Speed",
+    "Hint": "The multiplier that controls how quickly Yunobo's skill happens.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SageSkillSpeed:",
+        "Value": "5.0",
+        "OGValue": "1.8",
+        "Type": "Single"
+      },
+      {
+        "File": "Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SageSkillSpeed:",
+        "Value": "5.0",
+        "OGValue": "1.8",
+        "Type": "Single"
+      },
+      {
+        "File": "Npc_Goron_Yunbo_Sage.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SageSkillSpeed:",
+        "Value": "5.0",
+        "OGValue": "1.8",
+        "Type": "Single"
+      }
+    ],
+    "Enabled": true
+  },
+  {
+    "Name": "Yunobo Skill Return Speed Ratio",
+    "Hint": "The ratio from 0 to 1 that controls how quickly Yunobo will return to the player.",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillReturnSpeedRatio:",
+        "Value": "0.0",
+        "OGValue": "0.5",
+        "Type": "Single"
+      },
+      {
+        "File": "Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillReturnSpeedRatio:",
+        "Value": "0.0",
+        "OGValue": "0.5",
+        "Type": "Single"
+      },
+      {
+        "File": "Npc_Goron_Yunbo_Sage.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillReturnSpeedRatio:",
+        "Value": "0.0",
+        "OGValue": "0.5",
+        "Type": "Single"
+      }
+    ],
+    "Enabled": true
+  },
+  {
+    "Name": "Yunobo Skill Wall Hit Angle",
+    "Hint": "The number of degrees between 0 and 360 by which Yunobo will reflect off a wall?",
+    "Changes": [
+      {
+        "File": "Dm_Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillWallHitAngle:",
+        "Value": "359.9",
+        "OGValue": "60.0",
+        "Type": "Single"
+      },
+      {
+        "File": "Sage_Soul_Goron.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillWallHitAngle:",
+        "Value": "359.9",
+        "OGValue": "60.0",
+        "Type": "Single"
+      },
+      {
+        "File": "Npc_Goron_Yunbo_Sage.pack",
+        "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
+        "FieldName": "SkillWallHitAngle:",
+        "Value": "359.9",
+        "OGValue": "60.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -582,21 +746,24 @@
         "Path": "Component\\VoiceParam\\Npc_Goron020_2.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Yunbou"
+        "OGValue": "Custom_Yunbou",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "Component\\VoiceParam\\Npc_Goron020_2.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Yunbou"
+        "OGValue": "Custom_Yunbou",
+        "Type": "String"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "Component\\VoiceParam\\Npc_Goron020_2.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Yunbou"
+        "OGValue": "Custom_Yunbou",
+        "Type": "String"
       }
     ],
     "Enabled": false
@@ -610,21 +777,24 @@
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       }
     ],
     "Enabled": false
@@ -638,14 +808,16 @@
         "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Goron.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Goron_HeroDescendants_Sage_Reduction_Dm",
-        "OGValue": "Npc_Goron_HeroDescendants_Sage"
+        "OGValue": "Npc_Goron_HeroDescendants_Sage",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Goron.pack",
         "Path": "Component\\ModelInfo\\Sage_Soul_Goron.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Goron_HeroDescendants_Sage_Reduction",
-        "OGValue": "Npc_Goron_HeroDescendants_Sage"
+        "OGValue": "Npc_Goron_HeroDescendants_Sage",
+        "Type": "String"
       }
     ],
     "Enabled": true
@@ -659,21 +831,24 @@
         "Path": "GameBalance\\AttackParam\\NpcZoraSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackParam\\NpcZoraSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackParam\\NpcZoraSage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "1.5",
-        "OGValue": "0.75"
+        "OGValue": "0.75",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -687,126 +862,144 @@
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcZoraSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -819,85 +1012,97 @@
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "300.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1.0",
-        "OGValue": "90.0"
+        "Value": "1",
+        "OGValue": "300",
+        "Type": "Int32"
       }
     ],
     "Enabled": true
@@ -911,21 +1116,24 @@
         "Path": "Component\\VoiceParam\\ZoraB001.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Shido"
+        "OGValue": "Custom_Shido",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "Component\\VoiceParam\\ZoraB001.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Shido"
+        "OGValue": "Custom_Shido",
+        "Type": "String"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "Component\\VoiceParam\\ZoraB001.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Shido"
+        "OGValue": "Custom_Shido",
+        "Type": "String"
       }
     ],
     "Enabled": false
@@ -939,21 +1147,24 @@
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       }
     ],
     "Enabled": false
@@ -967,14 +1178,16 @@
         "Path": "Component\\ModelInfo\\Dm_Sage_Soul_Zora.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Zora_Prince_Sage_Reduction_Dm",
-        "OGValue": "Npc_Zora_Prince_Sage"
+        "OGValue": "Npc_Zora_Prince_Sage",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "Component\\ModelInfo\\Sage_Soul_Zora.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Zora_Prince_Sage_Reduction",
-        "OGValue": "Npc_Zora_Prince_Sage"
+        "OGValue": "Npc_Zora_Prince_Sage",
+        "Type": "String"
       }
     ],
     "Enabled": true
@@ -988,21 +1201,24 @@
         "Path": "GameBalance\\AttackParam\\Npc_Tulin_Sage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "3.0",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackParam\\Npc_Tulin_Sage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "3.0",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackParam\\Npc_Tulin_Sage.game__gamebalance__AttackParam.yml",
         "FieldName": "DamageMultiplier",
         "Value": "3.0",
-        "OGValue": "1.0"
+        "OGValue": "1.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1016,126 +1232,144 @@
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "LongIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "MediumIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMax:",
         "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "170.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameBalance\\AttackInterval\\NpcTulinSage.game__gamebalance__AttackInterval.yml",
         "FieldName": "ShortIntervalMin:",
         "Value": "1.0",
-        "OGValue": "150.0"
+        "OGValue": "150.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1149,42 +1383,48 @@
         "Path": "GameParameter\\SageCommonParam\\NpcSageTulinCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "450.0"
+        "OGValue": "450.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageTulinCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "450.0"
+        "OGValue": "450.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageTulinCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "450.0"
+        "OGValue": "450.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
         "Value": "1.0",
-        "OGValue": "90.0"
+        "OGValue": "90.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1198,42 +1438,48 @@
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeed",
         "Value": "1.0",
-        "OGValue": "6.0"
+        "OGValue": "6.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeedMin",
         "Value": "1.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeed",
         "Value": "1.0",
-        "OGValue": "6.0"
+        "OGValue": "6.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeedMin",
         "Value": "1.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeed",
         "Value": "1.0",
-        "OGValue": "6.0"
+        "OGValue": "6.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillAwakeSpeedMin",
         "Value": "1.0",
-        "OGValue": "10.0"
+        "OGValue": "10.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1246,22 +1492,25 @@
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindTime",
-        "Value": "20.0",
-        "OGValue": "120.0"
+        "Value": "60.0",
+        "OGValue": "120.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindTime",
-        "Value": "20.0",
-        "OGValue": "120.0"
+        "Value": "60.0",
+        "OGValue": "120.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindTime",
-        "Value": "20.0",
-        "OGValue": "120.0"
+        "Value": "60.0",
+        "OGValue": "120.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1275,21 +1524,24 @@
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
         "Value": "100.0",
-        "OGValue": "30.0"
+        "OGValue": "30.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
         "Value": "100.0",
-        "OGValue": "30.0"
+        "OGValue": "30.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindPower",
         "Value": "100.0",
-        "OGValue": "30.0"
+        "OGValue": "30.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1302,22 +1554,25 @@
         "File": "Dm_Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "27.0",
-        "OGValue": "30.0"
+        "Value": "150.0",
+        "OGValue": "30.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "27.0",
-        "OGValue": "30.0"
+        "Value": "150.0",
+        "OGValue": "30.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "GameParameter\\SageTulinParam\\Npc_Tulin_Sage.game__npc__SageTulinParam.yml",
         "FieldName": "SageSkillWindLength",
-        "Value": "27.0",
-        "OGValue": "30.0"
+        "Value": "150.0",
+        "OGValue": "30.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
@@ -1331,21 +1586,24 @@
         "Path": "Component\\VoiceParam\\Npc_Tulin_Sage.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Tuli"
+        "OGValue": "Custom_Tuli",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "Component\\VoiceParam\\Npc_Tulin_Sage.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Tuli"
+        "OGValue": "Custom_Tuli",
+        "Type": "String"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "Component\\VoiceParam\\Npc_Tulin_Sage.game__component__VoiceParam.yml",
         "FieldName": "NpcVoiceType:",
         "Value": "",
-        "OGValue": "Custom_Tuli"
+        "OGValue": "Custom_Tuli",
+        "Type": "String"
       }
     ],
     "Enabled": false
@@ -1359,21 +1617,24 @@
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "Component\\SoundFootStepParam\\Sage.game__component__SoundFootStepParam.yml",
         "FieldName": "RayLength",
         "Value": "0.0",
-        "OGValue": "1.4"
+        "OGValue": "1.4",
+        "Type": "Single"
       }
     ],
     "Enabled": false
@@ -1387,21 +1648,24 @@
         "Path": "Component\\SoundFlapParam\\Npc_Rito.game__component__SoundFlapParam.yml",
         "FieldName": "Dash:",
         "Value": "",
-        "OGValue": "Wing_Move_Weak_Frequent"
+        "OGValue": "Wing_Move_Weak_Frequent",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "Component\\SoundFlapParam\\Npc_Rito.game__component__SoundFlapParam.yml",
         "FieldName": "Dash:",
         "Value": "",
-        "OGValue": "Wing_Move_Weak_Frequent"
+        "OGValue": "Wing_Move_Weak_Frequent",
+        "Type": "String"
       },
       {
         "File": "Npc_Tulin_Sage.pack",
         "Path": "Component\\SoundFlapParam\\Npc_Rito.game__component__SoundFlapParam.yml",
         "FieldName": "Dash:",
         "Value": "",
-        "OGValue": "Wing_Move_Weak_Frequent"
+        "OGValue": "Wing_Move_Weak_Frequent",
+        "Type": "String"
       }
     ],
     "Enabled": false
@@ -1415,77 +1679,16 @@
         "Path": "Component\\ModelInfo\\Sage_Soul_Rito_Dm.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Rito_Moto_Young_Reduction_Dm",
-        "OGValue": "Npc_Rito_Moto_Young"
+        "OGValue": "Npc_Rito_Moto_Young",
+        "Type": "String"
       },
       {
         "File": "Sage_Soul_Rito.pack",
         "Path": "Component\\ModelInfo\\Sage_Soul_Rito.engine__component__ModelInfo.yml",
         "FieldName": "FmdbName:",
         "Value": "Npc_Rito_Moto_Young_Reduction",
-        "OGValue": "Npc_Rito_Moto_Young"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Mineru Attack Power Multiplier",
-    "Hint": "The amount of damage caused by melee attacks in battle. Decimal lower than 1 will decrease damage.",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackParam\\Npc_RaumiGolem_Sage.game__gamebalance__AttackParam.yml",
-        "FieldName": "DamageMultiplier",
-        "Value": "1.5",
-        "OGValue": "1.0"
-      }
-    ],
-    "Enabled": true
-  },
-  {
-    "Name": "Mineru Attack Interval Delay",
-    "Hint": "The amount of time (in frames) between consecutive melee attacks in battle.",
-    "Changes": [
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMax:",
-        "Value": "1.0",
-        "OGValue": "190.0"
-      },
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "LongIntervalMin:",
-        "Value": "1.0",
-        "OGValue": "170.0"
-      },
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMax:",
-        "Value": "1.0",
-        "OGValue": "190.0"
-      },
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "MediumIntervalMin:",
-        "Value": "1.0",
-        "OGValue": "170.0"
-      },
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMax:",
-        "Value": "1.0",
-        "OGValue": "190.0"
-      },
-      {
-        "File": "Sage_Soul_Zonau.pack",
-        "Path": "GameBalance\\AttackInterval\\Sage_Soul_Zonau.game__gamebalance__AttackInterval.yml",
-        "FieldName": "ShortIntervalMin:",
-        "Value": "1.0",
-        "OGValue": "170.0"
+        "OGValue": "Npc_Rito_Moto_Young",
+        "Type": "String"
       }
     ],
     "Enabled": true

@@ -362,6 +362,19 @@ namespace TOTKActorRepacker
             if (!enabled)
                 value = change.OGValue;
 
+            // Ensure decimals end with a decimals place and integers do not
+            switch (change.Type)
+            {
+                case "Int32":
+                    value = Math.Floor(Convert.ToDouble(value)).ToString();
+                    break;
+                case "Single":
+                    value = Convert.ToDouble(value).ToString("0.0");
+                    break;
+                default:
+                    break;
+            }
+
             if (change.FieldName.Contains(":"))
             {
                 string[] ymlLines = File.ReadAllLines(ymlPath);
@@ -1083,6 +1096,7 @@ namespace TOTKActorRepacker
         public string FieldName = "";
         public string Value = "";
         public string OGValue = "";
+        public string Type = "String";
     }
 
     public class Option
