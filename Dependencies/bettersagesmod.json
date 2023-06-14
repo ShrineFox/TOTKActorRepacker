@@ -708,13 +708,13 @@
   },
   {
     "Name": "Yunobo Skill Wall Hit Angle",
-    "Hint": "The number of degrees between 0 and 360 by which Yunobo will reflect off a wall?",
+    "Hint": "The angle (degrees between 0 and 360) where Yunobo's skill will cancel, both before launching and after hitting a wall.",
     "Changes": [
       {
         "File": "Dm_Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillWallHitAngle:",
-        "Value": "359.9",
+        "Value": "90.0",
         "OGValue": "60.0",
         "Type": "Single"
       },
@@ -722,7 +722,7 @@
         "File": "Sage_Soul_Goron.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillWallHitAngle:",
-        "Value": "359.9",
+        "Value": "90.0",
         "OGValue": "60.0",
         "Type": "Single"
       },
@@ -730,7 +730,7 @@
         "File": "Npc_Goron_Yunbo_Sage.pack",
         "Path": "GameParameter\\GoronSageParam\\NpcGoronSage.game__npc__GoronSageParam.yml",
         "FieldName": "SkillWallHitAngle:",
-        "Value": "359.9",
+        "Value": "90.0",
         "OGValue": "60.0",
         "Type": "Single"
       }
