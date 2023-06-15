@@ -894,12 +894,13 @@ namespace TOTKActorRepacker
 
             Output.Log($"Comparing Actor Pack files between\n\tOriginal: {gameActorPath}\n\tMod: {modActorPath}", ConsoleColor.White);
 
-            // If comparison path already exists, delete it
+            // If comparison path already exists, delete it and recreate it
             if (Directory.Exists(comparisonPath))
             {
                 Output.Log($"Deleting existing comparison output directory: {comparisonPath}", ConsoleColor.Yellow);
                 Directory.Delete(comparisonPath, true);
             }
+            Directory.CreateDirectory(comparisonPath);
 
             if (Directory.Exists(modActorPath) && Directory.Exists(gameActorPath))
             {
