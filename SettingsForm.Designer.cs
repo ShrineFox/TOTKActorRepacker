@@ -119,6 +119,7 @@
             num_Padding.Location = new Point(197, 109);
             num_Padding.Margin = new Padding(10, 8, 3, 3);
             num_Padding.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
+            num_Padding.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             num_Padding.Name = "num_Padding";
             num_Padding.Size = new Size(126, 27);
             num_Padding.TabIndex = 4;

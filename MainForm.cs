@@ -108,7 +108,7 @@ namespace TOTKActorRepacker
         {
             foreach (var file in Directory.GetFiles("./Temp", "*.yml", SearchOption.AllDirectories))
             {
-                using (FileStream fs = new FileStream(file.Replace(".yml",".bgyml"), FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(file.Replace(".yml", ".bgyml"), FileMode.OpenOrCreate))
                 {
                     string relativePath = Path.Combine(Path.GetDirectoryName(file).Split("_pack\\")[1], Path.GetFileNameWithoutExtension(file) + ".bgyml");
                     //int version = GetBymlVersion(relativePath);
@@ -121,8 +121,8 @@ namespace TOTKActorRepacker
 
         private void PatchRESTBL()
         {
-            string gameResTbl = Path.Combine(txt_GamePath.Text, 
-                $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".","")}.rsizetable.zs");
+            string gameResTbl = Path.Combine(txt_GamePath.Text,
+                $"System/Resource/ResourceSizeTable.Product.{formSettings.Version.Replace(".", "")}.rsizetable.zs");
 
             Output.Log($"Creating newly patched Resource Table file...");
 
@@ -163,12 +163,30 @@ namespace TOTKActorRepacker
                     string[] splitLine = line.Split(' ');
                     if (splitLine.Count() > 1)
                     {
-                        string filePath = splitLine[0].Replace("\\","/");
+                        string filePath = splitLine[0].Replace("\\", "/");
                         uint size = Convert.ToUInt32(splitLine[1]) + (uint)formSettings.Padding;
 
-                        UpdateRSTBEntry(restbl, filePath, size, true);
+                        // Completely remove RSTB entry instead of replacing if padding is negative
+                        if (formSettings.Padding > 0)
+                            UpdateRSTBEntry(restbl, filePath, size, true);
+                        else
+                            RemoveRSTBEntry(restbl, filePath);
                     }
                 }
+            }
+        }
+
+        private void RemoveRSTBEntry(Restbl restbl, string relativePath)
+        {
+            uint pathCrc = StringToCRC32(relativePath);
+
+            if (restbl.CrcTable.Any(x => x.Hash.Equals(pathCrc)))
+            {
+                Output.Log($"Updating RESTBL entry for: {relativePath}");
+
+                var entry = restbl.CrcTable.First(x => x.Hash.Equals(pathCrc));
+                restbl.CrcTable.Remove(restbl.CrcTable.First(x => x.Hash.Equals(pathCrc)));
+                Output.Log($"\tRemoved CRC32 Table Entry:\n\t\tHash: {entry.Hash}\n\t\tSize: {entry.Size}", ConsoleColor.DarkYellow);
             }
         }
 
@@ -183,7 +201,11 @@ namespace TOTKActorRepacker
                 long fileLength = new FileInfo(uncompressedSARC).Length;
                 uint newSize = Convert.ToUInt32(fileLength + formSettings.Padding);
 
-                UpdateRSTBEntry(restbl, relativePath, newSize);
+                // Completely remove RSTB entry instead of replacing if padding is negative
+                if (formSettings.Padding > 0)
+                    UpdateRSTBEntry(restbl, relativePath, newSize, true);
+                else
+                    RemoveRSTBEntry(restbl, relativePath);
 
                 // Add/update CRC32 entry for the decompressed files within matching Actor Pack
                 string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileNameWithoutExtension(uncompressedSARC)}_pack";
@@ -194,7 +216,11 @@ namespace TOTKActorRepacker
                         string relativeFilePath = file.Substring(tempFolder.Length + 1).Replace("\\", "/");
                         newSize = Convert.ToUInt32(new FileInfo(file).Length + formSettings.Padding);
 
-                        UpdateRSTBEntry(restbl, relativeFilePath, newSize);
+                        // Completely remove RSTB entry instead of replacing if padding is negative
+                        if (formSettings.Padding > 0)
+                            UpdateRSTBEntry(restbl, relativeFilePath, newSize, true);
+                        else
+                            RemoveRSTBEntry(restbl, relativeFilePath);
                     }
                 }
             }
@@ -239,7 +265,7 @@ namespace TOTKActorRepacker
                 string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
 
                 // If matching folder for .sarc exists...
-                if (Directory.Exists(sarcDir)) 
+                if (Directory.Exists(sarcDir))
                 {
                     Output.Log($"Building SARC: {outPath}");
 
@@ -264,7 +290,7 @@ namespace TOTKActorRepacker
                                 Output.Log($"Removing from SARC: {sarcFile}\n\texisting entry: {relativePath}", ConsoleColor.DarkYellow);
                                 sarc.Remove(relativePath);
                             }
-                            
+
                             // Add to SARC
                             Output.Log($"\tAdding file: {relativePath}", ConsoleColor.Gray);
                             sarc.Add(relativePath, File.ReadAllBytes(newFile));
@@ -274,7 +300,7 @@ namespace TOTKActorRepacker
                         if (Directory.Exists(outDir))
                             foreach (var file in Directory.GetFiles(outDir).Where(x => x.EndsWith(".pack.zs")))
                                 File.Delete(file);
-                                
+
                         // Save new .pack to output dir
                         Directory.CreateDirectory(outDir);
                         using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
@@ -293,9 +319,9 @@ namespace TOTKActorRepacker
         {
             foreach (var option in options)
             {
-                foreach(var change in option.Changes)
+                foreach (var change in option.Changes)
                 {
-                    string ymlPath = $"./Temp/Pack/Actor/{change.File.Replace(".pack","_pack")}/{change.Path.Replace(".bgyml",".yml")}";
+                    string ymlPath = $"./Temp/Pack/Actor/{change.File.Replace(".pack", "_pack")}/{change.Path.Replace(".bgyml", ".yml")}";
                     if (!File.Exists(ymlPath))
                         CopyGameYMLToTemp(ymlPath);
 
@@ -315,7 +341,7 @@ namespace TOTKActorRepacker
             if (!File.Exists(tempSarcPath))
             {
                 string gameSARCPath = Path.Combine(txt_GamePath.Text, $"Pack/Actor/{Path.GetFileNameWithoutExtension(tempSarcPath)}.pack.zs");
-                
+
                 if (File.Exists(gameSARCPath))
                 {
                     string tempZsPath = tempSarcPath.Replace(".sarc", ".pack.zs");
@@ -385,7 +411,7 @@ namespace TOTKActorRepacker
                         string[] splitLine = ymlLines[i].Split(' ');
                         for (int x = 0; x < splitLine.Length; x++)
                         {
-                            if (splitLine[x].Replace("{","").StartsWith(change.FieldName))
+                            if (splitLine[x].Replace("{", "").StartsWith(change.FieldName))
                             {
                                 string strEnd = "";
                                 if (splitLine[x + 1].EndsWith(","))
@@ -523,7 +549,7 @@ namespace TOTKActorRepacker
                         if (fileName.EndsWith(".bgyml"))
                         {
                             // If Full SARC rebuild is enabled, or an option modifies this file...
-                            if (formSettings.FullSARCRebuild || 
+                            if (formSettings.FullSARCRebuild ||
                                 options.Any(o => o.Changes.Any(c => Path.GetFileName(fileName).Equals(c.File))))
                             {
                                 // Extract YML to temp dir
@@ -634,11 +660,11 @@ namespace TOTKActorRepacker
             if (options.Count > 0)
             {
                 // TODO: Iterate over changes in option
-               // foreach (var option in options)
-                    //if (!files.Any(x => x.Equals(option.File)))
-                    //files.Add(option.File);
+                // foreach (var option in options)
+                //if (!files.Any(x => x.Equals(option.File)))
+                //files.Add(option.File);
 
-                    comboBox_File.Items.Clear();
+                comboBox_File.Items.Clear();
                 // Add blank first item
                 comboBox_File.Items.Add("");
 
@@ -766,7 +792,7 @@ namespace TOTKActorRepacker
                 ToolTip lbl_ToolTip = new ToolTip();
                 lbl_ToolTip.SetToolTip(lbl, options[i].Hint);
                 option.Controls.Add(lbl, 1, 0);
-                
+
                 // Add textbox
                 DarkTextBox txtBox = new DarkTextBox { Name = $"txt_Value_{i}", Text = options[i].Changes.First().Value, Anchor = anchorStyle };
                 // Add tooltip
@@ -886,7 +912,7 @@ namespace TOTKActorRepacker
                     if (File.Exists(gameFile))
                     {
                         string fileName = Path.GetFileName(gameFile);
-                        string outFolder = Path.Combine(comparisonPath, Path.GetFileNameWithoutExtension(fileName).Replace(".pack","_pack"));
+                        string outFolder = Path.Combine(comparisonPath, Path.GetFileNameWithoutExtension(fileName).Replace(".pack", "_pack"));
 
                         // TODO: wait for handle to be free
 
@@ -948,8 +974,8 @@ namespace TOTKActorRepacker
                                 else
                                 {
                                     // If file in mod pack is new or different from one in game pack...
-                                    if (gamePack.Any(x => !x.Key.Equals(modPackFileName) 
-                                    || (x.Key.Equals(modPackFileName) && 
+                                    if (gamePack.Any(x => !x.Key.Equals(modPackFileName)
+                                    || (x.Key.Equals(modPackFileName) &&
                                         gamePack.First(x => x.Key.Equals(modPackFileName)).Value.AsSpan() != modPackFile.AsSpan())))
                                     {
                                         string outFile = Path.Combine(outFolder, modPackFileName);
@@ -1086,6 +1112,22 @@ namespace TOTKActorRepacker
         public static void Show()
         {
             ShowWindow(handle, SW_SHOW); //show the console
+        }
+
+        private void BymlToYml_Click(object sender, EventArgs e)
+        {
+            List<string> bymlPaths = WinFormsEvents.FilePath_Click("Choose BYML file...", true, new string[] { "bgyml (.bgyml)", "byml (.byml)" }, false );
+
+            foreach (var bymlPath in bymlPaths)
+            {
+                if (File.Exists(bymlPath))
+                {
+                    string ymlPath = bymlPath.Replace(".bgyml", ".yml").Replace(".byml", ".yml");
+                    File.WriteAllText(ymlPath, Byml.FromBinary(File.ReadAllBytes(bymlPath)).ToText());
+                }
+            }
+            
+            MessageBox.Show($"Saved output .YML successfully.");
         }
     }
 

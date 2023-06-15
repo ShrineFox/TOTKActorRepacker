@@ -50,6 +50,7 @@
             btn_GenerateMod = new DarkUI.Controls.DarkButton();
             pnl_Main = new Panel();
             lbl_ChooseFile = new DarkUI.Controls.DarkLabel();
+            bYMLToYMLToolStripMenuItem = new ToolStripMenuItem();
             menuStrip_Main.SuspendLayout();
             tlp_Main.SuspendLayout();
             groupBox_Paths.SuspendLayout();
@@ -72,7 +73,7 @@
             // fileToolStripMenuItem
             // 
             fileToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveConfigToolStripMenuItem, loadConfigToolStripMenuItem, compareModFilesToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveConfigToolStripMenuItem, loadConfigToolStripMenuItem, compareModFilesToolStripMenuItem, bYMLToYMLToolStripMenuItem });
             fileToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(46, 24);
@@ -315,6 +316,15 @@
             lbl_ChooseFile.Text = "<= Choose a File to Get Started";
             lbl_ChooseFile.Visible = false;
             // 
+            // bYMLToYMLToolStripMenuItem
+            // 
+            bYMLToYMLToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
+            bYMLToYMLToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
+            bYMLToYMLToolStripMenuItem.Name = "bYMLToYMLToolStripMenuItem";
+            bYMLToYMLToolStripMenuItem.Size = new Size(230, 26);
+            bYMLToYMLToolStripMenuItem.Text = "BYML to YML";
+            bYMLToYMLToolStripMenuItem.Click += BymlToYml_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -360,5 +370,6 @@
         private ToolStripMenuItem settingsToolStripMenuItem;
         private DarkUI.Controls.DarkLabel lbl_ChooseFile;
         private ToolStripMenuItem compareModFilesToolStripMenuItem;
+        private ToolStripMenuItem bYMLToYMLToolStripMenuItem;
     }
 }

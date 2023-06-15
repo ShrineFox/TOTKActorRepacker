@@ -1012,97 +1012,97 @@
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Dm_Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Sage_Soul_Zora.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\ZoraSageParam\\NpcZoraSage.game__npc__ZoraSageParam.yml",
         "FieldName": "SageSkillCooldown:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSoulZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcZoraSage.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       },
       {
         "File": "Npc_Zora_Prince_Sage.pack",
         "Path": "GameParameter\\SageCommonParam\\NpcSageCommon.game__npc__SageCommonParam.yml",
         "FieldName": "SageSkillRecastBaseTime:",
-        "Value": "1",
-        "OGValue": "300",
-        "Type": "Int32"
+        "Value": "1.0",
+        "OGValue": "300.0",
+        "Type": "Single"
       }
     ],
     "Enabled": true
