@@ -9,6 +9,7 @@ using System.Text;
 using Soft160.Data.Cryptography;
 using System.Runtime.InteropServices;
 using ShrineFox.IO;
+using static Cead.Sarc;
 
 namespace TOTKActorRepacker
 {
@@ -45,47 +46,24 @@ namespace TOTKActorRepacker
             ValidateModGeneration();
         }
 
-        private void ValidateModGeneration()
-        {
-            if (options != null && options.Where(x => x.Enabled).Count() > 0)
-                btn_GenerateMod.Enabled = true;
-            else
-                btn_GenerateMod.Enabled = false;
-        }
-
-        private void SetupLogging()
-        {
-            Output.Logging = true;
-            Output.LogPath = "log.txt";
-        }
-
-        private void GenerateMod_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                GenerateMod();
-            }
-            catch
-            {
-                MessageBox.Show("There was an error generating the mod. " +
-                    "This is known to happen at random for some reason.\n\nPlease try again!");
-                Output.Log("\n\nMod generation failed", ConsoleColor.Red);
-            }
-        }
-
         private void GenerateMod()
         {
             Output.Log($"Starting mod generation...");
 
-            ExtractSARCs();
+            // Extract .pack.zs contents to program's "Temp" folder
+            ExtractPacks(txt_GamePath.Text, "./Temp");
+
+            // Convert .bgyml files in temp folder  to .yml if changed by options
+            ConvertBYMLtoYML("./Temp", true);
 
             CopyDependencyFiles();
 
             UpdateYMLValues();
 
-            ConvertYMLsToBYML();
+            // Delete existing .pack.zs files in output dir
+            DeleteZsFiles(txt_OutputPath.Text);
 
-            RebuildSARC();
+            RebuildPacks();
 
             // Recompress .pack files to .zs 
             string actorPath = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
@@ -104,17 +82,282 @@ namespace TOTKActorRepacker
             MessageBox.Show("Done generating output!");
         }
 
+        private void ExtractPacks(string inDir, string outDir, bool deletePacks = false)
+        {
+            string actorPathIn = Path.Combine(inDir, "Pack/Actor");
+            string actorPathOut = Path.Combine(outDir, "Pack/Actor");
+
+            // If out directory already exists, delete it
+            if (Directory.Exists(outDir))
+            {
+                Directory.Delete(outDir, true);
+                Output.VerboseLog($"Deleted existing extraction output folder: {outDir}", ConsoleColor.Yellow);
+            }
+            Directory.CreateDirectory(actorPathOut);
+
+            if (Directory.Exists(actorPathIn))
+            {
+                // Copy .zs files to destination folder
+                foreach (var zsFile in Directory.GetFiles(actorPathIn, "*.zs", SearchOption.TopDirectoryOnly))
+                    File.Copy(zsFile, Path.Combine(actorPathOut, Path.GetFileName(zsFile)));
+                // Decompress .zs files
+                ZStdHelper.DecompressFolder(actorPathOut, actorPathOut, false);
+                Output.Log($"Decompressed .zs files in: {actorPathOut}", ConsoleColor.White);
+                // Delete .zs files
+                foreach (var zsFile in Directory.GetFiles(actorPathOut, "*.zs", SearchOption.TopDirectoryOnly))
+                    File.Delete(zsFile);
+
+                // Delete .zs files after decompressing
+                DeleteZsFiles(actorPathOut);
+
+                // For each .pack file in temp dir...
+                foreach (var packFile in Directory.GetFiles(actorPathOut, "*.pack", SearchOption.TopDirectoryOnly))
+                {
+                    // Make temp folder for unpacked .pack contents and modified .pack contents (for later)
+                    string unpackedPath = Path.Combine(actorPathOut, Path.GetFileNameWithoutExtension(packFile) + "_pack");
+                    Directory.CreateDirectory(unpackedPath);
+
+                    // Extract SARC contents to temp folder
+                    SARC.Extract(packFile, unpackedPath, true, false);
+                    Output.VerboseLog($"Extracted files from: {packFile}\n\tto: {unpackedPath}", ConsoleColor.White);
+
+                    // Delete .pack files if they aren't needed anymore
+                    if (deletePacks)
+                        File.Delete(packFile);
+                }
+                Output.Log($"Done extracting files from SARCs.", ConsoleColor.Green);
+            }
+        }
+
+        private void ConvertBYMLtoYML(string bymlPath, bool onlyChangedFiles)
+        {
+            // For each file that ends with .bgyml in path...
+            foreach (string file in Directory.GetFiles(bymlPath, "*",
+                        SearchOption.AllDirectories).Where(x => Path.GetExtension(x).Equals(".bgyml")))
+            {
+                // If an option modifies this file...
+                if (!onlyChangedFiles || options.Any(o => o.Changes.Any(c => Path.GetFileName(file).Equals(c.File))))
+                {
+                    // Convert file to YML
+                    string outFile = file.Replace(".bgyml", ".yml");
+                    File.WriteAllText(outFile, Byml.FromBinary(File.ReadAllBytes(file)).ToText());
+                    Output.VerboseLog($"Converted file to .yml:\n\t\t{outFile}", ConsoleColor.Gray);
+                }
+            }
+        }
+
+        private void CopyDependencyFiles()
+        {
+            if (Directory.Exists("./Dependencies"))
+            {
+                foreach (var depFolder in Directory.GetDirectories("./Dependencies"))
+                {
+                    foreach (var packFolder in Directory.GetDirectories(depFolder))
+                    {
+                        string packfolderName = Path.GetFileName(packFolder);
+                        foreach (var subDir in Directory.GetDirectories(packFolder))
+                        {
+                            FileSys.CopyDir(subDir, $"./Temp/Pack/Actor/{packfolderName}/{Path.GetFileName(subDir)}");
+                        }
+                        Output.Log($"Copied dependency \"{Path.GetFileName(depFolder)}\" contents to temp folder: {packfolderName}", ConsoleColor.White);
+                    }
+                }
+            }
+        }
+
+        private void UpdateYMLValues()
+        {
+            // Update values in YML to reflect changes made by user options
+            foreach (var option in options)
+            {
+                foreach (var change in option.Changes)
+                {
+                    string ymlPath = $"./Temp/Pack/Actor/{change.File.Replace(".pack", "_pack_new")}/{change.Path.Replace(".bgyml", ".yml")}";
+
+                    if (File.Exists(ymlPath))
+                        UpdateYMLValue(ymlPath, change, option.Enabled);
+                    else
+                        Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
+                }
+            }
+
+            // Convert YML files to BYML and delete YML
+            ConvertYMLsToBYML();
+        }
+
+        private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
+        {
+            using (FileSys.WaitForFile(ymlPath)) { }
+
+            string value = change.Value;
+            if (!enabled)
+                value = change.OGValue;
+
+            // Ensure decimals end with a decimals place and integers do not
+            switch (change.Type)
+            {
+                case "Int32":
+                    value = Math.Floor(Convert.ToDouble(value)).ToString();
+                    break;
+                case "Single":
+                    value = Convert.ToDouble(value).ToString("0.0");
+                    break;
+                default:
+                    break;
+            }
+
+            if (change.FieldName.Contains(":"))
+            {
+                string[] ymlLines = File.ReadAllLines(ymlPath);
+                for (int i = 0; i < ymlLines.Count(); i++)
+                {
+                    if (ymlLines[i].Contains(change.FieldName))
+                    {
+                        string[] splitLine = ymlLines[i].Split(' ');
+                        for (int x = 0; x < splitLine.Length; x++)
+                        {
+                            if (splitLine[x].Replace("{", "").StartsWith(change.FieldName))
+                            {
+                                string strEnd = "";
+                                if (splitLine[x + 1].EndsWith(","))
+                                    strEnd += ",";
+                                if (splitLine[x + 1].EndsWith("}}"))
+                                    strEnd += "}}";
+                                else if (splitLine[x + 1].EndsWith("}"))
+                                    strEnd += "}";
+                                splitLine[x + 1] = value + strEnd;
+                            }
+                        }
+
+                        string newLine = string.Join(' ', splitLine);
+
+                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
+                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
+                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+
+                        ymlLines[i] = newLine;
+
+                        File.WriteAllLines(ymlPath, ymlLines);
+                    }
+                }
+            }
+            else
+            {
+                string[] ymlLines = File.ReadAllLines(ymlPath);
+                for (int i = 0; i < ymlLines.Count(); i++)
+                {
+                    if (ymlLines[i].Contains(change.FieldName))
+                    {
+                        string newLine = change.FieldName + ": " + value;
+                        int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
+                        newLine = newLine.PadLeft(whiteSpaceCount);
+
+                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
+                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
+                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
+                        Output.Log($"\n\tNew: ", ConsoleColor.Green);
+                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Green);
+
+                        ymlLines[i] = newLine;
+
+                        File.WriteAllLines(ymlPath, ymlLines);
+                    }
+                }
+            }
+        }
+
         private void ConvertYMLsToBYML()
         {
+            Output.Log("Converting YML files back to BYML...");
+
             foreach (var file in Directory.GetFiles("./Temp", "*.yml", SearchOption.AllDirectories))
             {
-                using (FileStream fs = new FileStream(file.Replace(".yml", ".bgyml"), FileMode.OpenOrCreate))
+                string outFile = file.Replace("_pack", "_pack_new").Replace(".yml", ".bgyml");
+                // Create BYML from YML
+                using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
                 {
-                    string relativePath = Path.Combine(Path.GetDirectoryName(file).Split("_pack\\")[1], Path.GetFileNameWithoutExtension(file) + ".bgyml");
-                    //int version = GetBymlVersion(relativePath);
                     int version = 7;
                     fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(false, version).AsSpan());
-                    Output.Log($"Converted .yml back to .bgyml: {file.Replace(".yml", ".bgyml")} (ver {version}, little endian)");
+                    Output.VerboseLog($"\tConverted .yml back to .bgyml: {outFile}\n\t\t(ver {version}, little endian)");
+                }
+            }
+            Output.Log("Done converting to BYML.");
+        }
+
+        private void DeleteZsFiles(string directoryPath)
+        {
+            foreach (var file in Directory.GetFiles(directoryPath, "*.zs", SearchOption.AllDirectories))
+            {
+                using (FileSys.WaitForFile(file)) { }
+                File.Delete(file);
+            }
+            Output.Log($"Deleted .zs files in directory: {directoryPath}", ConsoleColor.Yellow);
+        }
+
+        private void RebuildPacks()
+        {
+            Output.Log("Rebuilding .pack files...\n");
+
+            foreach (var packFile in Directory.GetFiles($"./Temp/Pack/Actor/", "*.pack", SearchOption.TopDirectoryOnly))
+            {
+                string packDir = packFile.Replace(".pack", "_pack");
+                string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
+                string outPath = Path.Combine(outDir, Path.GetFileName(packFile));
+
+                // If matching folder for .pack exists...
+                if (Directory.Exists(packDir))
+                {
+                    Output.Log($"Building .pack: {outPath}");
+
+                    if (!formSettings.FullSARCRebuild)
+                    {
+                        // Replace only modded files in pack
+                        PartialSARCRebuild(packDir + "_new", outPath);
+                    }
+                    else
+                    {
+                        // Copy modified files to pack dir
+                        FileSys.CopyDir(packDir + "_new", packDir);
+                        // Build new SARC from entire pack dir
+                        SARC.Build(packDir, outPath);
+                        Output.Log("Done rebuilding .pack.");
+                    }
+                }
+            }
+
+            Output.Log("Done rebuilding .pack files.", ConsoleColor.Green);
+        }
+
+        private void PartialSARCRebuild(string packDir, string outPath)
+        {
+            string packFile = packDir.Replace("_pack_new", ".pack");
+
+            Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(packFile));
+            using (sarc)
+            {
+                // Get all files in Temp Sarc dir
+                var sarcFilesDir = Directory.GetFiles(packDir + "/", "*", SearchOption.AllDirectories);
+
+                // For each file in matching SARC dir...
+                foreach (var newFile in sarcFilesDir)
+                {
+                    string relativePath = newFile.Substring(packDir.Length + 1).Replace("\\", "/");
+
+                    // Add to SARC
+                    Output.Log($"\tAdding file: {relativePath}", ConsoleColor.Gray);
+                    sarc.Add(relativePath, File.ReadAllBytes(newFile));
+                }
+
+                // Create output directory if it doesn't already exist
+                Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+
+                // Save new .pack to output dir
+                using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
+                {
+                    fs.Write(sarc.ToBinary());
+                    Output.Log("Done building SARC.");
                 }
             }
         }
@@ -208,10 +451,10 @@ namespace TOTKActorRepacker
                     RemoveRSTBEntry(restbl, relativePath);
 
                 // Add/update CRC32 entry for the decompressed files within matching Actor Pack
-                string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileNameWithoutExtension(uncompressedSARC)}_pack";
+                string tempFolder = $"./Temp/Pack/Actor/{Path.GetFileNameWithoutExtension(uncompressedSARC)}_pack_new";
                 if (Directory.Exists(tempFolder))
                 {
-                    foreach (var file in Directory.GetFiles(tempFolder, "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml")))
+                    foreach (var file in Directory.GetFiles(tempFolder, "*", SearchOption.AllDirectories))
                     {
                         string relativeFilePath = file.Substring(tempFolder.Length + 1).Replace("\\", "/");
                         newSize = Convert.ToUInt32(new FileInfo(file).Length + formSettings.Padding);
@@ -254,804 +497,83 @@ namespace TOTKActorRepacker
             return CRC.Crc32(Encoding.ASCII.GetBytes(path));
         }
 
-        private void RebuildSARC()
-        {
-            Output.Log("Rebuilding SARC archives...\n");
-
-            foreach (var sarcFile in Directory.GetFiles($"./Temp/Pack/Actor/", "*.sarc", SearchOption.TopDirectoryOnly))
-            {
-                string sarcDir = sarcFile.Replace(".sarc", "_pack");
-                string outDir = Path.Combine(txt_OutputPath.Text, "Pack/Actor");
-                string outPath = Path.Combine(outDir, Path.GetFileNameWithoutExtension(sarcFile) + ".pack");
-
-                // If matching folder for .sarc exists...
-                if (Directory.Exists(sarcDir))
-                {
-                    Output.Log($"Building SARC: {outPath}");
-
-                    Sarc sarc = new Sarc();
-                    if (!formSettings.FullSARCRebuild)
-                        sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
-
-                    using (sarc)
-                    {
-                        // Get all non-YML files in Temp Sarc dir
-                        var sarcFilesDir = Directory.GetFiles(sarcDir + "/", "*", SearchOption.AllDirectories).Where(x => !Path.GetExtension(x).Equals(".yml"));
-
-                        int count = sarcFilesDir.Count();
-                        // For each non-yml file in matching SARC dir...
-                        foreach (var newFile in sarcFilesDir)
-                        {
-                            string relativePath = newFile.Substring(sarcDir.Length + 1).Replace("\\", "/");
-
-                            // Remove from SARC if it already exists
-                            if (!formSettings.FullSARCRebuild && sarc.Any(x => x.Key.Equals(relativePath)))
-                            {
-                                Output.Log($"Removing from SARC: {sarcFile}\n\texisting entry: {relativePath}", ConsoleColor.DarkYellow);
-                                sarc.Remove(relativePath);
-                            }
-
-                            // Add to SARC
-                            Output.Log($"\tAdding file: {relativePath}", ConsoleColor.Gray);
-                            sarc.Add(relativePath, File.ReadAllBytes(newFile));
-                        }
-
-                        // Delete existing .pack.zs file in output dir
-                        if (Directory.Exists(outDir))
-                            foreach (var file in Directory.GetFiles(outDir).Where(x => x.EndsWith(".pack.zs")))
-                                File.Delete(file);
-
-                        // Save new .pack to output dir
-                        Directory.CreateDirectory(outDir);
-                        using (FileStream fs = new FileStream(outPath, FileMode.OpenOrCreate))
-                        {
-                            fs.Write(sarc.ToBinary());
-                            Output.Log("Done building SARC.");
-                        }
-                    }
-                }
-            }
-
-            Output.Log("Done rebuilding SARC archives.", ConsoleColor.Green);
-        }
-
-        private void UpdateYMLValues()
-        {
-            foreach (var option in options)
-            {
-                foreach (var change in option.Changes)
-                {
-                    string ymlPath = $"./Temp/Pack/Actor/{change.File.Replace(".pack", "_pack")}/{change.Path.Replace(".bgyml", ".yml")}";
-                    if (!File.Exists(ymlPath))
-                        CopyGameYMLToTemp(ymlPath);
-
-                    if (File.Exists(ymlPath))
-                        UpdateYMLValue(ymlPath, change, option.Enabled);
-                    else
-                        Output.Log($"Could not find YML file: {ymlPath}", ConsoleColor.Red);
-                }
-            }
-        }
-
-        private void CopyGameYMLToTemp(string ymlPath)
-        {
-            string tempSarcPath = ymlPath.Split("_pack")[0] + ".sarc";
-
-            // If .pack isn't already decompressed and copied to Temp dir, do that first
-            if (!File.Exists(tempSarcPath))
-            {
-                string gameSARCPath = Path.Combine(txt_GamePath.Text, $"Pack/Actor/{Path.GetFileNameWithoutExtension(tempSarcPath)}.pack.zs");
-
-                if (File.Exists(gameSARCPath))
-                {
-                    string tempZsPath = tempSarcPath.Replace(".sarc", ".pack.zs");
-                    File.Copy(gameSARCPath, tempZsPath);
-                    using (WaitForFile(tempZsPath)) { }
-                    var decSARC = ZStdHelper.Decompress(tempZsPath);
-                    using (FileStream fs = new FileStream(tempSarcPath, FileMode.OpenOrCreate))
-                        fs.Write(decSARC);
-                    Output.Log($"Decompressed required SARC to: {tempSarcPath}", ConsoleColor.DarkGray);
-                }
-            }
-
-            using (WaitForFile(tempSarcPath)) { }
-
-            // Extract required .yml files from SARC
-            using (Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(tempSarcPath)))
-            {
-                string packEntryPath = ymlPath.Replace("./Temp/Pack/Actor/", "")
-                        .Replace(Path.GetFileNameWithoutExtension(tempSarcPath) + "_pack/", "").Replace(".yml", ".bgyml").Replace("\\", "/");
-
-                if (sarc.Any(x => x.Key.Equals(packEntryPath)))
-                {
-                    Span<byte> modBymlBytes = sarc.First(x => x.Key.Equals(packEntryPath)).Value.AsSpan();
-                    string modYml = Byml.FromBinary(modBymlBytes).ToText();
-                    //AddToVersionList(packEntryPath, Convert.ToInt32(modBymlBytes[2]));
-
-                    Directory.CreateDirectory(Path.GetDirectoryName(ymlPath));
-                    File.WriteAllText(ymlPath, modYml);
-                    using (WaitForFile(ymlPath)) { }
-                    Output.Log($"Extracted required .yml file to: {ymlPath}", ConsoleColor.DarkGreen);
-                }
-                else
-                {
-                    Output.Log($"Could not extract required .yml file from SARC.\n\tPack: {tempSarcPath}\n\tPack file: {packEntryPath}", ConsoleColor.DarkRed);
-                }
-            }
-        }
-
-        private void UpdateYMLValue(string ymlPath, Change change, bool enabled)
-        {
-            using (WaitForFile(ymlPath)) { }
-
-            string value = change.Value;
-            if (!enabled)
-                value = change.OGValue;
-
-            // Ensure decimals end with a decimals place and integers do not
-            switch (change.Type)
-            {
-                case "Int32":
-                    value = Math.Floor(Convert.ToDouble(value)).ToString();
-                    break;
-                case "Single":
-                    value = Convert.ToDouble(value).ToString("0.0");
-                    break;
-                default:
-                    break;
-            }
-
-            if (change.FieldName.Contains(":"))
-            {
-                string[] ymlLines = File.ReadAllLines(ymlPath);
-                for (int i = 0; i < ymlLines.Count(); i++)
-                {
-                    if (ymlLines[i].Contains(change.FieldName))
-                    {
-                        string[] splitLine = ymlLines[i].Split(' ');
-                        for (int x = 0; x < splitLine.Length; x++)
-                        {
-                            if (splitLine[x].Replace("{", "").StartsWith(change.FieldName))
-                            {
-                                string strEnd = "";
-                                if (splitLine[x + 1].EndsWith(","))
-                                    strEnd += ",";
-                                if (splitLine[x + 1].EndsWith("}}"))
-                                    strEnd += "}}";
-                                else if (splitLine[x + 1].EndsWith("}"))
-                                    strEnd += "}";
-                                splitLine[x + 1] = value + strEnd;
-                            }
-                        }
-
-                        string newLine = string.Join(' ', splitLine);
-
-                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
-                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
-                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-                        Output.Log($"\n\tNew: ", ConsoleColor.Yellow);
-                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-
-                        ymlLines[i] = newLine;
-
-                        File.WriteAllLines(ymlPath, ymlLines);
-                    }
-                }
-            }
-            else
-            {
-                string[] ymlLines = File.ReadAllLines(ymlPath);
-                for (int i = 0; i < ymlLines.Count(); i++)
-                {
-                    if (ymlLines[i].Contains(change.FieldName))
-                    {
-                        string newLine = change.FieldName + ": " + value;
-                        int whiteSpaceCount = ymlLines[i].TakeWhile(c => c == ' ').Count() + newLine.Length;
-                        newLine = newLine.PadLeft(whiteSpaceCount);
-
-                        Output.Log($"\nChanged line {i} in YML: {ymlPath}");
-                        Output.Log($"\tOld: ", ConsoleColor.Yellow);
-                        Output.Log(ymlLines[i].Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Yellow);
-                        Output.Log($"\n\tNew: ", ConsoleColor.Green);
-                        Output.Log(newLine.Replace("{", "{{").Replace("}", "}}"), ConsoleColor.Green);
-
-                        ymlLines[i] = newLine;
-
-                        File.WriteAllLines(ymlPath, ymlLines);
-                    }
-                }
-            }
-        }
-
-        private void CopyDependencyFiles()
-        {
-            if (Directory.Exists("./Dependencies"))
-            {
-                foreach (var depFolder in Directory.GetDirectories("./Dependencies"))
-                {
-                    foreach (var packFolder in Directory.GetDirectories(depFolder))
-                    {
-                        // Copy directory contents to temp folder
-                        //if (options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileName(packFolder).Equals(c.File))))
-                        {
-                            string packfolderName = Path.GetFileName(packFolder).Replace(".pack", "_pack");
-                            foreach (var subDir in Directory.GetDirectories(packFolder))
-                            {
-                                CopyDir(subDir, $"./Temp/Pack/Actor/{packfolderName}/{Path.GetFileName(subDir)}");
-                            }
-                            Output.Log($"Copied dependency \"{Path.GetFileName(depFolder)}\" contents to temp folder: {packfolderName}", ConsoleColor.White);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ExtractSARCs()
-        {
-            string actorPath = Path.Combine(txt_GamePath.Text, "Pack/Actor");
-            string tempPath = $"./Temp";
-            string tempActorPath = $"./Temp/Pack/Actor";
-
-            Output.Log($"Extracting files from SARCs...", ConsoleColor.White);
-
-            // If temp path already exists, delete it
-            if (Directory.Exists(tempPath))
-            {
-                Directory.Delete(tempPath, true);
-                Output.Log($"Deleted existing temp folder: {tempPath}", ConsoleColor.Yellow);
-            }
-
-            if (Directory.Exists(actorPath))
-            {
-                // For each .zs file in Actor/Pack
-                foreach (var zsFile in Directory.GetFiles(actorPath, "*.zs", SearchOption.TopDirectoryOnly))
-                //    .Where(x => options.Any(o => o.Enabled == true && o.Changes.Any(c => Path.GetFileNameWithoutExtension(x).Equals(c.File)))))
-                {
-                    // Copy to temp dir
-                    Directory.CreateDirectory(tempActorPath);
-                    string zsCopy = Path.Combine(tempActorPath, Path.GetFileName(zsFile));
-                    File.Copy(zsFile, zsCopy);
-                    Output.Log($"Copied .zs file to temp folder: {zsCopy}", ConsoleColor.White);
-                }
-
-                // Decompress files
-                ZStdHelper.DecompressFolder(tempActorPath, tempActorPath, false);
-                Output.Log($"Decompressed temp folder: {tempActorPath}", ConsoleColor.White);
-
-                // Delete .zs files
-                foreach (var file in Directory.GetFiles(tempActorPath, "*.zs", SearchOption.AllDirectories))
-                {
-                    File.Delete(file);
-                }
-                Output.Log($"Deleted .zs files in temp folder.", ConsoleColor.Yellow);
-
-                // Rename .pack files to .sarc
-                foreach (var file in Directory.GetFiles(tempActorPath, "*.pack", SearchOption.AllDirectories))
-                {
-                    File.Move(file, Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".sarc"));
-                }
-                Output.Log($"Renamed .pack files in temp folder to .sarc", ConsoleColor.Yellow);
-
-
-                // For each .sarc file in temp dir...
-                foreach (var sarcFile in Directory.GetFiles(tempActorPath, "*.sarc", SearchOption.TopDirectoryOnly))
-                {
-                    // Open SARC
-                    using Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(sarcFile));
-
-                    Output.Log($"Extracting files from: {sarcFile}", ConsoleColor.White);
-                    // For each file in SARC...
-                    foreach ((var fileName, var file) in sarc)
-                    {
-                        string tempSarcPath = Path.Combine(tempActorPath, Path.GetFileNameWithoutExtension(sarcFile) + "_pack");
-                        string outFile = Path.Combine(tempSarcPath, fileName);
-
-                        if (fileName.EndsWith(".bgyml"))
-                        {
-                            // If Full SARC rebuild is enabled, or an option modifies this file...
-                            if (formSettings.FullSARCRebuild ||
-                                options.Any(o => o.Changes.Any(c => Path.GetFileName(fileName).Equals(c.File))))
-                            {
-                                // Extract YML to temp dir
-                                Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                                Span<byte> bymlBytes = file.AsSpan();
-                                //AddToVersionList(bymlFileName, Convert.ToInt32(bymlBytes[2]));
-                                File.WriteAllText(outFile.Replace(".bgyml", ".yml"), Byml.FromBinary(bymlBytes).ToText());
-                                Output.Log($"\tExtracted .yml file to temp folder:\n\t\t{outFile}", ConsoleColor.Gray);
-                            }
-                        }
-                        else if (formSettings.FullSARCRebuild)
-                        {
-                            // Extract file to temp dir if full SARC rebuild
-                            Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-
-                            using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
-                            {
-                                fs.Write(file.AsSpan());
-                                Output.Log($"\tExtracted file to temp folder:\n\t\t{outFile}", ConsoleColor.DarkGray);
-                            }
-                        }
-                    }
-                }
-
-                Output.Log($"Done extracting files from SARCs.", ConsoleColor.Green);
-            }
-
-        }
-
-        private void LoadUserDefaults()
-        {
-            // Automatically set previously used paths
-            txt_GamePath.Text = formSettings.GamePath;
-            txt_OutputPath.Text = formSettings.OutputPath;
-
-            // Automatically load default .json file if found
-            if (File.Exists(formSettings.DefaultJson))
-                LoadConfig(formSettings.DefaultJson);
-        }
-
-        private void GamePath_Click(object sender, EventArgs e)
-        {
-            string path = ChooseFolder("Choose extracted game folder");
-            txt_GamePath.Text = path;
-        }
-
-        private void OutputPath_Click(object sender, EventArgs e)
-        {
-            string path = ChooseFolder("Choose output mod files folder");
-            txt_OutputPath.Text = path;
-        }
-
-        public static string ChooseFolder(string windowTitle)
-        {
-            // Prompt the user to pick a folder path
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            dialog.Title = windowTitle;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                return dialog.FileName;
-            return "";
-        }
-
-        private void ValidatePaths()
-        {
-            // If paths are valid...
-            if (Directory.Exists(txt_GamePath.Text) && Directory.Exists(txt_OutputPath.Text)
-                && File.Exists(Path.Combine(txt_GamePath.Text, "Pack\\ZsDic.pack.zs")))
-            {
-                // Update config with chosen paths
-                formSettings.GamePath = txt_GamePath.Text;
-                formSettings.OutputPath = txt_OutputPath.Text;
-
-                // Enable options if mod files are found & output folder is set
-                btn_GenerateMod.Enabled = true;
-                loadConfigToolStripMenuItem.Enabled = true;
-                addFileToolStripMenuItem.Enabled = true;
-                compareModFilesToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                // Disiable options
-                btn_GenerateMod.Enabled = false;
-                loadConfigToolStripMenuItem.Enabled = false;
-                addFileToolStripMenuItem.Enabled = false;
-                compareModFilesToolStripMenuItem.Enabled = false;
-            }
-        }
-
-        private void Path_Changed(object sender, EventArgs e)
-        {
-            ValidatePaths();
-        }
-
-        private void LoadConfig_Click(object sender, EventArgs e)
-        {
-            string file = ChooseFile("Choose config file", ".json");
-            if (File.Exists(file))
-            {
-                LoadConfig(file);
-            }
-        }
-
-        public void UpdateFilesList()
-        {
-            List<string> files = new List<string>();
-
-            if (options.Count > 0)
-            {
-                // TODO: Iterate over changes in option
-                // foreach (var option in options)
-                //if (!files.Any(x => x.Equals(option.File)))
-                //files.Add(option.File);
-
-                comboBox_File.Items.Clear();
-                // Add blank first item
-                comboBox_File.Items.Add("");
-
-                foreach (var file in files)
-                    comboBox_File.Items.Add(file);
-
-                comboBox_File.Enabled = true;
-            }
-            else
-            {
-                comboBox_File.Items.Clear();
-                comboBox_File.Items.Add("");
-                comboBox_File.Enabled = false;
-            }
-            comboBox_File.SelectedIndex = 0;
-            lbl_ChooseFile.Visible = true;
-        }
-
-        private string ChooseFile(string title, string filter)
-        {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-
-            dialog.Title = title;
-            dialog.Multiselect = false;
-            dialog.Filters.Add(new CommonFileDialogFilter("File", filter));
-
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                return dialog.FileName;
-            return "";
-        }
-
-        public void LoadConfig(string jsonPath)
-        {
-            if (File.Exists(jsonPath))
-            {
-                options = JsonConvert.DeserializeObject<List<Option>>(File.ReadAllText(jsonPath));
-                Output.Log($"Loaded options from: {jsonPath}", ConsoleColor.White);
-            }
-            if (options.Count > 0)
-            {
-                UpdateFilesList();
-            }
-        }
-
-        public void SaveConfig(string jsonPath)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(jsonPath));
-            using (WaitForFile(jsonPath)) { };
-            File.WriteAllText(jsonPath, JsonConvert.SerializeObject(options, Formatting.Indented));
-            Output.Log($"Saved options to: {jsonPath}", ConsoleColor.Green);
-        }
-
-        public static FileStream WaitForFile(string fullPath,
-            FileMode mode = FileMode.Open,
-            FileAccess access = FileAccess.ReadWrite,
-            FileShare share = FileShare.None)
-        {
-            for (int numTries = 0; numTries < 10; numTries++)
-            {
-                FileStream fs = null;
-                try
-                {
-                    fs = new FileStream(fullPath, mode, access, share);
-                    return fs;
-                }
-                catch (IOException)
-                {
-                    if (fs != null)
-                    {
-                        fs.Dispose();
-                    }
-                    Thread.Sleep(2000);
-                }
-            }
-            return null;
-        }
-
-        private void SelectedFile_Changed(object sender, EventArgs e)
-        {
-            var comboBox = (DarkComboBox)sender;
-            LoadOptions(comboBox.SelectedItem.ToString());
-
-            saveConfigToolStripMenuItem.Enabled = true;
-            lbl_ChooseFile.Visible = false;
-        }
-
-        private void LoadOptions(string fileName)
-        {
-            // TODO: Filter options by file
-            //List<Option> fileOptions = options.Where(x => x.File == fileName).ToList();
-            //List<Option> fileOptions = options;
-
-            // Reset TableLayoutPanel contents
-            tlp.Controls.Clear();
-            tlp.RowStyles.Clear();
-
-            AnchorStyles anchorStyle = (AnchorStyles.Left | AnchorStyles.Right);
-
-            // Add Header Row
-            tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-            TableLayoutPanel header = new TableLayoutPanel() { Name = "tlp_Header", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
-            foreach (var width in new float[] { 5f, 55f, 40f })
-                header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
-            header.Controls.Add(new DarkLabel { Name = "lbl_Enabled", Text = "", Anchor = anchorStyle }, 0, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_Name", Text = "Name", Anchor = anchorStyle }, 1, 0);
-            header.Controls.Add(new DarkLabel { Name = "lbl_Value", Text = "Value", Anchor = anchorStyle }, 2, 0);
-            tlp.Controls.Add(header, 0, 0);
-
-            // Add individual options
-            for (int i = 0; i < options.Count; i++)
-            {
-                tlp.RowStyles.Add(new RowStyle() { SizeType = SizeType.Absolute, Height = 50f });
-                TableLayoutPanel option = new TableLayoutPanel() { Name = $"tlp_Option_{i}", Dock = DockStyle.Fill, ColumnCount = 3, RowCount = 1 };
-                foreach (var width in new float[] { 5f, 55f, 40f })
-                    option.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
-
-                // Add checkbox
-                DarkCheckBox chkBox = new DarkCheckBox { Name = $"chk_Enabled_{i}", Checked = options[i].Enabled, Anchor = anchorStyle };
-                chkBox.CheckedChanged += ChkBox_Checked_Changed;
-                option.Controls.Add(chkBox, 0, 0);
-
-                // Add label
-                DarkLabel lbl = new DarkLabel { Name = $"lbl_Name_{i}", Text = options[i].Name, Anchor = anchorStyle };
-                // Add tooltip
-                ToolTip lbl_ToolTip = new ToolTip();
-                lbl_ToolTip.SetToolTip(lbl, options[i].Hint);
-                option.Controls.Add(lbl, 1, 0);
-
-                // Add textbox
-                DarkTextBox txtBox = new DarkTextBox { Name = $"txt_Value_{i}", Text = options[i].Changes.First().Value, Anchor = anchorStyle };
-                // Add tooltip
-                ToolTip txt_ToolTip = new ToolTip();
-                txt_ToolTip.SetToolTip(txtBox, options[i].Hint);
-                // Add text changed event
-                txtBox.TextChanged += TxtBox_Value_Changed;
-                option.Controls.Add(txtBox, 2, 0);
-
-                tlp.Controls.Add(option, 0, i + 1);
-            }
-
-            addOptionToolStripMenuItem.Enabled = true;
-        }
-
-        private void TxtBox_Value_Changed(object? sender, EventArgs e)
-        {
-            DarkTextBox txtBox = (DarkTextBox)sender;
-
-            // Skip this if options is currently disabled
-            if (!txtBox.Enabled)
-                return;
-
-            // Update value of option matching label name
-            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{txtBox.Name.Split('_').Last()}", true).First();
-            if (options.Any(x => x.Name.Equals(optionLabel.Text)))
-            {
-                foreach (var change in options.First(x => x.Name.Equals(optionLabel.Text)).Changes)
-                {
-                    change.Value = txtBox.Text;
-                }
-            }
-        }
-
-        private void ChkBox_Checked_Changed(object? sender, EventArgs e)
-        {
-            DarkCheckBox chkBox = (DarkCheckBox)sender;
-
-            // Update enabled status of option matching label name
-            string optionIndex = chkBox.Name.Split('_').Last();
-
-            var optionLabel = (DarkLabel)this.Controls.Find($"lbl_Name_{optionIndex}", true).First();
-            if (options.Any(x => x.Name.Equals(optionLabel.Text)))
-            {
-                var option = options.First(x => x.Name.Equals(optionLabel.Text));
-                option.Enabled = chkBox.Checked;
-
-                var txtBox = (DarkTextBox)this.Controls.Find($"txt_Value_{optionIndex}", true).First();
-                if (!option.Enabled)
-                {
-                    txtBox.Enabled = false;
-                    // Show OG value if textbox is disabled
-                    txtBox.Text = option.Changes.First().OGValue;
-                }
-                else
-                {
-                    txtBox.Enabled = true;
-                    // Show user-defined value if textbox is enabled
-                    txtBox.Text = option.Changes.First().Value;
-                }
-            }
-
-            ValidateModGeneration();
-        }
-
-        private void SaveConfig_Click(object sender, EventArgs e)
-        {
-            string file = SaveFile("Save config file", ".json");
-            if (!string.IsNullOrEmpty(file))
-            {
-                SaveConfig(file);
-            }
-        }
-
-        private string SaveFile(string title, string filter)
-        {
-            CommonSaveFileDialog dialog = new CommonSaveFileDialog();
-
-            dialog.Title = title;
-            dialog.Filters.Add(new CommonFileDialogFilter("File", filter));
-
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                return dialog.FileName;
-            return "";
-        }
-
-        private void Settings_Click(object sender, EventArgs e)
-        {
-            using (SettingsForm settingsForm = new SettingsForm())
-                settingsForm.ShowDialog();
-        }
-
-        private void Compare_Click(object sender, EventArgs e)
+        private void CompareModToOGFiles()
         {
             string modPath = ChooseFolder("Choose mod folder to compare with game files");
             string modActorPath = Path.Combine(modPath, "Pack/Actor");
             string gameActorPath = Path.Combine(formSettings.GamePath, "Pack/Actor");
-            string comparisonPath = $"./Compare_{Path.GetFileName(modPath)}";
 
-            Output.Log($"Comparing Actor Pack files between\n\tOriginal: {gameActorPath}\n\tMod: {modActorPath}", ConsoleColor.White);
-
-            // If comparison path already exists, delete it and recreate it
-            if (Directory.Exists(comparisonPath))
-            {
-                Output.Log($"Deleting existing comparison output directory: {comparisonPath}", ConsoleColor.Yellow);
-                Directory.Delete(comparisonPath, true);
-            }
-            Directory.CreateDirectory(comparisonPath);
-
-            if (Directory.Exists(modActorPath) && Directory.Exists(gameActorPath))
-            {
-                // For each .zs file in Actor/Pack...
-                foreach (var modFile in Directory.GetFiles(modActorPath, "*.zs", SearchOption.TopDirectoryOnly))
-                {
-                    // If matching file in game dir exists...
-                    string modFileRelativePath = modFile.Substring(modPath.Length + 1);
-                    string gameFile = Path.Combine(formSettings.GamePath, modFileRelativePath);
-                    if (File.Exists(gameFile))
-                    {
-                        string fileName = Path.GetFileName(gameFile);
-                        string outFolder = Path.Combine(comparisonPath, Path.GetFileNameWithoutExtension(fileName).Replace(".pack", "_pack"));
-
-                        // TODO: wait for handle to be free
-
-                        // Copy both to comparison output dir
-                        Directory.CreateDirectory(outFolder);
-                        string tempModFile = Path.Combine(outFolder, "modFile.pack.zs");
-                        string tempGameFile = Path.Combine(outFolder, "gameFile.pack.zs");
-                        File.Copy(modFile, tempModFile);
-                        File.Copy(gameFile, tempGameFile);
-
-                        Output.Log($"Copied matching SARCs to Temp directory: {Path.GetFileName(outFolder)}", ConsoleColor.White);
-
-                        // Decompress files
-                        ZStdHelper.DecompressFolder(outFolder, outFolder, false);
-                        tempModFile = tempModFile.Replace(".zs", "");
-                        tempGameFile = tempGameFile.Replace(".zs", "");
-
-                        Output.Log($"Decompressed .zs files in Temp directory", ConsoleColor.White);
-
-                        // Open SARC
-                        if (File.Exists(tempModFile))
-                        {
-                            using (WaitForFile(tempModFile)) { }
-                            var modPack = Sarc.FromBinary(File.ReadAllBytes(tempModFile)).Where(x => x.Key.Contains('.')).ToList();
-                            using (WaitForFile(tempGameFile)) { }
-                            var gamePack = Sarc.FromBinary(File.ReadAllBytes(tempGameFile)).Where(x => x.Key.Contains('.')).ToList();
-
-                            // For each byml file in modified SARC...
-                            foreach ((var modPackFileName, var modPackFile) in modPack)
-                            {
-                                // By default, if a match doesn't exist in base game, consider it a modded file
-                                string gameByml = "";
-
-                                // If unmodified SARC contains same file...
-                                if (modPackFileName.EndsWith(".bgyml"))
-                                {
-                                    // If file is a BYML...
-                                    if (gamePack.Any(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName)))
-                                    {
-                                        // Compare original BYML text
-                                        var gamePackFile = gamePack.First(x => x.Key.EndsWith(".bgyml") && x.Key.Equals(modPackFileName));
-                                        gameByml = Byml.FromBinary(gamePackFile.Value.AsSpan()).ToText();
-                                    }
-
-                                    // Get modified BYML (and version), convert to text
-                                    Span<byte> modBymlBytes = modPackFile.AsSpan();
-                                    //AddToVersionList(modPackFileName, Convert.ToInt32(modBymlBytes[2]));
-                                    string modByml = Byml.FromBinary(modBymlBytes).ToText();
-
-                                    // If BYML texts are not identical, save .yml
-                                    if (modByml != gameByml)
-                                    {
-                                        string outFile = Path.Combine(outFolder, modPackFileName.Replace("bgyml", "yml"));
-                                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                                        File.WriteAllText(outFile, modByml);
-                                        Output.Log($"Extracted modified .yml file to: {outFile}", ConsoleColor.Green);
-                                    }
-                                }
-                                else
-                                {
-                                    // If file in mod pack is new or different from one in game pack...
-                                    if (gamePack.Any(x => !x.Key.Equals(modPackFileName)
-                                    || (x.Key.Equals(modPackFileName) &&
-                                        gamePack.First(x => x.Key.Equals(modPackFileName)).Value.AsSpan() != modPackFile.AsSpan())))
-                                    {
-                                        string outFile = Path.Combine(outFolder, modPackFileName);
-                                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                                        using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
-                                        {
-                                            try
-                                            {
-                                                fs.Write(modPackFile.AsSpan());
-                                                Output.Log($"Saving new or modified SARC content to output: {outFile}");
-                                            }
-                                            catch
-                                            {
-                                                Output.Log($"Failed to save new or modified SARC content to output: {outFile}", ConsoleColor.Red);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-
-                // Delete .pack and .zs files
-                foreach (var file in Directory.GetFiles(comparisonPath, "*", SearchOption.AllDirectories)
-                    .Where(x => Path.GetExtension(x) == ".zs" || Path.GetExtension(x) == ".pack"))
-                {
-                    File.Delete(file);
-                }
-                Output.Log($"Deleted .pack and .zs files in comparison directory", ConsoleColor.Yellow);
-
-                MessageBox.Show($"Comparison complete, modded .yml files can be found at:\n\n{Path.GetFullPath(comparisonPath)}");
-                Output.Log($"Comparison succeeded.", ConsoleColor.Green);
-            }
-            else
+            // Warn user if required directories aren't present, otherwise continue
+            if (!Directory.Exists(modActorPath) || !Directory.Exists(gameActorPath))
             {
                 MessageBox.Show("Failed to compare mod to game files, please ensure " +
                     "/Pack/Actor/ directory exists in both folders!");
                 Output.Log($"Comparison failed.", ConsoleColor.Red);
             }
-        }
-
-        private void AddToVersionList(string packFilePath, int version)
-        {
-            packFilePath = packFilePath.Replace("/", "\\");
-
-            string txtPath = "./BymlVersions.txt";
-            List<string> txtLines = new List<string>();
-
-            if (File.Exists(txtPath))
-                txtLines = File.ReadAllLines(txtPath).ToList();
-
-            if (!txtLines.Any(x => x.StartsWith(packFilePath)))
+            else
             {
-                string versionLine = $"{packFilePath} {version}";
-                txtLines.Add(versionLine);
-                Output.Log($"\t\tAdded to known BYML version list: {versionLine}", ConsoleColor.DarkCyan);
-            }
+                // Get mod name from user
+                string modName = $"Compare_{Path.GetFileName(modPath)}";
+                RenameForm rename = new RenameForm(modName);
+                var result = rename.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    modName = rename.RenameText;
+                    if (string.IsNullOrEmpty(modName))
+                        modName = $"Compare_{Path.GetFileName(modPath)}";
+                }
+                else
+                {
+                    return;
+                }
+                string compareOutPath = $"./Dependencies/{modName}";
 
-            File.WriteAllLines(txtPath, txtLines);
+                // If comparison path already exists, delete it and recreate it
+                if (Directory.Exists(compareOutPath))
+                    Directory.Delete(compareOutPath, true);
+                Directory.CreateDirectory(compareOutPath);
+
+                Output.Log($"Comparing Actor Pack files between\n\tOriginal: {gameActorPath}\n\tMod: {modActorPath}", ConsoleColor.White);
+
+                string compareTempPath = "./CompareTemp";
+                if (Directory.Exists(compareTempPath))
+                    Directory.Delete(compareTempPath, true);
+                Directory.CreateDirectory(compareTempPath);
+
+                string gameTempPath = Path.Combine(compareTempPath, "Game");
+                ExtractPacks(formSettings.GamePath, gameTempPath, true);
+                string modTempPath = Path.Combine(compareTempPath, "Mod");
+                ExtractPacks(modPath, modTempPath, true);
+
+                // For each extracted file in mod folder...
+                foreach (var modFile in Directory.GetFiles(modTempPath, "*", SearchOption.AllDirectories))
+                {
+                    string modFileRelativePath = modFile.Substring(modTempPath.Length + 1);
+                    string gameFile = Path.Combine(gameTempPath, modFileRelativePath);
+
+                    // If matching file in game dir exists doesn't exist or there's a binary difference...
+                    if (!File.Exists(gameFile) || !ByteArraysEqual(File.ReadAllBytes(gameFile), File.ReadAllBytes(modFile)) )
+                    {
+                        string outFile = Path.Combine(compareOutPath, modFileRelativePath.Replace("Pack\\Actor\\",""));
+                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                        File.Copy(modFile, outFile, true);
+                        Output.VerboseLog($"Copied new or modified file to: {outFile}", ConsoleColor.DarkGreen);
+                    }
+                }
+
+                // Delete temporary comparison directory
+                Directory.Delete(compareTempPath, true);
+
+                MessageBox.Show($"Comparison complete, modded files have been added to the Dependencies/{modName} folder." +
+                    "\n\nContents of the Dependencies folder will automatically be merged with output generated by this tool." +
+                    "\nPlease move the folder to somewhere else if you do not want it merged.");
+                Output.Log($"Comparison succeeded.", ConsoleColor.Green);
+            }
         }
 
-        private int GetBymlVersion(string packFilePath)
+        static bool ByteArraysEqual(ReadOnlySpan<byte> a1, ReadOnlySpan<byte> a2)
         {
-            packFilePath = packFilePath.Replace("/", "\\");
-
-            string txtPath = "./BymlVersions.txt";
-            string[] txtLines = txtLines = File.ReadAllLines(txtPath);
-
-            if (txtLines.Any(x => x.StartsWith(packFilePath)))
-                return Convert.ToInt32(txtLines.First(x => x.StartsWith(packFilePath)).Split(' ')[1]);
-
-            Output.Log($"\t\tCouldn't find BYML version, defaulting to 7: {packFilePath}", ConsoleColor.DarkYellow);
-            return 7;
+            return a1.SequenceEqual(a2);
         }
 
         internal static byte[] Decompress(string input)
@@ -1074,61 +596,6 @@ namespace TOTKActorRepacker
             Directory.CreateDirectory(Path.GetDirectoryName(output));
 
             File.WriteAllBytes(output, outputBytes);
-        }
-
-        public static void CopyDir(string sourceFolder, string destFolder)
-        {
-            if (!Directory.Exists(destFolder) && !File.Exists(destFolder))
-                Directory.CreateDirectory(destFolder);
-
-            // Get Files & Copy
-            string[] files = Directory.GetFiles(sourceFolder);
-            foreach (string file in files)
-            {
-                string name = Path.GetFileName(file);
-                string dest = Path.Combine(destFolder, name);
-                File.Copy(file, dest, true);
-            }
-
-            // Get dirs recursively and copy files
-            string[] folders = Directory.GetDirectories(sourceFolder);
-            foreach (string folder in folders)
-            {
-                string name = Path.GetFileName(folder);
-                string dest = Path.Combine(destFolder, name);
-                CopyDir(folder, dest);
-            }
-        }
-
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 5;
-        readonly static IntPtr handle = GetConsoleWindow();
-        [DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
-        [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        public static void Hide()
-        {
-            ShowWindow(handle, SW_HIDE); //hide the console
-        }
-        public static void Show()
-        {
-            ShowWindow(handle, SW_SHOW); //show the console
-        }
-
-        private void BymlToYml_Click(object sender, EventArgs e)
-        {
-            List<string> bymlPaths = WinFormsEvents.FilePath_Click("Choose BYML file...", true, new string[] { "bgyml (.bgyml)", "byml (.byml)" }, false );
-
-            foreach (var bymlPath in bymlPaths)
-            {
-                if (File.Exists(bymlPath))
-                {
-                    string ymlPath = bymlPath.Replace(".bgyml", ".yml").Replace(".byml", ".yml");
-                    File.WriteAllText(ymlPath, Byml.FromBinary(File.ReadAllBytes(bymlPath)).ToText());
-                }
-            }
-            
-            MessageBox.Show($"Saved output .YML successfully.");
         }
     }
 
