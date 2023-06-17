@@ -35,16 +35,7 @@ namespace TOTKActorRepacker
 
         private void GenerateMod_Click(object sender, EventArgs e)
         {
-            try
-            {
-                GenerateMod();
-            }
-            catch
-            {
-                MessageBox.Show("There was an error generating the mod. " +
-                    "This is known to happen at random for some reason.\n\nPlease try again!");
-                Output.Log("\n\nMod generation failed", ConsoleColor.Red);
-            }
+            GenerateMod();
         }
 
 

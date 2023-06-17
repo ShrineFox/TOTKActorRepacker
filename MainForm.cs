@@ -53,16 +53,19 @@ namespace TOTKActorRepacker
             // Extract .pack.zs contents to program's "Temp" folder
             ExtractPacks(txt_GamePath.Text, "./Temp");
 
-            // Convert .bgyml files in temp folder  to .yml if changed by options
-            ConvertBYMLtoYML("./Temp", true);
-
+            // Copy files from Dependency folder to Temp folder
             CopyDependencyFiles();
 
+            // Convert .bgyml files in Temp folder to .yml
+            ConvertBYMLtoYML("./Temp");
+
+            // Replace values in .yml with changes in form options
             UpdateYMLValues();
 
             // Delete existing .pack.zs files in output dir
             DeleteZsFiles(txt_OutputPath.Text);
 
+            // Create new .pack files using modified files
             RebuildPacks();
 
             // Recompress .pack files to .zs 
@@ -70,6 +73,7 @@ namespace TOTKActorRepacker
             ZStdHelper.CompressFolder(actorPath, actorPath, false);
             Output.Log($"Compressed .pack files to .zs in: {actorPath}");
 
+            // Update values in the game's CRC filesize table
             PatchRESTBL();
 
             // Delete .pack files in output folder
@@ -129,7 +133,7 @@ namespace TOTKActorRepacker
             }
         }
 
-        private void ConvertBYMLtoYML(string bymlPath, bool onlyChangedFiles)
+        private void ConvertBYMLtoYML(string bymlPath, bool onlyChangedFiles = false)
         {
             // For each file that ends with .bgyml in path...
             foreach (string file in Directory.GetFiles(bymlPath, "*",
@@ -154,7 +158,7 @@ namespace TOTKActorRepacker
                 {
                     foreach (var packFolder in Directory.GetDirectories(depFolder))
                     {
-                        string packfolderName = Path.GetFileName(packFolder);
+                        string packfolderName = Path.GetFileName(packFolder) + "_new";
                         foreach (var subDir in Directory.GetDirectories(packFolder))
                         {
                             FileSys.CopyDir(subDir, $"./Temp/Pack/Actor/{packfolderName}/{Path.GetFileName(subDir)}");
@@ -274,13 +278,20 @@ namespace TOTKActorRepacker
 
             foreach (var file in Directory.GetFiles("./Temp", "*.yml", SearchOption.AllDirectories))
             {
-                string outFile = file.Replace("_pack", "_pack_new").Replace(".yml", ".bgyml");
-                // Create BYML from YML
-                using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
+                if (File.Exists(file))
                 {
-                    int version = 7;
-                    fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(false, version).AsSpan());
-                    Output.VerboseLog($"\tConverted .yml back to .bgyml: {outFile}\n\t\t(ver {version}, little endian)");
+                    string outFile = file.Replace("_pack", "_pack_new").Replace(".yml", ".bgyml");
+
+                    if (Directory.Exists(Path.GetDirectoryName(outFile)))
+                    {
+                        // Create BYML from YML
+                        using (FileStream fs = new FileStream(outFile, FileMode.OpenOrCreate))
+                        {
+                            int version = 7;
+                            fs.Write(Byml.FromText(File.ReadAllText(file)).ToBinary(false, version).AsSpan());
+                            Output.VerboseLog($"\tConverted .yml back to .bgyml: {outFile}\n\t\t(ver {version}, little endian)");
+                        }
+                    }
                 }
             }
             Output.Log("Done converting to BYML.");
@@ -309,14 +320,12 @@ namespace TOTKActorRepacker
                 // If matching folder for .pack exists...
                 if (Directory.Exists(packDir))
                 {
-                    Output.Log($"Building .pack: {outPath}");
-
                     if (!formSettings.FullSARCRebuild)
                     {
                         // Replace only modded files in pack
                         PartialSARCRebuild(packDir + "_new", outPath);
                     }
-                    else
+                    else if (Directory.Exists(packDir + "_new"))
                     {
                         // Copy modified files to pack dir
                         FileSys.CopyDir(packDir + "_new", packDir);
@@ -324,6 +333,8 @@ namespace TOTKActorRepacker
                         SARC.Build(packDir, outPath);
                         Output.Log("Done rebuilding .pack.");
                     }
+                    else
+                        Output.Log($"No new files found, skipping building .pack: {outPath}");
                 }
             }
 
@@ -332,13 +343,19 @@ namespace TOTKActorRepacker
 
         private void PartialSARCRebuild(string packDir, string outPath)
         {
+            if (!Directory.Exists(packDir))
+                return;
+
             string packFile = packDir.Replace("_pack_new", ".pack");
+
+            if (!File.Exists(packFile))
+                return;
 
             Sarc sarc = Sarc.FromBinary(File.ReadAllBytes(packFile));
             using (sarc)
             {
                 // Get all files in Temp Sarc dir
-                var sarcFilesDir = Directory.GetFiles(packDir + "/", "*", SearchOption.AllDirectories);
+                var sarcFilesDir = Directory.GetFiles(packDir, "*", SearchOption.AllDirectories);
 
                 // For each file in matching SARC dir...
                 foreach (var newFile in sarcFilesDir)
@@ -552,12 +569,17 @@ namespace TOTKActorRepacker
                     string gameFile = Path.Combine(gameTempPath, modFileRelativePath);
 
                     // If matching file in game dir exists doesn't exist or there's a binary difference...
-                    if (!File.Exists(gameFile) || !ByteArraysEqual(File.ReadAllBytes(gameFile), File.ReadAllBytes(modFile)) )
+                    if (!File.Exists(gameFile) || !ByteArraysEqual(File.ReadAllBytes(gameFile), File.ReadAllBytes(modFile)))
                     {
-                        string outFile = Path.Combine(compareOutPath, modFileRelativePath.Replace("Pack\\Actor\\",""));
-                        Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-                        File.Copy(modFile, outFile, true);
-                        Output.VerboseLog($"Copied new or modified file to: {outFile}", ConsoleColor.DarkGreen);
+                        // If format isn't byml, or game file exists and doesn't contain the same yml text...
+                        if (!modFile.EndsWith(".bgyml") ||
+                            (File.Exists(gameFile) && Byml.FromBinary(File.ReadAllBytes(gameFile)).ToText() != Byml.FromBinary(File.ReadAllBytes(modFile)).ToText()))
+                        {
+                            string outFile = Path.Combine(compareOutPath, modFileRelativePath.Replace("Pack\\Actor\\", ""));
+                            Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                            File.Copy(modFile, outFile, true);
+                            Output.VerboseLog($"Copied new or modified file to: {outFile}", ConsoleColor.DarkGreen);
+                        }
                     }
                 }
 
