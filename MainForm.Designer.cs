@@ -1,14 +1,16 @@
-﻿namespace TOTKActorRepacker
+﻿using MetroSet_UI.Forms;
+
+namespace TOTKActorRepack
 {
-    partial class MainForm : DarkUI.Forms.DarkForm
+    partial class MainForm : MetroSetForm
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,353 +25,391 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip_Main = new DarkUI.Controls.DarkMenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
-            saveConfigToolStripMenuItem = new ToolStripMenuItem();
-            loadConfigToolStripMenuItem = new ToolStripMenuItem();
-            compareModFilesToolStripMenuItem = new ToolStripMenuItem();
-            addToolStripMenuItem = new ToolStripMenuItem();
-            addFileToolStripMenuItem = new ToolStripMenuItem();
-            addOptionToolStripMenuItem = new ToolStripMenuItem();
-            settingsToolStripMenuItem = new ToolStripMenuItem();
-            tlp_Main = new TableLayoutPanel();
-            comboBox_File = new DarkUI.Controls.DarkComboBox();
-            groupBox_Paths = new DarkUI.Controls.DarkGroupBox();
-            tlp_Paths = new TableLayoutPanel();
-            btn_OutputPath = new DarkUI.Controls.DarkButton();
-            lbl_GamePath = new DarkUI.Controls.DarkLabel();
-            lbl_OutputPath = new DarkUI.Controls.DarkLabel();
-            txt_GamePath = new DarkUI.Controls.DarkTextBox();
-            txt_OutputPath = new DarkUI.Controls.DarkTextBox();
-            btn_GamePath = new DarkUI.Controls.DarkButton();
-            btn_GenerateMod = new DarkUI.Controls.DarkButton();
-            pnl_Main = new Panel();
-            lbl_ChooseFile = new DarkUI.Controls.DarkLabel();
-            bYMLToYMLToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip_Main.SuspendLayout();
-            tlp_Main.SuspendLayout();
-            groupBox_Paths.SuspendLayout();
-            tlp_Paths.SuspendLayout();
-            SuspendLayout();
-            // 
-            // menuStrip_Main
-            // 
-            menuStrip_Main.BackColor = Color.FromArgb(60, 63, 65);
-            menuStrip_Main.ForeColor = Color.FromArgb(220, 220, 220);
-            menuStrip_Main.ImageScalingSize = new Size(20, 20);
-            menuStrip_Main.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, addToolStripMenuItem, settingsToolStripMenuItem });
-            menuStrip_Main.Location = new Point(0, 0);
-            menuStrip_Main.Name = "menuStrip_Main";
-            menuStrip_Main.Padding = new Padding(3, 2, 0, 2);
-            menuStrip_Main.Size = new Size(800, 28);
-            menuStrip_Main.TabIndex = 0;
-            menuStrip_Main.Text = "darkMenuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveConfigToolStripMenuItem, loadConfigToolStripMenuItem, compareModFilesToolStripMenuItem, bYMLToYMLToolStripMenuItem });
-            fileToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(46, 24);
-            fileToolStripMenuItem.Text = "File";
-            // 
-            // saveConfigToolStripMenuItem
-            // 
-            saveConfigToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            saveConfigToolStripMenuItem.Enabled = false;
-            saveConfigToolStripMenuItem.ForeColor = Color.FromArgb(153, 153, 153);
-            saveConfigToolStripMenuItem.Name = "saveConfigToolStripMenuItem";
-            saveConfigToolStripMenuItem.Size = new Size(230, 26);
-            saveConfigToolStripMenuItem.Text = "Save Config";
-            saveConfigToolStripMenuItem.Click += SaveConfig_Click;
-            // 
-            // loadConfigToolStripMenuItem
-            // 
-            loadConfigToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            loadConfigToolStripMenuItem.Enabled = false;
-            loadConfigToolStripMenuItem.ForeColor = Color.FromArgb(153, 153, 153);
-            loadConfigToolStripMenuItem.Name = "loadConfigToolStripMenuItem";
-            loadConfigToolStripMenuItem.Size = new Size(230, 26);
-            loadConfigToolStripMenuItem.Text = "Load Config";
-            loadConfigToolStripMenuItem.Click += LoadConfig_Click;
-            // 
-            // compareModFilesToolStripMenuItem
-            // 
-            compareModFilesToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            compareModFilesToolStripMenuItem.Enabled = false;
-            compareModFilesToolStripMenuItem.ForeColor = Color.FromArgb(153, 153, 153);
-            compareModFilesToolStripMenuItem.Name = "compareModFilesToolStripMenuItem";
-            compareModFilesToolStripMenuItem.Size = new Size(230, 26);
-            compareModFilesToolStripMenuItem.Text = "Compare Mod Files...";
-            compareModFilesToolStripMenuItem.Click += Compare_Click;
-            // 
-            // addToolStripMenuItem
-            // 
-            addToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            addToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addFileToolStripMenuItem, addOptionToolStripMenuItem });
-            addToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
-            addToolStripMenuItem.Name = "addToolStripMenuItem";
-            addToolStripMenuItem.Size = new Size(60, 24);
-            addToolStripMenuItem.Text = "Add...";
-            // 
-            // addFileToolStripMenuItem
-            // 
-            addFileToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            addFileToolStripMenuItem.Enabled = false;
-            addFileToolStripMenuItem.ForeColor = Color.FromArgb(153, 153, 153);
-            addFileToolStripMenuItem.Name = "addFileToolStripMenuItem";
-            addFileToolStripMenuItem.Size = new Size(138, 26);
-            addFileToolStripMenuItem.Text = "File";
-            // 
-            // addOptionToolStripMenuItem
-            // 
-            addOptionToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            addOptionToolStripMenuItem.Enabled = false;
-            addOptionToolStripMenuItem.ForeColor = Color.FromArgb(153, 153, 153);
-            addOptionToolStripMenuItem.Name = "addOptionToolStripMenuItem";
-            addOptionToolStripMenuItem.Size = new Size(138, 26);
-            addOptionToolStripMenuItem.Text = "Option";
-            // 
-            // settingsToolStripMenuItem
-            // 
-            settingsToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            settingsToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
-            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(76, 24);
-            settingsToolStripMenuItem.Text = "Settings";
-            settingsToolStripMenuItem.Click += Settings_Click;
+            this.components = new System.ComponentModel.Container();
+            this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_GameSettings = new System.Windows.Forms.TableLayoutPanel();
+            this.txt_GameVersion = new System.Windows.Forms.TextBox();
+            this.lbl_Gameversion = new System.Windows.Forms.Label();
+            this.lbl_GameFiles = new System.Windows.Forms.Label();
+            this.txt_GameFilesDir = new System.Windows.Forms.TextBox();
+            this.groupBox_BYMLs = new System.Windows.Forms.GroupBox();
+            this.listBox_BYMLs = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip_BYMLs = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox_EditedValues = new System.Windows.Forms.GroupBox();
+            this.listBox_Changes = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip_Changes = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.setNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setFieldNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCommentToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertyGrid_Changes = new System.Windows.Forms.PropertyGrid();
+            this.menuStrip_Main = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportModFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tlp_Main.SuspendLayout();
+            this.tlp_GameSettings.SuspendLayout();
+            this.groupBox_BYMLs.SuspendLayout();
+            this.contextMenuStrip_BYMLs.SuspendLayout();
+            this.groupBox_EditedValues.SuspendLayout();
+            this.contextMenuStrip_Changes.SuspendLayout();
+            this.menuStrip_Main.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tlp_Main
             // 
-            tlp_Main.ColumnCount = 2;
-            tlp_Main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
-            tlp_Main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tlp_Main.Controls.Add(comboBox_File, 0, 1);
-            tlp_Main.Controls.Add(groupBox_Paths, 0, 0);
-            tlp_Main.Controls.Add(btn_GenerateMod, 1, 3);
-            tlp_Main.Controls.Add(pnl_Main, 0, 2);
-            tlp_Main.Controls.Add(lbl_ChooseFile, 1, 1);
-            tlp_Main.Dock = DockStyle.Fill;
-            tlp_Main.Location = new Point(0, 28);
-            tlp_Main.Name = "tlp_Main";
-            tlp_Main.RowCount = 4;
-            tlp_Main.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tlp_Main.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tlp_Main.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlp_Main.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tlp_Main.Size = new Size(800, 422);
-            tlp_Main.TabIndex = 1;
+            this.tlp_Main.ColumnCount = 2;
+            this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.Controls.Add(this.tlp_GameSettings, 0, 0);
+            this.tlp_Main.Controls.Add(this.groupBox_BYMLs, 1, 0);
+            this.tlp_Main.Controls.Add(this.groupBox_EditedValues, 1, 1);
+            this.tlp_Main.Controls.Add(this.propertyGrid_Changes, 0, 1);
+            this.tlp_Main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_Main.Location = new System.Drawing.Point(2, 28);
+            this.tlp_Main.Name = "tlp_Main";
+            this.tlp_Main.RowCount = 2;
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.Size = new System.Drawing.Size(796, 420);
+            this.tlp_Main.TabIndex = 0;
             // 
-            // comboBox_File
+            // tlp_GameSettings
             // 
-            comboBox_File.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            comboBox_File.DrawMode = DrawMode.OwnerDrawVariable;
-            comboBox_File.Enabled = false;
-            comboBox_File.FormattingEnabled = true;
-            comboBox_File.Location = new Point(10, 112);
-            comboBox_File.Margin = new Padding(10, 3, 3, 3);
-            comboBox_File.Name = "comboBox_File";
-            comboBox_File.Size = new Size(547, 28);
-            comboBox_File.TabIndex = 1;
-            comboBox_File.SelectedIndexChanged += SelectedFile_Changed;
+            this.tlp_GameSettings.ColumnCount = 2;
+            this.tlp_GameSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.27551F));
+            this.tlp_GameSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 73.72449F));
+            this.tlp_GameSettings.Controls.Add(this.txt_GameVersion, 1, 1);
+            this.tlp_GameSettings.Controls.Add(this.lbl_Gameversion, 0, 1);
+            this.tlp_GameSettings.Controls.Add(this.lbl_GameFiles, 0, 0);
+            this.tlp_GameSettings.Controls.Add(this.txt_GameFilesDir, 1, 0);
+            this.tlp_GameSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_GameSettings.Location = new System.Drawing.Point(3, 3);
+            this.tlp_GameSettings.Name = "tlp_GameSettings";
+            this.tlp_GameSettings.RowCount = 2;
+            this.tlp_GameSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_GameSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_GameSettings.Size = new System.Drawing.Size(392, 204);
+            this.tlp_GameSettings.TabIndex = 0;
             // 
-            // groupBox_Paths
+            // txt_GameVersion
             // 
-            groupBox_Paths.BorderColor = Color.FromArgb(51, 51, 51);
-            tlp_Main.SetColumnSpan(groupBox_Paths, 2);
-            groupBox_Paths.Controls.Add(tlp_Paths);
-            groupBox_Paths.Dock = DockStyle.Fill;
-            groupBox_Paths.Location = new Point(3, 3);
-            groupBox_Paths.Name = "groupBox_Paths";
-            groupBox_Paths.Size = new Size(794, 99);
-            groupBox_Paths.TabIndex = 1;
-            groupBox_Paths.TabStop = false;
-            groupBox_Paths.Text = "Paths";
+            this.txt_GameVersion.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txt_GameVersion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt_GameVersion.Location = new System.Drawing.Point(106, 137);
+            this.txt_GameVersion.Name = "txt_GameVersion";
+            this.txt_GameVersion.Size = new System.Drawing.Size(283, 32);
+            this.txt_GameVersion.TabIndex = 3;
+            this.txt_GameVersion.Text = "1.2.1";
+            this.txt_GameVersion.TextChanged += new System.EventHandler(this.GameVer_Changed);
             // 
-            // tlp_Paths
+            // lbl_Gameversion
             // 
-            tlp_Paths.ColumnCount = 3;
-            tlp_Paths.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tlp_Paths.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
-            tlp_Paths.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tlp_Paths.Controls.Add(btn_OutputPath, 2, 1);
-            tlp_Paths.Controls.Add(lbl_GamePath, 0, 0);
-            tlp_Paths.Controls.Add(lbl_OutputPath, 0, 1);
-            tlp_Paths.Controls.Add(txt_GamePath, 1, 0);
-            tlp_Paths.Controls.Add(txt_OutputPath, 1, 1);
-            tlp_Paths.Controls.Add(btn_GamePath, 2, 0);
-            tlp_Paths.Dock = DockStyle.Fill;
-            tlp_Paths.Location = new Point(3, 23);
-            tlp_Paths.Name = "tlp_Paths";
-            tlp_Paths.RowCount = 2;
-            tlp_Paths.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlp_Paths.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlp_Paths.Size = new Size(788, 73);
-            tlp_Paths.TabIndex = 0;
+            this.lbl_Gameversion.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_Gameversion.AutoSize = true;
+            this.lbl_Gameversion.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbl_Gameversion.ForeColor = System.Drawing.Color.Black;
+            this.lbl_Gameversion.Location = new System.Drawing.Point(29, 133);
+            this.lbl_Gameversion.Name = "lbl_Gameversion";
+            this.lbl_Gameversion.Size = new System.Drawing.Size(71, 40);
+            this.lbl_Gameversion.TabIndex = 2;
+            this.lbl_Gameversion.Text = "Game Version:";
             // 
-            // btn_OutputPath
+            // lbl_GameFiles
             // 
-            btn_OutputPath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            btn_OutputPath.Location = new Point(712, 40);
-            btn_OutputPath.Name = "btn_OutputPath";
-            btn_OutputPath.Padding = new Padding(5);
-            btn_OutputPath.Size = new Size(73, 29);
-            btn_OutputPath.TabIndex = 5;
-            btn_OutputPath.Text = ". . .";
-            btn_OutputPath.Click += OutputPath_Click;
+            this.lbl_GameFiles.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_GameFiles.AutoSize = true;
+            this.lbl_GameFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbl_GameFiles.ForeColor = System.Drawing.Color.Black;
+            this.lbl_GameFiles.Location = new System.Drawing.Point(5, 31);
+            this.lbl_GameFiles.Name = "lbl_GameFiles";
+            this.lbl_GameFiles.Size = new System.Drawing.Size(95, 40);
+            this.lbl_GameFiles.TabIndex = 0;
+            this.lbl_GameFiles.Text = "Game Files Directory:";
             // 
-            // lbl_GamePath
+            // txt_GameFilesDir
             // 
-            lbl_GamePath.Anchor = AnchorStyles.Right;
-            lbl_GamePath.AutoSize = true;
-            lbl_GamePath.ForeColor = Color.FromArgb(220, 220, 220);
-            lbl_GamePath.Location = new Point(45, 8);
-            lbl_GamePath.Name = "lbl_GamePath";
-            lbl_GamePath.Size = new Size(149, 20);
-            lbl_GamePath.TabIndex = 0;
-            lbl_GamePath.Text = "Game Files Directory:";
+            this.txt_GameFilesDir.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txt_GameFilesDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt_GameFilesDir.Location = new System.Drawing.Point(106, 35);
+            this.txt_GameFilesDir.Name = "txt_GameFilesDir";
+            this.txt_GameFilesDir.Size = new System.Drawing.Size(283, 32);
+            this.txt_GameFilesDir.TabIndex = 1;
+            this.txt_GameFilesDir.TextChanged += new System.EventHandler(this.GameFileDir_Changed);
             // 
-            // lbl_OutputPath
+            // groupBox_BYMLs
             // 
-            lbl_OutputPath.Anchor = AnchorStyles.Right;
-            lbl_OutputPath.AutoSize = true;
-            lbl_OutputPath.ForeColor = Color.FromArgb(220, 220, 220);
-            lbl_OutputPath.Location = new Point(71, 44);
-            lbl_OutputPath.Name = "lbl_OutputPath";
-            lbl_OutputPath.Size = new Size(123, 20);
-            lbl_OutputPath.TabIndex = 1;
-            lbl_OutputPath.Text = "Output Directory:";
+            this.groupBox_BYMLs.Controls.Add(this.listBox_BYMLs);
+            this.groupBox_BYMLs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox_BYMLs.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.groupBox_BYMLs.Location = new System.Drawing.Point(401, 3);
+            this.groupBox_BYMLs.Name = "groupBox_BYMLs";
+            this.groupBox_BYMLs.Size = new System.Drawing.Size(392, 204);
+            this.groupBox_BYMLs.TabIndex = 1;
+            this.groupBox_BYMLs.TabStop = false;
+            this.groupBox_BYMLs.Text = "Edited BYMLs";
             // 
-            // txt_GamePath
+            // listBox_BYMLs
             // 
-            txt_GamePath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            txt_GamePath.BackColor = Color.FromArgb(69, 73, 74);
-            txt_GamePath.BorderStyle = BorderStyle.FixedSingle;
-            txt_GamePath.ForeColor = Color.FromArgb(220, 220, 220);
-            txt_GamePath.Location = new Point(200, 4);
-            txt_GamePath.Name = "txt_GamePath";
-            txt_GamePath.Size = new Size(506, 27);
-            txt_GamePath.TabIndex = 2;
-            txt_GamePath.TextChanged += Path_Changed;
+            this.listBox_BYMLs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBox_BYMLs.ContextMenuStrip = this.contextMenuStrip_BYMLs;
+            this.listBox_BYMLs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_BYMLs.FormattingEnabled = true;
+            this.listBox_BYMLs.ItemHeight = 20;
+            this.listBox_BYMLs.Location = new System.Drawing.Point(3, 22);
+            this.listBox_BYMLs.Name = "listBox_BYMLs";
+            this.listBox_BYMLs.Size = new System.Drawing.Size(386, 179);
+            this.listBox_BYMLs.TabIndex = 0;
+            this.listBox_BYMLs.SelectedIndexChanged += new System.EventHandler(this.ListBox_SelectedIndexChanged);
             // 
-            // txt_OutputPath
+            // contextMenuStrip_BYMLs
             // 
-            txt_OutputPath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            txt_OutputPath.BackColor = Color.FromArgb(69, 73, 74);
-            txt_OutputPath.BorderStyle = BorderStyle.FixedSingle;
-            txt_OutputPath.ForeColor = Color.FromArgb(220, 220, 220);
-            txt_OutputPath.Location = new Point(200, 41);
-            txt_OutputPath.Name = "txt_OutputPath";
-            txt_OutputPath.Size = new Size(506, 27);
-            txt_OutputPath.TabIndex = 3;
-            txt_OutputPath.TextChanged += Path_Changed;
+            this.contextMenuStrip_BYMLs.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip_BYMLs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
+            this.removeToolStripMenuItem,
+            this.setPathToolStripMenuItem,
+            this.setCommentToolStripMenuItem});
+            this.contextMenuStrip_BYMLs.Name = "contextMenuStrip_BYMLs";
+            this.contextMenuStrip_BYMLs.Size = new System.Drawing.Size(169, 100);
             // 
-            // btn_GamePath
+            // addToolStripMenuItem
             // 
-            btn_GamePath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            btn_GamePath.Location = new Point(712, 3);
-            btn_GamePath.Name = "btn_GamePath";
-            btn_GamePath.Padding = new Padding(5);
-            btn_GamePath.Size = new Size(73, 29);
-            btn_GamePath.TabIndex = 4;
-            btn_GamePath.Text = ". . .";
-            btn_GamePath.Click += GamePath_Click;
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddBYML_Click);
             // 
-            // btn_GenerateMod
+            // removeToolStripMenuItem
             // 
-            btn_GenerateMod.Dock = DockStyle.Fill;
-            btn_GenerateMod.Enabled = false;
-            btn_GenerateMod.Location = new Point(570, 368);
-            btn_GenerateMod.Margin = new Padding(10);
-            btn_GenerateMod.Name = "btn_GenerateMod";
-            btn_GenerateMod.Padding = new Padding(15);
-            btn_GenerateMod.Size = new Size(220, 44);
-            btn_GenerateMod.TabIndex = 0;
-            btn_GenerateMod.Text = "Generate Mod";
-            btn_GenerateMod.Click += GenerateMod_Click;
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.RemoveByml_Click);
             // 
-            // pnl_Main
+            // setPathToolStripMenuItem
             // 
-            pnl_Main.AutoScroll = true;
-            tlp_Main.SetColumnSpan(pnl_Main, 2);
-            pnl_Main.Dock = DockStyle.Fill;
-            pnl_Main.Location = new Point(3, 150);
-            pnl_Main.Name = "pnl_Main";
-            pnl_Main.Size = new Size(794, 205);
-            pnl_Main.TabIndex = 2;
+            this.setPathToolStripMenuItem.Name = "setPathToolStripMenuItem";
+            this.setPathToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.setPathToolStripMenuItem.Text = "Set Path";
+            this.setPathToolStripMenuItem.Click += new System.EventHandler(this.SetBymlPath_Click);
             // 
-            // lbl_ChooseFile
+            // setCommentToolStripMenuItem
             // 
-            lbl_ChooseFile.Anchor = AnchorStyles.Left;
-            lbl_ChooseFile.AutoSize = true;
-            lbl_ChooseFile.ForeColor = Color.FromArgb(220, 220, 220);
-            lbl_ChooseFile.Location = new Point(563, 116);
-            lbl_ChooseFile.Name = "lbl_ChooseFile";
-            lbl_ChooseFile.Size = new Size(218, 20);
-            lbl_ChooseFile.TabIndex = 3;
-            lbl_ChooseFile.Text = "<= Choose a File to Get Started";
-            lbl_ChooseFile.Visible = false;
+            this.setCommentToolStripMenuItem.Name = "setCommentToolStripMenuItem";
+            this.setCommentToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.setCommentToolStripMenuItem.Text = "Set Comment";
+            this.setCommentToolStripMenuItem.Click += new System.EventHandler(this.SetBymlComment_Click);
             // 
-            // bYMLToYMLToolStripMenuItem
+            // groupBox_EditedValues
             // 
-            bYMLToYMLToolStripMenuItem.BackColor = Color.FromArgb(60, 63, 65);
-            bYMLToYMLToolStripMenuItem.ForeColor = Color.FromArgb(220, 220, 220);
-            bYMLToYMLToolStripMenuItem.Name = "bYMLToYMLToolStripMenuItem";
-            bYMLToYMLToolStripMenuItem.Size = new Size(230, 26);
-            bYMLToYMLToolStripMenuItem.Text = "BYML to YML";
-            bYMLToYMLToolStripMenuItem.Click += BymlToYml_Click;
+            this.groupBox_EditedValues.Controls.Add(this.listBox_Changes);
+            this.groupBox_EditedValues.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox_EditedValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.groupBox_EditedValues.Location = new System.Drawing.Point(401, 213);
+            this.groupBox_EditedValues.Name = "groupBox_EditedValues";
+            this.groupBox_EditedValues.Size = new System.Drawing.Size(392, 204);
+            this.groupBox_EditedValues.TabIndex = 2;
+            this.groupBox_EditedValues.TabStop = false;
+            this.groupBox_EditedValues.Text = "Edited Values";
+            // 
+            // listBox_Changes
+            // 
+            this.listBox_Changes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBox_Changes.ContextMenuStrip = this.contextMenuStrip_Changes;
+            this.listBox_Changes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_Changes.FormattingEnabled = true;
+            this.listBox_Changes.ItemHeight = 20;
+            this.listBox_Changes.Location = new System.Drawing.Point(3, 22);
+            this.listBox_Changes.Name = "listBox_Changes";
+            this.listBox_Changes.Size = new System.Drawing.Size(386, 179);
+            this.listBox_Changes.TabIndex = 1;
+            this.listBox_Changes.SelectedIndexChanged += new System.EventHandler(this.SelectedChange_Changed);
+            // 
+            // contextMenuStrip_Changes
+            // 
+            this.contextMenuStrip_Changes.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip_Changes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem1,
+            this.removeToolStripMenuItem1,
+            this.setNameToolStripMenuItem,
+            this.setFieldNameToolStripMenuItem,
+            this.setCommentToolStripMenuItem1});
+            this.contextMenuStrip_Changes.Name = "contextMenuStrip_Changes";
+            this.contextMenuStrip_Changes.Size = new System.Drawing.Size(198, 124);
+            // 
+            // addToolStripMenuItem1
+            // 
+            this.addToolStripMenuItem1.Name = "addToolStripMenuItem1";
+            this.addToolStripMenuItem1.Size = new System.Drawing.Size(197, 24);
+            this.addToolStripMenuItem1.Text = "Add";
+            this.addToolStripMenuItem1.Click += new System.EventHandler(this.AddChange_Click);
+            // 
+            // removeToolStripMenuItem1
+            // 
+            this.removeToolStripMenuItem1.Name = "removeToolStripMenuItem1";
+            this.removeToolStripMenuItem1.Size = new System.Drawing.Size(197, 24);
+            this.removeToolStripMenuItem1.Text = "Remove";
+            // 
+            // setNameToolStripMenuItem
+            // 
+            this.setNameToolStripMenuItem.Name = "setNameToolStripMenuItem";
+            this.setNameToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
+            this.setNameToolStripMenuItem.Text = "Set Change Name";
+            // 
+            // setFieldNameToolStripMenuItem
+            // 
+            this.setFieldNameToolStripMenuItem.Name = "setFieldNameToolStripMenuItem";
+            this.setFieldNameToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
+            this.setFieldNameToolStripMenuItem.Text = "Set Field Name";
+            // 
+            // setCommentToolStripMenuItem1
+            // 
+            this.setCommentToolStripMenuItem1.Name = "setCommentToolStripMenuItem1";
+            this.setCommentToolStripMenuItem1.Size = new System.Drawing.Size(197, 24);
+            this.setCommentToolStripMenuItem1.Text = "Set Comment";
+            // 
+            // propertyGrid_Changes
+            // 
+            this.propertyGrid_Changes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid_Changes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.propertyGrid_Changes.LineColor = System.Drawing.SystemColors.Highlight;
+            this.propertyGrid_Changes.Location = new System.Drawing.Point(3, 213);
+            this.propertyGrid_Changes.Name = "propertyGrid_Changes";
+            this.propertyGrid_Changes.Size = new System.Drawing.Size(392, 204);
+            this.propertyGrid_Changes.TabIndex = 3;
+            this.propertyGrid_Changes.ToolbarVisible = false;
+            this.propertyGrid_Changes.ViewBackColor = System.Drawing.SystemColors.Highlight;
+            // 
+            // menuStrip_Main
+            // 
+            this.menuStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toggleThemeToolStripMenuItem});
+            this.menuStrip_Main.Location = new System.Drawing.Point(2, 0);
+            this.menuStrip_Main.Name = "menuStrip_Main";
+            this.menuStrip_Main.Size = new System.Drawing.Size(796, 28);
+            this.menuStrip_Main.TabIndex = 1;
+            this.menuStrip_Main.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveProjectToolStripMenuItem,
+            this.loadProjectToolStripMenuItem,
+            this.exportModFilesToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveProjectToolStripMenuItem
+            // 
+            this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.saveProjectToolStripMenuItem.Text = "Save Project";
+            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.SaveProject_Click);
+            // 
+            // loadProjectToolStripMenuItem
+            // 
+            this.loadProjectToolStripMenuItem.Name = "loadProjectToolStripMenuItem";
+            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.loadProjectToolStripMenuItem.Text = "Load Project";
+            this.loadProjectToolStripMenuItem.Click += new System.EventHandler(this.LoadProject_Click);
+            // 
+            // exportModFilesToolStripMenuItem
+            // 
+            this.exportModFilesToolStripMenuItem.Name = "exportModFilesToolStripMenuItem";
+            this.exportModFilesToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.exportModFilesToolStripMenuItem.Text = "Export Mod Files";
+            // 
+            // toggleThemeToolStripMenuItem
+            // 
+            this.toggleThemeToolStripMenuItem.Name = "toggleThemeToolStripMenuItem";
+            this.toggleThemeToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
+            this.toggleThemeToolStripMenuItem.Text = "Toggle Theme";
+            this.toggleThemeToolStripMenuItem.Click += new System.EventHandler(this.ToggleTheme_Click);
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(tlp_Main);
-            Controls.Add(menuStrip_Main);
-            MainMenuStrip = menuStrip_Main;
-            Name = "MainForm";
-            Text = "TotK Actor Repacker";
-            menuStrip_Main.ResumeLayout(false);
-            menuStrip_Main.PerformLayout();
-            tlp_Main.ResumeLayout(false);
-            tlp_Main.PerformLayout();
-            groupBox_Paths.ResumeLayout(false);
-            tlp_Paths.ResumeLayout(false);
-            tlp_Paths.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.tlp_Main);
+            this.Controls.Add(this.menuStrip_Main);
+            this.DropShadowEffect = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            this.HeaderHeight = -40;
+            this.MainMenuStrip = this.menuStrip_Main;
+            this.Name = "MainForm";
+            this.Opacity = 0.99D;
+            this.Padding = new System.Windows.Forms.Padding(2, 0, 2, 2);
+            this.ShowHeader = true;
+            this.ShowLeftRect = false;
+            this.ShowTitle = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Style = MetroSet_UI.Enums.Style.Dark;
+            this.Text = "TOTKActorRepack";
+            this.TextColor = System.Drawing.Color.White;
+            this.ThemeName = "MetroDark";
+            this.tlp_Main.ResumeLayout(false);
+            this.tlp_GameSettings.ResumeLayout(false);
+            this.tlp_GameSettings.PerformLayout();
+            this.groupBox_BYMLs.ResumeLayout(false);
+            this.contextMenuStrip_BYMLs.ResumeLayout(false);
+            this.groupBox_EditedValues.ResumeLayout(false);
+            this.contextMenuStrip_Changes.ResumeLayout(false);
+            this.menuStrip_Main.ResumeLayout(false);
+            this.menuStrip_Main.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
 
-        private DarkUI.Controls.DarkMenuStrip menuStrip_Main;
-        private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem saveConfigToolStripMenuItem;
-        private ToolStripMenuItem loadConfigToolStripMenuItem;
-        private TableLayoutPanel tlp_Main;
-        private DarkUI.Controls.DarkButton btn_GenerateMod;
-        private DarkUI.Controls.DarkGroupBox groupBox_Paths;
-        private TableLayoutPanel tlp_Paths;
-        private Panel pnl_Main;
-        private DarkUI.Controls.DarkLabel lbl_GamePath;
-        private DarkUI.Controls.DarkLabel lbl_OutputPath;
-        private DarkUI.Controls.DarkTextBox txt_GamePath;
-        private DarkUI.Controls.DarkTextBox txt_OutputPath;
-        private DarkUI.Controls.DarkButton btn_OutputPath;
-        private DarkUI.Controls.DarkButton btn_GamePath;
-        private DarkUI.Controls.DarkComboBox comboBox_File;
-        private ToolStripMenuItem addToolStripMenuItem;
-        private ToolStripMenuItem addFileToolStripMenuItem;
-        private ToolStripMenuItem addOptionToolStripMenuItem;
-        private ToolStripMenuItem settingsToolStripMenuItem;
-        private DarkUI.Controls.DarkLabel lbl_ChooseFile;
-        private ToolStripMenuItem compareModFilesToolStripMenuItem;
-        private ToolStripMenuItem bYMLToYMLToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tlp_Main;
+        private System.Windows.Forms.MenuStrip menuStrip_Main;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleThemeToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tlp_GameSettings;
+        private System.Windows.Forms.Label lbl_GameFiles;
+        private System.Windows.Forms.TextBox txt_GameFilesDir;
+        private System.Windows.Forms.Label lbl_Gameversion;
+        private System.Windows.Forms.TextBox txt_GameVersion;
+        private System.Windows.Forms.GroupBox groupBox_BYMLs;
+        private System.Windows.Forms.GroupBox groupBox_EditedValues;
+        private System.Windows.Forms.ListBox listBox_BYMLs;
+        private System.Windows.Forms.ToolStripMenuItem exportModFilesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_BYMLs;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setCommentToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_Changes;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem setNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setFieldNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setCommentToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem setPathToolStripMenuItem;
+        private System.Windows.Forms.PropertyGrid propertyGrid_Changes;
+        private System.Windows.Forms.ListBox listBox_Changes;
     }
 }
+
